@@ -1,7 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import config from "@/conf/config";
+import bcrypt from "bcryptjs";
 
 interface WatchHistoryItem {
     type: Types.ObjectId;
@@ -91,7 +89,6 @@ userSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 10);
     }
-
     next();
 })
 

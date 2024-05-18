@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@react-email/components": "0.0.17",
-    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.4",

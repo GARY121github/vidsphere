@@ -25,11 +25,19 @@ const authOptions : NextAuthOptions = {
                         ]
                     });
 
+                    console.log(user);
+
                     if(!user){
                         throw new Error("No user found")
                     }
 
-                    const isValid = await bcrypt.compare(credentials.identifier.password, user.password);
+                    console.log(credentials.password);
+                    console.log(user.password);
+
+                    const isValid = await bcrypt.compare(credentials.password, user.password);
+
+                    
+                    console.log(isValid);
 
                     if(!isValid){
                         throw new Error("Invalid password");
@@ -38,6 +46,7 @@ const authOptions : NextAuthOptions = {
                     return user;
                     
                 } catch (error: any) {
+                    console.log("Error :: " , error);
                     throw new Error(error.message);
                 }
             },
