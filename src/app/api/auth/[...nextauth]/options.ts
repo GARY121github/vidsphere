@@ -11,8 +11,8 @@ const authOptions : NextAuthOptions = {
             id: "credentials",
             name: "Credentials",
             credentials: {
-                username: { label: "Username", type: "text" , placeholder: "Username"},
-                password: {  label: "Password", type: "password" , placeholder: "Password"}
+                username: { label: "Username", type: "text" , placeholder: "Enter your username"},
+                password: {  label: "Password", type: "password" , placeholder: "Enter your password"}
             },
             async authorize(credentials : any): Promise<any>{
                 await connectDB();
@@ -20,7 +20,7 @@ const authOptions : NextAuthOptions = {
                     const user = await UserModel.findOne({
                         $or : [
                             {
-                                username: credentials.identifier.username
+                                username: credentials.username
                             }
                         ]
                     });
