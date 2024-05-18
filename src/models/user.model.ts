@@ -95,39 +95,6 @@ userSchema.pre("save", async function (next) {
     next();
 })
 
-userSchema.methods.isPasswordCorrect = async function (password: string) {
-    return await bcrypt.compare(password, this.password);
-}
-
-userSchema.methods.generateAccessToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-            username: this.username,
-            email: this.email,
-            fullName: this.fullName,
-        },
-        config.ACCESS_TOKEN_SECRET,
-        {
-            expiresIn: config.ACCESS_TOKEN_EXPIRE
-        },
-    )
-}
-
-userSchema.methods.generateRefreshToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-            username: this.username,
-            email: this.email,
-            fullName: this.fullName,
-        },
-        config.REFRESH_TOKEN_SECRET,
-        {
-            expiresIn: config.REFRESH_TOKEN_EXPIRE
-        },
-    )
-}
 
 const UserModel = mongoose.models.User as mongoose.Model<User> || mongoose.model<User>("User", userSchema);
 
