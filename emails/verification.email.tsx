@@ -1,12 +1,10 @@
 import {
-    Html,
-    Button
+    Html
 } from "@react-email/components";
 
 interface VerificationEmailProps {
     verificationCode: string;
     username: string;
-
 }
 
 export default function VerificationEmail({ verificationCode , username }: VerificationEmailProps) {
