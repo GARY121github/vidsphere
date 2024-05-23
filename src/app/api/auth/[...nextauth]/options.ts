@@ -38,21 +38,14 @@ const authOptions: NextAuthOptions = {
             ],
           });
 
-          console.log(user);
-
           if (!user) {
             throw new Error("No user found");
           }
-
-          // console.log(credentials.password);
-          // console.log(user.password);
 
           const isValid = await bcrypt.compare(
             credentials.password,
             user.password
           );
-
-          // console.log(isValid);
 
           if (!isValid) {
             throw new Error("Invalid password");
@@ -60,63 +53,12 @@ const authOptions: NextAuthOptions = {
 
           return user;
         } catch (error: any) {
-          console.log("Error :: ", error);
           throw new Error(error.message);
         }
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account?.provider === "google") {
-        await connectDB();
-        try {
-          const { id, email, image } = user;
-          const existingUser = await UserModel.findOne({ email });
-          let userData;
-
-          if (existingUser) {
-            if (!existingUser.googleId) {
-              const updatedUser = await UserModel.findOneAndUpdate(
-                { email },
-                { $set: { googleId: id, avatar: image } },
-                { new: true }
-              );
-              userData = updatedUser;
-            } else {
-              userData = existingUser;
-            }
-          }
-
-          if (!existingUser) {
-            const newUser = await UserModel.create({
-              username: email?.split("@")[0],
-              fullName: user.name,
-              email,
-              avatar: image,
-              googleId: id,
-              isVerified: true,
-            });
-
-            if (!newUser) {
-              throw new Error("Failed to create user!!");
-            }
-
-            userData = newUser;
-          }
-
-          //updating user
-          user._id = userData?._id?.toString();
-          user.username = userData?.username;
-
-          return true;
-        } catch (error) {
-          console.error("Error signing in with Google: ", error);
-          throw new Error("Error signing in with Google!!");
-        }
-      }
-      return true;
-    },
     async jwt({ token, user }) {
       if (user) {
         token._id = user._id;
