@@ -6,16 +6,20 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import signInSchema from "@/schemas/signIn.schema";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { signIn } from "next-auth/react";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -25,22 +29,53 @@ export default function Login() {
       password: "",
     },
   });
-  function onSubmit(values: z.infer<typeof signInSchema>) {
-    console.log(values);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof signInSchema>) {
+    setIsLoading(true);
+    const response = await signIn("credentials", {
+      username: values.username,
+      password: values.password,
+      redirect: false,
+    });
+    if (response?.error) {
+      toast({
+        title: "Error",
+        description: response.error,
+        variant: "destructive",
+      });
+    }
+
+    if (response?.url) {
+      toast({
+        title: "Success",
+        description: "You have successfully signed in",
+      });
+
+      router.replace("/");
+    }
+    setIsLoading(false);
   }
   return (
     <>
       <div className="max-w-md w-full p-6">
         <p className="text-sm font-semibold mb-6 text-white text-left">
           Not a member?{" "}
-          <span className="text-blue-600 underline">Register</span>
+          <Link href="/sign-up">
+            <span className="text-blue-600 underline">Register</span>
+          </Link>
         </p>
         <h1 className="text-2xl font-semibold mb-6 text-white text-left">
           Log in to your Account
         </h1>
         <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
           <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
-            <Button className="w-full flex justify-center items-center gap-2 bg-[#0d6efd] text-sm text-white p-2 rounded-md hover:bg-blue-600">
+            <Button
+              className="w-full flex justify-center items-center gap-2 bg-[#0d6efd] text-sm text-white p-2 rounded-md hover:bg-blue-600"
+              onClick={() => signIn("google")}
+            >
               <Image width={25} height={25} src="/google.svg" alt="google" />
               Sign in with Google
             </Button>
@@ -60,7 +95,11 @@ export default function Login() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="username" {...field} />
+                    <Input
+                      placeholder="username"
+                      className="text-black"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,14 +112,28 @@ export default function Login() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" {...field} />
+                    <Input
+                      placeholder="password"
+                      className="text-black"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="py-4 px-8 bg-blue-600">
-              Submit
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="py-4 px-8 bg-blue-600 hover:bg-blue-700 w-full"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+                </>
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </form>
         </Form>

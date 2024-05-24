@@ -5,6 +5,8 @@ import UserModel from "@/models/user.model";
 import bcrypt from "bcryptjs";
 import config from "@/conf/config";
 import Google from "next-auth/providers/google";
+import signInSchema from "@/schemas/signIn.schema";
+import ApiError from "@/utils/ApiError";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -27,28 +29,41 @@ const authOptions: NextAuthOptions = {
           placeholder: "Enter your password",
         },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials): Promise<any> {
         await connectDB();
         try {
+          const isValidData = signInSchema.safeParse(credentials);
+
+          if (!isValidData.success) {
+            const errorMessage: string = isValidData.error.errors
+              .map((error) => `${error.path.join(".")} ${error.message}`)
+              .join(". ");
+            throw new Error("Please provide valid data. " + errorMessage);
+          }
+
           const user = await UserModel.findOne({
             $or: [
               {
-                username: credentials.username,
+                username: isValidData.data.username,
               },
             ],
           });
 
           if (!user) {
-            throw new Error("No user found");
+            throw new ApiError(404, "User not found!!");
+          }
+
+          if (!user.isVerified) {
+            throw new ApiError(400, "Please verify your email first!!");
           }
 
           const isValid = await bcrypt.compare(
-            credentials.password,
+            isValidData.data.password,
             user.password
           );
 
           if (!isValid) {
-            throw new Error("Invalid password");
+            throw new ApiError(400, "Invalid credentials!!");
           }
 
           return user;
@@ -91,7 +106,7 @@ const authOptions: NextAuthOptions = {
             });
 
             if (!newUser) {
-              throw new Error("Failed to create user!!");
+              throw new ApiError(400, "Error signing in with Google!!");
             }
 
             userData = newUser;
@@ -129,6 +144,9 @@ const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   secret: config.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/sign-in",
+  },
 };
 
 export default authOptions;
