@@ -59,6 +59,56 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        await connectDB();
+        try {
+          const { id, email, image } = user;
+          const existingUser = await UserModel.findOne({ email });
+          let userData;
+
+          if (existingUser) {
+            if (!existingUser.googleId) {
+              const updatedUser = await UserModel.findOneAndUpdate(
+                { email },
+                { $set: { googleId: id, avatar: image } },
+                { new: true }
+              );
+              userData = updatedUser;
+            } else {
+              userData = existingUser;
+            }
+          }
+
+          if (!existingUser) {
+            const newUser = await UserModel.create({
+              username: email?.split("@")[0],
+              fullName: user.name,
+              email,
+              avatar: image,
+              googleId: id,
+              isVerified: true,
+            });
+
+            if (!newUser) {
+              throw new Error("Failed to create user!!");
+            }
+
+            userData = newUser;
+          }
+
+          //updating user
+          user._id = userData?._id?.toString();
+          user.username = userData?.username;
+
+          return true;
+        } catch (error) {
+          console.error("Error signing in with Google: ", error);
+          throw new Error("Error signing in with Google!!");
+        }
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token._id = user._id;
