@@ -54,7 +54,7 @@ const authOptions: NextAuthOptions = {
           }
 
           if (!user.isVerified) {
-            throw new ApiError(400, "Please verify your email first!!");
+            throw new ApiError(400, "Please verify your email first");
           }
 
           const isValid = await bcrypt.compare(
@@ -97,7 +97,7 @@ const authOptions: NextAuthOptions = {
 
           if (!existingUser) {
             const newUser = await UserModel.create({
-              username: email?.split("@")[0],
+              username: email?.split("@")[0].toLocaleLowerCase(),
               fullName: user.name,
               email,
               avatar: image,

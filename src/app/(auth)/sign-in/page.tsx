@@ -46,6 +46,10 @@ export default function Login() {
         description: response.error,
         variant: "destructive",
       });
+
+      if (response?.error === "Please verify your email first") {
+        router.push(`/verify/${values.username.toLocaleLowerCase()}`);
+      }
     }
 
     if (response?.url) {
@@ -114,6 +118,7 @@ export default function Login() {
                   <FormControl>
                     <Input
                       placeholder="password"
+                      type="password"
                       className="text-black"
                       {...field}
                     />
@@ -135,6 +140,9 @@ export default function Login() {
                 "Sign In"
               )}
             </Button>
+            <Link href="/sign-up" className="block text-center">
+              <span className="text-blue-600 underline">forgot password</span>
+            </Link>
           </form>
         </Form>
       </div>

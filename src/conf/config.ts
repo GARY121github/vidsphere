@@ -6,7 +6,7 @@ interface IConfig {
   ACCESS_TOKEN_EXPIRE: string;
   REFRESH_TOKEN_SECRET: string;
   REFRESH_TOKEN_EXPIRE: string;
-  VERCEL_URL: string;
+  DEPLOYMENT_URL: string;
   AUTH_GOOGLE_ID: string;
   AUTH_GOOGLE_SECRET: string;
 }
@@ -19,7 +19,7 @@ const config: IConfig = {
   ACCESS_TOKEN_EXPIRE: process.env.ACCESS_TOKEN_EXPIRE || "",
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || "",
   REFRESH_TOKEN_EXPIRE: process.env.REFRESH_TOKEN_EXPIRE || "",
-  VERCEL_URL: process.env.VERCEL_URL || "",
+  DEPLOYMENT_URL: process.env.DEPLOYMENT_URL || "",
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID || "",
   AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET || "",
 };

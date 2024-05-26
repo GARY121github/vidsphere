@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -18,8 +18,11 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
+import { useDebounceCallback } from "usehooks-ts";
+import ApiResponse from "@/utils/ApiResponse";
+import ApiError from "@/utils/ApiError";
 
 export default function Signup() {
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -32,23 +35,61 @@ export default function Signup() {
     },
   });
 
+  const [availableUsername, setAvailableUsername] = useState("");
+  const [availableUsernameMessage, setAvailableUsernameMessage] = useState("");
+  const [isCheckingAvailableUsername, setIsCheckingAvailableUsername] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
+  const debounce = useDebounceCallback(setAvailableUsername, 500);
+
+  // api call to check if username is available or not
+  async function checkAvailableUsername() {
+    if (availableUsername.trim().length > 0) {
+      setIsCheckingAvailableUsername(true);
+      setAvailableUsernameMessage("");
+      try {
+        const response = await axios.post<ApiResponse>(
+          "/api/v1/user/check-unique-username",
+          { username: availableUsername }
+        );
+        setAvailableUsernameMessage(response.data.message);
+      } catch (error: any) {
+        const axiosError = error as AxiosError<ApiError>;
+        const errorMessage =
+          axiosError?.response?.data?.message ??
+          "Error while getting available username";
+        setAvailableUsernameMessage(errorMessage);
+      } finally {
+        setIsCheckingAvailableUsername(false);
+      }
+    }
+  }
+
+  // optimize the api call to check if username is available or not
+  useEffect(() => {
+    checkAvailableUsername();
+  }, [availableUsername]);
+
+  // submit the form
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
     setIsLoading(true);
     try {
-      await axios.post("/api/v1/user/signup", values);
+      await axios.post<ApiResponse>("/api/v1/user/signup", values);
       toast({
         title: "Signup Success",
         description: "You have successfully signed up",
       });
-      router.replace(`/verify/${values.username}`);
+      router.replace(`/verify/${values.username.toLocaleLowerCase()}`);
     } catch (error: any) {
+      const axiosError = error as AxiosError<ApiError>;
+      const errorMessage =
+        axiosError?.response?.data?.message ?? "Error while signing up";
       toast({
         title: "Signup Failed",
-        description: error.response.data.message,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -81,8 +122,20 @@ export default function Signup() {
                       className="bg-gray-900"
                       placeholder="Enter your username"
                       {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        debounce(e.target.value);
+                      }}
                     />
                   </FormControl>
+                  {isCheckingAvailableUsername && (
+                    <Loader2 className="animate-spin" />
+                  )}
+                  <p
+                    className={`text-sm ${availableUsernameMessage === "Username is avaliable" ? "text-green-500" : "text-red-500"}`}
+                  >
+                    {availableUsernameMessage}
+                  </p>
                   <FormMessage />
                 </FormItem>
               )}
@@ -130,6 +183,7 @@ export default function Signup() {
                   <FormControl>
                     <Input
                       className="bg-gray-900"
+                      type="password"
                       placeholder="Enter your password"
                       {...field}
                     />

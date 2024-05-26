@@ -5,13 +5,13 @@ import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import { userNameSchema } from "@/schemas/signUp.schema";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   await connectDB();
   try {
     const body = await request.json();
     const { username } = body;
 
-    const isValidData = userNameSchema.safeParse({ username });
+    const isValidData = userNameSchema.safeParse(username);
 
     if (isValidData.success === false) {
       const errorMessage: string = isValidData.error.errors
