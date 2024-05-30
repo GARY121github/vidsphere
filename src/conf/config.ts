@@ -9,6 +9,10 @@ interface IConfig {
   DEPLOYMENT_URL: string;
   AUTH_GOOGLE_ID: string;
   AUTH_GOOGLE_SECRET: string;
+  AWS_S3_BUCKET_NAME: string;
+  AWS_S3_BUCKET_REGION: string;
+  AWS_ACCESS_KEY: string;
+  AWS_SECRET_KEY: string;
 }
 
 const config: IConfig = {
@@ -22,6 +26,10 @@ const config: IConfig = {
   DEPLOYMENT_URL: process.env.DEPLOYMENT_URL || "",
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID || "",
   AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET || "",
+  AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME || "",
+  AWS_S3_BUCKET_REGION: process.env.AWS_S3_BUCKET_REGION || "",
+  AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || "",
+  AWS_SECRET_KEY: process.env.AWS_SECRET || "",
 };
 
 export default config;
