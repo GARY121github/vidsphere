@@ -86,7 +86,7 @@ const authOptions: NextAuthOptions = {
             if (!existingUser.googleId) {
               const updatedUser = await UserModel.findOneAndUpdate(
                 { email },
-                { $set: { googleId: id, avatar: image } },
+                { $set: { googleId: id, avatar: image, isVerified: true } },
                 { new: true }
               );
               userData = updatedUser;
@@ -115,6 +115,7 @@ const authOptions: NextAuthOptions = {
           //updating user
           user._id = userData?._id?.toString();
           user.username = userData?.username;
+          user.isVerified = userData?.isVerified;
 
           return true;
         } catch (error) {
@@ -126,17 +127,18 @@ const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
-        token._id = user._id;
+        token._id = user._id?.toString();
         token.username = user.username;
+        token.isVerified = user.isVerified;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user._id = token.user._id;
-        session.user.username = token.user.username;
+        session.user._id = token._id;
+        session.user.username = token.username;
+        session.user.isVerified = token.isVerified;
       }
-
       return session;
     },
   },

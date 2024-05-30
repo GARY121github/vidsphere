@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     if (!isValidData.success) {
       const errorMessage: string = isValidData.error.errors
-        .map((error) => `${error.path.join(".")} ${error.message}`)
+        .map((error: any) => `${error.path.join(".")} ${error.message}`)
         .join(". ");
       throw new ApiError(400, "Please provide valid data. " + errorMessage);
     }
