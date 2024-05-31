@@ -32,6 +32,4 @@ const config: IConfig = {
   AWS_SECRET_KEY: process.env.AWS_SECRET_KEY || "",
 };
 
-console.log(config);
-
 export default config;
