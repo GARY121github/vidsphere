@@ -29,6 +29,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         </DialogTrigger>
         <DialogContent
           className={`sm:max-w-[425px] bg-white text-black ${className}`}
+          ref={ref}
         >
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
@@ -42,5 +43,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     );
   }
 );
+
+Modal.displayName = "Modal";
 
 export default Modal;
