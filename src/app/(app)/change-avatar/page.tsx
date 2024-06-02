@@ -6,6 +6,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -19,10 +20,13 @@ import { useToast } from "@/components/ui/use-toast";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
 import axios, { AxiosError } from "axios";
+import Image from "next/image";
 
 export default function ChangeAvatar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [fileEnter, setFileEnter] = useState(false);
   const { toast } = useToast();
 
   const form = useForm({
@@ -76,6 +80,8 @@ export default function ChangeAvatar() {
     }
   }
 
+  console.log(file);
+
   return (
     <>
       <Modal
@@ -85,28 +91,97 @@ export default function ChangeAvatar() {
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="avatar"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      placeholder="Select your avatar"
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files.length > 0) {
-                          field.onChange(e.target.files[0]);
-                        } else {
-                          field.onChange(null);
-                        }
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {!file ? (
+              <FormField
+                control={form.control}
+                name="avatar"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setFileEnter(true);
+                        }}
+                        onDragLeave={(e) => {
+                          setFileEnter(false);
+                        }}
+                        onDragEnd={(e) => {
+                          e.preventDefault();
+                          setFileEnter(false);
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setFileEnter(false);
+                          if (e.dataTransfer.items) {
+                            [...e.dataTransfer.items].forEach((item, i) => {
+                              if (item.kind === "file") {
+                                const file = item.getAsFile();
+                                if (file) {
+                                  setFile(file);
+                                }
+                                console.log(
+                                  `items file[${i}].name = ${file?.name}`,
+                                  file
+                                );
+                              }
+                            });
+                          } else {
+                            [...e.dataTransfer.files].forEach((file, i) => {
+                              console.log(`… file[${i}].name = ${file.name}`);
+                            });
+                          }
+                        }}
+                        className={`${
+                          fileEnter ? "border-4" : "border-2"
+                        } mx-auto  bg-white flex flex-col w-full max-w-xs h-72 border-dashed items-center justify-center`}
+                      >
+                        <FormLabel
+                          htmlFor="avatar"
+                          className="h-full flex flex-col justify-center text-center"
+                        >
+                          Click to upload or drag and drop
+                        </FormLabel>
+                        <Input
+                          id="avatar"
+                          type="file"
+                          placeholder="Select your avatar"
+                          className="hidden"
+                          onChange={(e) => {
+                            let files = e.target.files;
+                            if (files && files.length > 0) {
+                              field.onChange(files[0]);
+                              setFile(files[0]);
+                            } else {
+                              field.onChange(null);
+                            }
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <div className="w-full h-72 flex justify-center items-center">
+                <Image
+                  src={URL.createObjectURL(file)}
+                  alt="avatar"
+                  width={innerWidth}
+                  height={innerHeight}
+                  className=""
+                />
+              </div>
+            )}
+
+            <Button
+              type="button"
+              onClick={() => setFile(undefined)}
+              className="py-4 px-8 bg-red-600 hover:bg-red-700 w-full"
+            >
+              Reset
+            </Button>
             <Button
               type="submit"
               disabled={isLoading}
