@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      new ApiResponse(
+      new ApiError(
         error.statusCode || 500,
         error.message || "Internal Server Error"
       ),

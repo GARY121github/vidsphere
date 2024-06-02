@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (error: any) {
     return NextResponse.json(
-      new ApiResponse(error.statusCode || 500, error.message),
+      new ApiError(error.statusCode || 500, error.message),
       { status: error.statusCode || 500 }
     );
   }
