@@ -13,6 +13,7 @@ interface IConfig {
   AWS_S3_BUCKET_REGION: string;
   AWS_ACCESS_KEY: string;
   AWS_SECRET_KEY: string;
+  AWS_CLOUDFRONT_URL: string;
 }
 
 const config: IConfig = {
@@ -30,6 +31,7 @@ const config: IConfig = {
   AWS_S3_BUCKET_REGION: process.env.AWS_S3_BUCKET_REGION || "",
   AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || "",
   AWS_SECRET_KEY: process.env.AWS_SECRET_KEY || "",
+  AWS_CLOUDFRONT_URL: process.env.AWS_CLOUDFRONT_URL || "",
 };
 
 export default config;
