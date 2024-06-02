@@ -5,7 +5,6 @@ import config from "@/conf/config";
 import { v4 as uuidv4 } from "uuid";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
-import avatarSchema from "@/schemas/avatar.schema";
 import s3 from "@/lib/s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -13,6 +12,12 @@ import UserModel from "@/models/user.model";
 
 function getUniqueId() {
   return uuidv4();
+}
+
+function getImageUrl(url: string) {
+  const baseUrl = url.split("?")[0];
+  const newPath = baseUrl.split("/").slice(3).join("/");
+  return `${config.AWS_CLOUDFRONT_URL}/${newPath}`;
 }
 
 export async function GET(request: NextRequest) {
@@ -40,6 +45,48 @@ export async function GET(request: NextRequest) {
       new ApiResponse(200, "Signed URL generated successfully", {
         url: preSignedUrl,
       })
+    );
+  } catch (error: any) {
+    console.error(error);
+    return NextResponse.json(
+      new ApiError(error.statusCode || 500, error.message),
+      { status: error.statusCode || 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user._id) {
+    throw new ApiError(402, "unauthorised user");
+  }
+
+  try {
+    const data = await request.json();
+    const { avatar } = data;
+
+    if (!avatar) {
+      throw new ApiError(400, "Avatar is required");
+    }
+
+    const url = getImageUrl(avatar);
+
+    const updatedAvatarUser = await UserModel.updateOne(
+      {
+        _id: session.user._id,
+      },
+      {
+        avatar: url,
+      }
+    );
+
+    if (updatedAvatarUser.modifiedCount === 0) {
+      throw new ApiError(400, "Avatar not updated");
+    }
+
+    return NextResponse.json(
+      new ApiResponse(200, "Avatar updated successfully")
     );
   } catch (error: any) {
     console.error(error);

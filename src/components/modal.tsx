@@ -1,16 +1,12 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import React from "react";
 
 interface ModalProps {
@@ -31,7 +27,9 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         <DialogTrigger asChild>
           <Button>{title}</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-white text-black">
+        <DialogContent
+          className={`sm:max-w-[425px] bg-white text-black ${className}`}
+        >
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             {description && (

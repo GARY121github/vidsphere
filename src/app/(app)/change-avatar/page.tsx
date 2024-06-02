@@ -6,7 +6,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -18,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import ApiResponse from "@/utils/ApiResponse";
-import axios from "axios";
+import ApiError from "@/utils/ApiError";
+import axios, { AxiosError } from "axios";
 
 export default function ChangeAvatar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,16 +39,38 @@ export default function ChangeAvatar() {
     }
     setIsLoading(true);
     try {
-      const response = await axios.get<ApiResponse>("api/v1/user/avatar");
-      console.log(response.data);
-      const { url } = response.data.data;
+      // get the presigned url from server
+      const preSignedUrl = await axios.get<ApiResponse>("api/v1/user/avatar");
+      const { url } = preSignedUrl.data.data;
+
+      console.log(url);
+
+      // upload the file to aws s3 bucket
       await axios.put(url, values.avatar, {
         headers: {
           "Content-Type": values.avatar.type,
         },
       });
-      console.log("uploadToAWS");
-    } catch (error) {
+
+      console.log("file uploaded to aws");
+
+      // put the avatar url in the user document
+      const response = await axios.put<ApiResponse>("api/v1/user/avatar", {
+        avatar: url,
+      });
+
+      toast({
+        title: "Avatar uploaded successfully",
+      });
+    } catch (error: any) {
+      const axiosError = error as AxiosError<ApiError>;
+      const errorMessage =
+        axiosError?.response?.data?.message ?? "Error while signing up";
+      toast({
+        title: "Error while changing avatar",
+        description: errorMessage,
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
