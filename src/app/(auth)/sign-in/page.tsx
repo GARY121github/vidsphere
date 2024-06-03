@@ -140,7 +140,7 @@ export default function Login() {
                 "Sign In"
               )}
             </Button>
-            <Link href="/sign-up" className="block text-center">
+            <Link href="/forgot-password" className="block text-center">
               <span className="text-blue-600 underline">forgot password</span>
             </Link>
           </form>

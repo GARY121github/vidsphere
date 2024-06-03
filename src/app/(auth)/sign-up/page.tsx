@@ -81,6 +81,7 @@ export default function Signup() {
       toast({
         title: "Signup Success",
         description: "You have successfully signed up",
+        variant: "success",
       });
       router.replace(`/verify/${values.username.toLocaleLowerCase()}`);
     } catch (error: any) {
