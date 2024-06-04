@@ -1,13 +1,12 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-import { verifyCodeSchema } from "@/schemas/verifyCode.schema";
+import verifyCodeSchema from "@/schemas/verifyCode.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
   Form,
   FormControl,
@@ -16,14 +15,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
-import signUpSchema from "@/schemas/signUp.schema";
 
 export default function Verify({ params }: { params: { username: string } }) {
   const { username } = params;
@@ -44,12 +41,10 @@ export default function Verify({ params }: { params: { username: string } }) {
   async function onSubmit(values: z.infer<typeof verifyCodeSchema>) {
     setIsLoading(true);
     try {
-      console.log("values is", values);
       const response = await axios.post<ApiResponse>(
         "/api/v1/user/verify-code",
         { username: values.username, code: values.code }
       );
-      console.log("response is", response);
       toast({
         title: "Verify success",
         description: "you are successfully verified",
@@ -61,7 +56,7 @@ export default function Verify({ params }: { params: { username: string } }) {
       const errorMessage =
         axiosError?.response?.data?.message ?? "Error while verifying";
       toast({
-        title: "verification Failed",
+        title: "Verification Failed",
         description: errorMessage,
         variant: "destructive",
       });
@@ -73,9 +68,30 @@ export default function Verify({ params }: { params: { username: string } }) {
   // resend verfication code
   async function resendCode() {
     setReSendCodeLoading(true);
-    setTimeout(() => {
-      setReSendCodeLoading(false);
-    }, 3000);
+    try {
+      await axios.post<ApiResponse>("/api/v1/email/resend-verification-code", {
+        username,
+      });
+      toast({
+        title: "check your email",
+        description: "verification code sent successfully",
+        variant: "success",
+      });
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiError>;
+      const errorMessage =
+        axiosError?.response?.data?.message ??
+        "Error while sending verification code";
+      toast({
+        title: "Failed to resend verification code",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setTimeout(() => {
+        setReSendCodeLoading(false);
+      }, 30000);
+    }
   }
   return (
     <>

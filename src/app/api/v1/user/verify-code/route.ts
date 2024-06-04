@@ -1,6 +1,6 @@
 import connectDB from "@/db/connectDB";
 import UserModel from "@/models/user.model";
-import { verifyCodeSchema } from "@/schemas/verifyCode.schema";
+import verifyCodeSchema from "@/schemas/verifyCode.schema";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import { NextRequest, NextResponse } from "next/server";
