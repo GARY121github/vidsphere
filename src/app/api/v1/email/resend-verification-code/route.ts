@@ -3,8 +3,8 @@ import UserModel from "@/models/user.model";
 import { userNameSchema } from "@/schemas/signUp.schema";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
-import { sendVerificationEmail } from "@/utils/SendVerificationEmail";
 import { NextRequest, NextResponse } from "next/server";
+import { sendEmail } from "@/utils/SendEmail";
 
 export async function POST(request: NextRequest) {
   await connectDB();
@@ -38,10 +38,11 @@ export async function POST(request: NextRequest) {
 
     await user.save();
 
-    await sendVerificationEmail({
+    await sendEmail({
       email: user.email,
+      emailType: "VERIFICATIONEMAIL",
       username,
-      verifyCode: verificationToken,
+      verificationCode: verificationToken,
     });
 
     return NextResponse.json(

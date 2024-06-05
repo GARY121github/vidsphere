@@ -58,10 +58,11 @@ export async function POST(request: NextRequest) {
         verificationTokenExpiry,
       });
       await newUser.save();
-      await se({
+      await sendEmail({
         email,
+        emailType: "VERIFICATIONEMAIL",
         username,
-        verifyCode: verificationToken,
+        verificationCode: verificationToken,
       });
     }
 
