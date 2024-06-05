@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const page = () => {
+const ForgotPasswordPage = () => {
   return (
     <div className="flex gap-2 flex-col">
       <h1>Reset Password</h1>
@@ -16,4 +16,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ForgotPasswordPage;

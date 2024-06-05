@@ -18,16 +18,16 @@ export async function GET(
   await connectDB();
 
   //TODO: Is session check necessary? why?
-  // const session = await getServerSession(authOptions);
-  // if (!session) {
-  //   return NextResponse.json(
-  //     new ApiResponse(
-  //       401,
-  //       "You need to be logged in to view subscribed channels"
-  //     ),
-  //     { status: 401 }
-  //   );
-  // }
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      new ApiResponse(
+        401,
+        "You need to be logged in to view subscribed channels"
+      ),
+      { status: 401 }
+    );
+  }
 
   try {
     const subscriberIdConverted = new mongoose.Types.ObjectId(

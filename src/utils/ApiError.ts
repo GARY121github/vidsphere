@@ -1,5 +1,6 @@
 class ApiError extends Error {
   public statusCode: number;
+  public message: string;
   public data: any | null;
   public success: boolean;
   public errors: any[];
@@ -7,12 +8,14 @@ class ApiError extends Error {
   constructor(
     statusCode: number,
     message: string = "Something went wrong",
+    data: any | null = null,
     errors: any[] = [],
     stack: string = ""
   ) {
-    super(message);
+    super();
     this.statusCode = statusCode;
-    this.data = null;
+    this.message = message;
+    this.data = data;
     this.success = false;
     this.errors = errors;
 

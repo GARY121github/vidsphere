@@ -2,7 +2,7 @@
 import Navbar from "@/components/navbar/navbar";
 import React, { useState } from "react";
 
-const Homepage = () => {
+export default function HomePage() {
   const [showModal, setShowModal] = useState(false);
 
   const handleToggleModal = () => {
@@ -23,6 +23,4 @@ const Homepage = () => {
       </button>
     </>
   );
-};
-
-export default Homepage;
+}

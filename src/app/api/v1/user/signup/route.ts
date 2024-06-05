@@ -3,7 +3,7 @@ import UserModel from "@/models/user.model";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
 import connectDB from "@/db/connectDB";
-import { sendVerificationEmail } from "@/utils/SendVerificationEmail";
+import { sendEmail } from "@/utils/SendEmail";
 import signUpSchema from "@/schemas/signUp.schema";
 
 export async function POST(request: NextRequest) {
@@ -41,10 +41,11 @@ export async function POST(request: NextRequest) {
         existingUser.verificationToken = verificationToken;
         existingUser.verificationTokenExpiry = verificationTokenExpiry;
         await existingUser.save();
-        await sendVerificationEmail({
+        await sendEmail({
           email,
+          emailType: "VERIFICATIONEMAIL",
           username,
-          verifyCode: verificationToken,
+          verificationCode: verificationToken,
         });
       }
     } else {
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
         verificationTokenExpiry,
       });
       await newUser.save();
-      await sendVerificationEmail({
+      await se({
         email,
         username,
         verifyCode: verificationToken,

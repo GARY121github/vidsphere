@@ -22,7 +22,7 @@ import ApiError from "@/utils/ApiError";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
 
-export default function ChangeAvatar() {
+export default function ChangeAvatarPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | undefined>(undefined);

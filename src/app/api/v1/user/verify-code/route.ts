@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       code,
     });
 
-    if (isValidData.success === false) {
+    if (!isValidData.success) {
       const errorMessage: string = isValidData.error.errors
         .map((error: any) => `${error.path.join(".")} ${error.message}`)
         .join(". ");

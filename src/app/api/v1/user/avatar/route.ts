@@ -9,6 +9,7 @@ import s3 from "@/lib/s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import UserModel from "@/models/user.model";
+import avatarSchema from "@/schemas/avatar.schema";
 
 function getUniqueId() {
   return uuidv4();
@@ -66,8 +67,13 @@ export async function PUT(request: NextRequest) {
     const data = await request.json();
     const { avatar } = data;
 
-    if (!avatar) {
-      throw new ApiError(400, "Avatar is required");
+    const isValidData = avatarSchema.safeParse({ avatar });
+
+    if (!isValidData.success) {
+      const errorMessage: string = isValidData.error.errors
+        .map((error: any) => `${error.path.join(".")} ${error.message}`)
+        .join(". ");
+      throw new ApiError(400, "Please provide valid data. " + errorMessage);
     }
 
     const url = getImageUrl(avatar);

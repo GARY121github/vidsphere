@@ -24,7 +24,7 @@ import { useDebounceCallback } from "usehooks-ts";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
 
-export default function Signup() {
+export default function SignUpPage() {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {

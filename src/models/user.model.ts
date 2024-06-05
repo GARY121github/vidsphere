@@ -14,6 +14,8 @@ export interface User extends Document {
   isVerified: boolean;
   verificationToken?: string;
   verificationTokenExpiry?: Date;
+  forgotPasswordToken?: string;
+  forgotPasswordTokenExpiry?: Date;
   avatar?: string;
   coverImage?: string;
   refreshToken?: string;
@@ -71,6 +73,12 @@ const userSchema = new Schema<User>(
       type: String,
     },
     verificationTokenExpiry: {
+      type: Date,
+    },
+    forgotPasswordToken: {
+      type: String,
+    },
+    forgotPasswordTokenExpiry: {
       type: Date,
     },
     refreshToken: {

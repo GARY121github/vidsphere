@@ -17,6 +17,7 @@ interface ModalProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
 }
+
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   (
     { title, description, children, isModalOpen, setIsModalOpen, className },

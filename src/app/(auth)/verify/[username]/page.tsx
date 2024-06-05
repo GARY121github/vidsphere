@@ -22,7 +22,11 @@ import { Loader2 } from "lucide-react";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
 
-export default function Verify({ params }: { params: { username: string } }) {
+export default function VerifyPage({
+  params,
+}: {
+  params: { username: string };
+}) {
   const { username } = params;
   const form = useForm<z.infer<typeof verifyCodeSchema>>({
     resolver: zodResolver(verifyCodeSchema),

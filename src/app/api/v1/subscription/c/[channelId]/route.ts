@@ -93,16 +93,16 @@ export async function POST(
 ) {
   await connectDB();
 
-  //TODO: Is session check necessary? why?
-  // const session = await getServerSession(authOptions);
-  // if (!session) {
-  //   return NextResponse.json(
-  //     {
-  //       error: "You need to be logged in to view subscribers",
-  //     },
-  //     { status: 401 }
-  //   );
-  // }
+  // TODO: Is session check necessary? why?
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      {
+        error: "You need to be logged in to view subscribers",
+      },
+      { status: 401 }
+    );
+  }
 
   try {
     const channelIdConverted = new mongoose.Types.ObjectId(params.channelId);
