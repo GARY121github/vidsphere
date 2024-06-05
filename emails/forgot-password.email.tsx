@@ -10,7 +10,7 @@ export default function ForgotPasswordEmail({
   forgotPasswordToken,
   username,
 }: ForgotPasswordEmailProps) {
-  const forgotPasswordUrl = `${config.DEPLOYMENT_URL}/forgot-password?token=${forgotPasswordToken}`;
+  const forgotPasswordUrl = `${config.DEPLOYMENT_URL}/reset-password?token=${forgotPasswordToken}`;
   return (
     <Html lang="en" dir="ltr">
       <h1>Hi {username},</h1>

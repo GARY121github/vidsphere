@@ -1,9 +1,7 @@
 import { resend } from "@/lib/resend";
-import VerificationEmail from "../../emails/verification.email";
 import ApiResponse from "./ApiResponse";
 import ApiError from "./ApiError";
-import ForgotPasswordEmail from "../../emails/forgot-password.email";
-import React from "react";
+import { VerificationEmail, ForgotPasswordEmail } from "../../emails";
 
 interface SendVerificationEmailProps {
   email: string;
@@ -49,11 +47,9 @@ export async function sendEmail({
           : ForgotPasswordEmail({ forgotPasswordToken, username }),
     };
 
-    const response = await resend.emails.send({
+    await resend.emails.send({
       ...emailOptions,
     });
-
-    // console.log("Email sent successfully", response);
 
     if (emailType === "VERIFICATIONEMAIL") {
       return new ApiResponse(200, "Verification email sent successfully");
