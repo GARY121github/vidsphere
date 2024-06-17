@@ -20,9 +20,13 @@ export const passwordSchema = z
     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
   );
 
+export const emailSchema = z
+  .string()
+  .email({ message: "Invalid email address" });
+
 const signUpSchema = z.object({
   username: userNameSchema,
-  email: z.string().email({ message: "Invalid email address" }),
+  email: emailSchema,
   fullName: z
     .string()
     .min(4, { message: "Name must be at least 4  characters long" })

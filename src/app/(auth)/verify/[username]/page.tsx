@@ -98,78 +98,76 @@ export default function VerifyPage({
     }
   }
   return (
-    <>
-      <div className="max-w-md w-full p-6">
-        <h1 className="text-2xl font-semibold mb-6 text-white text-left">
-          Verify your Account
-        </h1>
+    <div className="max-w-md w-full p-6">
+      <h1 className="text-2xl font-semibold mb-6 text-white text-left">
+        Verify your Account
+      </h1>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>username</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-900"
-                      {...field}
-                      value={username}
-                      disabled={true}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>verfication code</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-900"
-                      placeholder="VerficationCode"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="py-4 px-8 bg-blue-600 hover:bg-blue-700 w-full"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
-                </>
-              ) : (
-                "verify code"
-              )}
-            </Button>
-          </form>
-        </Form>
-        <Button
-          onClick={() => resendCode()}
-          disabled={reSendCodeLoading}
-          className="py-4 px-8 bg-blue-600 hover:bg-blue-700 w-full mt-4"
-        >
-          {reSendCodeLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
-            </>
-          ) : (
-            "resend verification code"
-          )}
-        </Button>
-      </div>
-    </>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>username</FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-gray-900"
+                    {...field}
+                    value={username}
+                    disabled={true}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>verfication code</FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-gray-900"
+                    placeholder="VerficationCode"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="py-4 px-8 bg-blue-600 hover:bg-blue-700 w-full"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+              </>
+            ) : (
+              "verify code"
+            )}
+          </Button>
+        </form>
+      </Form>
+      <Button
+        onClick={() => resendCode()}
+        disabled={reSendCodeLoading}
+        className="py-4 px-8 bg-blue-600 hover:bg-blue-700 w-full mt-4"
+      >
+        {reSendCodeLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+          </>
+        ) : (
+          "resend verification code"
+        )}
+      </Button>
+    </div>
   );
 }
