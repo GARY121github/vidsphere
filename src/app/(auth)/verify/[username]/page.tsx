@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
@@ -38,8 +38,33 @@ export default function VerifyPage({
 
   const [reSendCodeLoading, setReSendCodeLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [seconds, setSeconds] = useState(15);
+
   const { toast } = useToast();
   const router = useRouter();
+
+  // let timer;
+
+  // useEffect(()=>{
+  //   if(seconds > 0){
+  //     timer = setTimeout(() => setSeconds(seconds - 1), 1000);
+  //   }else{
+  //     setSeconds(0);
+  //     setReSendCodeLoading(false);
+  //   }
+
+  // },)
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (seconds > 0) {
+      timer = setTimeout(() => setSeconds(seconds - 1), 1000);
+    } else {
+      setReSendCodeLoading(false);
+    }
+    return () => clearTimeout(timer);
+  }, [seconds]);
 
   // submit the form
   async function onSubmit(values: z.infer<typeof verifyCodeSchema>) {
@@ -71,7 +96,10 @@ export default function VerifyPage({
 
   // resend verfication code
   async function resendCode() {
+    console.log("resend code");
     setReSendCodeLoading(true);
+    setSeconds(15); // Reset timer to 30 seconds
+    console.log(reSendCodeLoading);
     try {
       await axios.post<ApiResponse>("/api/v1/email/resend-verification-code", {
         username,
@@ -162,7 +190,8 @@ export default function VerifyPage({
       >
         {reSendCodeLoading ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+            {/* <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait */}
+            {`Request new otp in ${seconds} seconds`}
           </>
         ) : (
           "resend verification code"
