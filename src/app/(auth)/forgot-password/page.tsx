@@ -35,17 +35,13 @@ export default function ForgotPassword() {
   async function onSubmit(values: z.infer<typeof forgotPasswordSchema>) {
     setIsLoading(true);
     try {
-      const response = await axios.post<ApiResponse>(
-        "/api/v1/email/forgot-password",
-        values
-      );
+      await axios.post<ApiResponse>("/api/v1/email/forgot-password", values);
       toast({
         title: "checkout your email",
         description:
           "We have sent you an email with instructions to reset your password.",
         variant: "success",
       });
-      console.log(response);
       router.push("/sign-in");
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiError>;

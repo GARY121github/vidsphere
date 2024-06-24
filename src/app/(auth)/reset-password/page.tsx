@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { changePasswordSchema } from "@/schemas/changePassword.schema";
-import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -23,9 +22,12 @@ import { Loader2 } from "lucide-react";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
 
-export default function ResetPassword() {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token") ?? "";
+export default function ResetPassword({
+  searchParams,
+}: {
+  searchParams: { token: string };
+}) {
+  const { token } = searchParams;
   const form = useForm<z.infer<typeof changePasswordSchema>>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
@@ -42,16 +44,15 @@ export default function ResetPassword() {
   async function onSubmit(values: z.infer<typeof changePasswordSchema>) {
     setIsLoading(true);
     try {
-      const response = await axios.post<ApiResponse>(
-        "/api/v1/user/reset-password",
-        { ...values }
-      );
+      await axios.post<ApiResponse>("/api/v1/user/reset-password", {
+        ...values,
+      });
       toast({
-        title: "checkout your email",
-        description: "logging in with email",
+        title: "Password updated successfully",
+        description: "You can now log in with your new password.",
         variant: "success",
       });
-      router.push("/home");
+      router.push("/sign-in");
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiError>;
       const errorMessage =
