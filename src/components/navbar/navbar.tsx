@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
@@ -15,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
+import config from "@/conf/config";
 
 const Navbar = () => {
   const [inputVisible, setInputVisible] = useState(false);
@@ -47,7 +50,7 @@ const Navbar = () => {
           </p>
         </div>
 
-        <div className="flex flex-none sm:flex-grow xs:max-w-xs md:max-w-sm md:max-w-md lg:max-w-4xl">
+        <div className="flex flex-none sm:flex-grow xs:max-w-xs sm:max-w-sm md:max-w-md lg:max-w-4xl">
           <div
             className={`w-full flex rounded-md  items-center  bg-white p-1 sm:p-2`}
             id="search-menu"

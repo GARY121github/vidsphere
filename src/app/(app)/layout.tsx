@@ -1,3 +1,4 @@
+import Navbar from "@/components/navbar/navbar";
 import SidebarDesktop from "@/components/sidebar/sidebar-desktop";
 interface LayoutProps {
   children: React.ReactNode;
@@ -5,16 +6,17 @@ interface LayoutProps {
 
 const layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <>
-      <div className="mx-4 min-h-screen sm:mx-8 xl:mx-auto">
-        {children}
-        <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
-          <div className="col-span-2 hidden sm:block">
-            <SidebarDesktop />
-          </div>
+    <div className="flex flex-col max-h-screen">
+      <Navbar />
+      <div className="grid grid-cols-[auto , 1fr] flex-grow-1 overflow-auto">
+        <div>
+          <SidebarDesktop />
+        </div>
+        <div className="grid gap-4 grid-cols-[repeat(auto-fill , minmax(300px , 1fr))]">
+          {children}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
