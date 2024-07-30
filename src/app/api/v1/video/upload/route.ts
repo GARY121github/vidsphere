@@ -78,19 +78,19 @@ export async function POST(request: NextRequest) {
       user: user._id,
       videoUrls: [
         {
-          link: `${baseUrl}/360.mp4`,
+          link: `${baseUrl}/360p.mp4`,
           quality: "360p",
         },
         {
-          link: `${baseUrl}/480.mp4`,
+          link: `${baseUrl}/480p.mp4`,
           quality: "480p",
         },
         {
-          link: `${baseUrl}/720.mp4`,
+          link: `${baseUrl}/720p.mp4`,
           quality: "720p",
         },
         {
-          link: `${baseUrl}/1080.mp4`,
+          link: `${baseUrl}/1080p.mp4`,
           quality: "1080p",
         },
       ],
