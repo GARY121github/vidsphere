@@ -42,6 +42,7 @@ const videoSchema = new Schema<Video>(
           type: String,
           required: true,
         },
+        _id: false,
       },
     ],
     thumbnailUrl: {
