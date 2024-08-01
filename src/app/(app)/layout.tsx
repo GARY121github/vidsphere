@@ -6,14 +6,12 @@ interface LayoutProps {
 
 const layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col max-h-screen">
+    <div className="max-h-screen flex flex-col">
       <Navbar />
-      <div className="grid grid-cols-[auto , 1fr] flex-grow-1 overflow-auto">
-        <div>
-          <SidebarDesktop />
-        </div>
-        <div className="grid gap-4 grid-cols-[repeat(auto-fill , minmax(300px , 1fr))]">
-          {children}
+      <div className="grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto">
+        <SidebarDesktop />
+        <div className="overflow-x-hidden px-8 pb-4">
+          <div className="">{children}</div>
         </div>
       </div>
     </div>
