@@ -50,9 +50,9 @@ const Navbar = () => {
           </p>
         </div>
 
-        <div className="flex flex-none sm:flex-grow xs:max-w-xs sm:max-w-sm md:max-w-md lg:max-w-4xl">
+        <div className="flex sm:flex-grow xs:max-w-xs sm:max-w-sm md:max-w-md lg:max-w-4xl sm:relative">
           <div
-            className={`w-full flex rounded-md  items-center  bg-white p-1 sm:p-2`}
+            className={`w-full flex rounded-md  items-center`}
             id="search-menu"
             onClick={handleSClick}
           >
@@ -60,7 +60,9 @@ const Navbar = () => {
               placeholder="Search ..."
               className="hidden sm:inline-block"
             />
-            <Button className={`bg-slate-500 w-[2.7rem] md:w-[4rem]`}>
+            <Button
+              className={`bg-slate-500 w-[2.7rem] md:w-[4rem] sm:absolute right-0`}
+            >
               <Search className="text-black" />
             </Button>
           </div>
