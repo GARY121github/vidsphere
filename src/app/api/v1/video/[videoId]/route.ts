@@ -23,6 +23,35 @@ export async function GET(
       { status: 401 }
     );
   }
+
+  try {
+    const { videoId } = params;
+
+    if (!videoId) {
+      return new ApiError(400, "Invalid video id");
+    }
+
+    const video = await VideoModel.findById(videoId);
+
+    if (!video) {
+      return new ApiError(404, "Video not found");
+    }
+
+    return NextResponse.json(new ApiResponse(200, "Video found", video), {
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof ApiError) {
+      return NextResponse.json(
+        new ApiResponse(error.statusCode, error.message),
+        { status: error.statusCode }
+      );
+    }
+    return NextResponse.json(new ApiResponse(500, "Internal server error"), {
+      status: 500,
+    });
+  }
 }
 
 export async function PATCH(
@@ -84,6 +113,61 @@ export async function PATCH(
 
     return NextResponse.json(
       new ApiResponse(200, "Video updated successfully"),
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    if (error instanceof ApiError) {
+      return NextResponse.json(
+        new ApiResponse(error.statusCode, error.message),
+        { status: error.statusCode }
+      );
+    }
+    return NextResponse.json(new ApiResponse(500, "Internal server error"), {
+      status: 500,
+    });
+  }
+}
+
+export async function DELETE(
+  _: NextRequest,
+  { params }: { params: { videoId: string } }
+) {
+  await connectDB();
+
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      new ApiResponse(
+        401,
+        "You need to be logged in to view subscribed channels"
+      ),
+      { status: 401 }
+    );
+  }
+  try {
+    const { videoId } = params;
+
+    if (!videoId) {
+      throw new ApiError(400, "Invalid video id");
+    }
+
+    const video = await VideoModel.findById(videoId);
+
+    if (!video) {
+      throw new ApiError(404, "Video not found");
+    }
+
+    if (video.owner.toString() != session.user._id) {
+      throw new ApiError(403, "You are not authorized to delete this video");
+    }
+
+    await VideoModel.findByIdAndDelete(videoId);
+
+    return NextResponse.json(
+      new ApiResponse(200, "Video deleted successfully"),
       {
         status: 200,
       }
