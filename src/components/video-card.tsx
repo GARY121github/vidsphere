@@ -61,7 +61,7 @@ export default function VideoCard({
           }`}
         />
         <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
-          {formatDuration(duration)}
+          <h1>{formatDuration(duration)}</h1>
         </div>
         <video
           className={`block h-full object-cover absolute inset-0 transition-opacity duration-200 ${

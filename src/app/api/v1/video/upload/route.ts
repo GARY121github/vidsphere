@@ -10,6 +10,11 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import VideoModel from "@/models/video.model";
 import mongoose from "mongoose";
 import connectDB from "@/db/connectDB";
+import {
+  titleSchema,
+  descriptionSchema,
+  statusSchema,
+} from "@/schemas/video.schema";
 
 function getUniqueId() {
   return new mongoose.Types.ObjectId().toHexString();
@@ -68,6 +73,21 @@ export async function POST(request: NextRequest) {
   try {
     const { uniqueID, title, description, thumbnailUrl } = await request.json();
 
+    if (!uniqueID) {
+      throw new ApiError(400, "Invalid request");
+    }
+
+    const isValidTitle = titleSchema.safeParse(title);
+    if (!isValidTitle.success) {
+      throw new ApiError(400, isValidTitle.error.errors[0].message);
+    }
+
+    const isValidDescription = descriptionSchema.safeParse(description);
+    if (!isValidDescription.success) {
+      throw new ApiError(400, isValidDescription.error.errors[0].message);
+    }
+    4;
+
     const baseUrl = `${config.AWS_CLOUDFRONT_URL}/vidsphere/${user._id}/video/${uniqueID}`;
 
     await VideoModel.create({
@@ -116,14 +136,16 @@ export async function PATCH(request: NextRequest) {
   try {
     const { videoId, status } = await request.json();
 
-    console.log(videoId, status);
+    console.log(videoId);
 
-    if (!videoId || !status) {
+    if (!videoId) {
       throw new ApiError(400, "Invalid request body");
     }
 
-    if (!["uploading", "transcoding", "completed"].includes(status)) {
-      throw new ApiError(400, "Invalid status");
+    const isValidStatus = statusSchema.safeParse(status);
+
+    if (!isValidStatus.success) {
+      return new ApiError(301, "Invalid Status");
     }
 
     const updatedVideo = await VideoModel.findByIdAndUpdate(

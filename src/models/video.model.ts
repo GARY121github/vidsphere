@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 interface VideoQuality {
   link: string;
   quality: string;
@@ -9,9 +9,10 @@ export interface Video extends Document {
   _id: string;
   title: string;
   description: string;
+  isPublished: boolean;
   videoUrls: Array<VideoQuality>;
   thumbnailUrl: string;
-  user: {
+  owner: {
     type: Types.ObjectId;
     ref: "User";
   };
@@ -32,6 +33,10 @@ const videoSchema = new Schema<Video>(
       type: String,
       required: true,
     },
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
     videoUrls: [
       {
         link: {
@@ -49,7 +54,7 @@ const videoSchema = new Schema<Video>(
       type: String,
       required: true,
     },
-    user: {
+    owner: {
       type: Types.ObjectId,
       ref: "User",
       required: true,
@@ -62,6 +67,8 @@ const videoSchema = new Schema<Video>(
   },
   { timestamps: true }
 );
+
+videoSchema.plugin(aggregatePaginate);
 
 const VideoModel =
   (mongoose.models.Video as mongoose.Model<Video>) ||
