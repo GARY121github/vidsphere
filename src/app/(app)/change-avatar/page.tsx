@@ -59,7 +59,7 @@ export default function ChangeAvatarPage() {
       console.log("file uploaded to aws");
 
       // put the avatar url in the user document
-      const response = await axios.put<ApiResponse>("api/v1/user/avatar", {
+      await axios.put<ApiResponse>("api/v1/user/avatar", {
         avatar: url,
       });
 

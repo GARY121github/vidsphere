@@ -8,7 +8,7 @@ import ApiResponse from "@/utils/ApiResponse";
 import s3 from "@/lib/s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import UserModel from "@/models/user.model";
+import VideoModel from "@/models/video.model";
 import avatarSchema from "@/schemas/avatar.schema";
 import getImageUrl from "@/utils/S3toCloudfront";
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 
     const command = new PutObjectCommand({
       Bucket: config.AWS_S3_BUCKET_NAME,
-      Key: `vidsphere/${user._id}/${uniqueId}`,
+      Key: `vidsphere/${user._id}/thumbnail/${uniqueId}`,
       ContentType: "image/*",
     });
 
@@ -60,9 +60,9 @@ export async function PUT(request: NextRequest) {
 
   try {
     const data = await request.json();
-    const { avatar } = data;
+    const { thumbnail, videoId } = data;
 
-    const isValidData = avatarSchema.safeParse({ avatar });
+    const isValidData = avatarSchema.safeParse({ thumbnail });
 
     if (!isValidData.success) {
       const errorMessage: string = isValidData.error.errors
@@ -71,23 +71,29 @@ export async function PUT(request: NextRequest) {
       throw new ApiError(400, "Please provide valid data. " + errorMessage);
     }
 
-    const url = getImageUrl(avatar);
+    const url = getImageUrl(thumbnail);
 
-    const updatedAvatarUser = await UserModel.updateOne(
-      {
-        _id: session.user._id,
-      },
-      {
-        avatar: url,
-      }
+    const video = await VideoModel.findById(videoId);
+    if (!video) {
+      throw new ApiError(404, "Video not found");
+    }
+
+    if (video.owner.toString() !== session.user._id) {
+      throw new ApiError(403, "You are not authorized to update this video");
+    }
+
+    const updatedVideoThumbnail = await VideoModel.findByIdAndUpdate(
+      videoId,
+      { thumbnail: url },
+      { new: true }
     );
 
-    if (updatedAvatarUser.modifiedCount === 0) {
-      throw new ApiError(400, "Avatar not updated");
+    if (!updatedVideoThumbnail?.isModified("thumbnail")) {
+      throw new ApiError(400, "Thumbnail not updated");
     }
 
     return NextResponse.json(
-      new ApiResponse(200, "Avatar updated successfully")
+      new ApiResponse(200, "Thumbnail updated successfully")
     );
   } catch (error: any) {
     console.error(error);

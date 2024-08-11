@@ -15,6 +15,7 @@ import {
   descriptionSchema,
   statusSchema,
 } from "@/schemas/video.schema";
+import getImageUrl from "@/utils/S3toCloudfront";
 
 function getUniqueId() {
   return new mongoose.Types.ObjectId().toHexString();
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
       _id: new mongoose.Types.ObjectId(uniqueID),
       title,
       description,
-      thumbnailUrl,
+      thumbnailUrl: getImageUrl(thumbnailUrl),
       user: user._id,
       videoUrls: [
         {
