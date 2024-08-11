@@ -28,18 +28,16 @@ export async function GET(
     const { videoId } = params;
 
     if (!videoId) {
-      return new ApiError(400, "Invalid video id");
+      throw new ApiError(400, "Invalid video id");
     }
 
     const video = await VideoModel.findById(videoId);
 
     if (!video) {
-      return new ApiError(404, "Video not found");
+      throw new ApiError(404, "Video not found");
     }
 
-    return NextResponse.json(new ApiResponse(200, "Video found", video), {
-      status: 200,
-    });
+    return NextResponse.json(new ApiResponse(200, "Video found", video));
   } catch (error) {
     console.log(error);
     if (error instanceof ApiError) {

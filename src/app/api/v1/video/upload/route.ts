@@ -146,7 +146,7 @@ export async function PATCH(request: NextRequest) {
     const isValidStatus = statusSchema.safeParse(status);
 
     if (!isValidStatus.success) {
-      return new ApiError(301, "Invalid Status");
+      throw new ApiError(301, "Invalid Status");
     }
 
     const updatedVideo = await VideoModel.findByIdAndUpdate(
