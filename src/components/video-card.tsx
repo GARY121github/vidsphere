@@ -3,35 +3,36 @@ import { useEffect, useRef, useState } from "react";
 import { formatDuration } from "../utils/formatDuration";
 import { formatTimeAgo } from "@/utils/formatTimeAgo";
 import Link from "next/link";
+import { VideoQuality } from "@/models/video.model";
 
-type VideoGridItemProps = {
-  id: string;
+export interface VideoGridItemProps {
+  _id: string;
   title: string;
-  channel: {
-    id: string;
+  owner: {
+    _id: string;
     name: string;
-    profileUrl: string;
+    avatar: string;
   };
   views: number;
-  postedAt: Date;
+  createdAt: Date;
   duration: number;
   thumbnailUrl: string;
-  videoUrl: string;
-};
+  videoUrls: Array<VideoQuality>;
+}
 
 const VIEW_FORMATTER = new Intl.NumberFormat(undefined, {
   notation: "compact",
 });
 
 export default function VideoCard({
-  id,
+  _id,
   title,
-  channel,
+  owner,
   views,
-  postedAt,
+  createdAt,
   duration,
   thumbnailUrl,
-  videoUrl,
+  videoUrls,
 }: VideoGridItemProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -53,7 +54,7 @@ export default function VideoCard({
       onMouseEnter={() => setIsVideoPlaying(true)}
       onMouseLeave={() => setIsVideoPlaying(false)}
     >
-      <Link href={`/watch?v=${id}`} className="relative aspect-video">
+      <Link href={`/watch?v=${_id}`} className="relative aspect-video">
         <img
           src={thumbnailUrl}
           className={`block w-full h-full object-cover transition-[border-radius] duration-200 ${
@@ -70,25 +71,23 @@ export default function VideoCard({
           ref={videoRef}
           muted
           playsInline
-          src={videoUrl}
+          src={videoUrls[0].quality}
         />
       </Link>
       <div className="flex gap-2">
-        <Link href={`/@${channel.id}`} className="flex-shrink-0">
-          <img className="w-12 h-12 rounded-full" src={channel.profileUrl} />
+        <Link href={`/@${owner._id}`} className="flex-shrink-0">
+          <img className="w-12 h-12 rounded-full" src={owner.avatar} />
         </Link>
         <div className="flex flex-col">
-          <Link href={`/watch?v=${id}`} className="font-bold">
+          <Link href={`/watch?v=${_id}`} className="font-bold">
             {title}
           </Link>
-          <Link
-            href={`/@${channel.id}`}
-            className="text-secondary-text text-sm"
-          >
-            {channel.name}
+          <Link href={`/@${owner._id}`} className="text-secondary-text text-sm">
+            {owner.name}
           </Link>
           <div className="text-secondary-text text-sm">
-            {VIEW_FORMATTER.format(views)} Views • {formatTimeAgo(postedAt)}
+            {VIEW_FORMATTER.format(views)} Views •{" "}
+            {formatTimeAgo(new Date(createdAt))}
           </div>
         </div>
       </div>

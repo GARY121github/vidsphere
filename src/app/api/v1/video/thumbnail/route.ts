@@ -8,15 +8,14 @@ import ApiResponse from "@/utils/ApiResponse";
 import s3 from "@/lib/s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import VideoModel from "@/models/video.model";
-import avatarSchema from "@/schemas/avatar.schema";
-import getImageUrl from "@/utils/S3toCloudfront";
+import connectDB from "@/db/connectDB";
 
 function getUniqueId() {
   return uuidv4();
 }
 
 export async function GET(request: NextRequest) {
+  await connectDB();
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user._id) {
@@ -41,59 +40,6 @@ export async function GET(request: NextRequest) {
       new ApiResponse(200, "Signed URL generated successfully", {
         url: preSignedUrl,
       })
-    );
-  } catch (error: any) {
-    console.error(error);
-    return NextResponse.json(
-      new ApiError(error.statusCode || 500, error.message),
-      { status: error.statusCode || 500 }
-    );
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user._id) {
-    throw new ApiError(402, "unauthorised user");
-  }
-
-  try {
-    const data = await request.json();
-    const { thumbnail, videoId } = data;
-
-    const isValidData = avatarSchema.safeParse({ thumbnail });
-
-    if (!isValidData.success) {
-      const errorMessage: string = isValidData.error.errors
-        .map((error: any) => `${error.path.join(".")} ${error.message}`)
-        .join(". ");
-      throw new ApiError(400, "Please provide valid data. " + errorMessage);
-    }
-
-    const url = getImageUrl(thumbnail);
-
-    const video = await VideoModel.findById(videoId);
-    if (!video) {
-      throw new ApiError(404, "Video not found");
-    }
-
-    if (video.owner.toString() !== session.user._id) {
-      throw new ApiError(403, "You are not authorized to update this video");
-    }
-
-    const updatedVideoThumbnail = await VideoModel.findByIdAndUpdate(
-      videoId,
-      { thumbnail: url },
-      { new: true }
-    );
-
-    if (!updatedVideoThumbnail?.isModified("thumbnail")) {
-      throw new ApiError(400, "Thumbnail not updated");
-    }
-
-    return NextResponse.json(
-      new ApiResponse(200, "Thumbnail updated successfully")
     );
   } catch (error: any) {
     console.error(error);

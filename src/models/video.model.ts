@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
 import aggregatePaginate from "mongoose-aggregate-paginate-v2";
-interface VideoQuality {
+export interface VideoQuality {
   link: string;
   quality: string;
 }

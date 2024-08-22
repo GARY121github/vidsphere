@@ -96,22 +96,22 @@ export async function POST(request: NextRequest) {
       title,
       description,
       thumbnailUrl: getImageUrl(thumbnailUrl),
-      user: user._id,
+      owner: user._id,
       videoUrls: [
         {
-          link: `${baseUrl}/360p.mp4`,
+          link: `${baseUrl}/360p/index.m3u8`,
           quality: "360p",
         },
         {
-          link: `${baseUrl}/480p.mp4`,
+          link: `${baseUrl}/480p/index.m3u8`,
           quality: "480p",
         },
         {
-          link: `${baseUrl}/720p.mp4`,
+          link: `${baseUrl}/720p/index.m3u8`,
           quality: "720p",
         },
         {
-          link: `${baseUrl}/1080p.mp4`,
+          link: `${baseUrl}/1080p/index.m3u8`,
           quality: "1080p",
         },
       ],

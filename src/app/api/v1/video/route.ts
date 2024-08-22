@@ -1,25 +1,12 @@
 import VideoModel from "@/models/video.model";
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/db/connectDB";
-import { getServerSession } from "next-auth";
-import authOptions from "@/app/api/auth/[...nextauth]/options";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import { videoSearchSchema } from "@/schemas/video.schema";
 
 export async function GET(request: NextRequest) {
   await connectDB();
-
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json(
-      new ApiResponse(
-        401,
-        "You need to be logged in to view subscribed channels"
-      ),
-      { status: 401 }
-    );
-  }
 
   try {
     const url = new URL(request.url);
@@ -47,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     let matchStage: any = {
-      isPublished: true,
+      isPublished: false,
       status: "completed",
     };
 
@@ -64,9 +51,6 @@ export async function GET(request: NextRequest) {
 
     const sortStage: any = {};
     sortStage[sortBy] = sortType === "desc" ? -1 : 1;
-
-    // console.log("Match Stage: ", JSON.stringify(matchStage, null, 2));
-    // console.log("Sort Stage: ", JSON.stringify(sortStage, null, 2));
 
     const options = {
       page,
@@ -99,18 +83,20 @@ export async function GET(request: NextRequest) {
           as: "owner",
         },
       },
-      // { $unwind: '$owner' },
-      // {
-      //     $project: {
-      //         title: 1,
-      //         description: 1,
-      //         createdAt: 1,
-      //         'owner.username': 1,
-      //         'owner.fullName': 1,
-      //         'owner.avatar': 1,
-      //         'owner._id': 1
-      //     }
-      // }
+      { $unwind: "$owner" },
+      {
+        $project: {
+          title: 1,
+          description: 1,
+          thumbnailUrl: 1,
+          videoUrls: 1,
+          createdAt: 1,
+          "owner.username": 1,
+          "owner.fullName": 1,
+          "owner.avatar": 1,
+          "owner._id": 1,
+        },
+      },
     ]);
 
     const result = await (VideoModel as any).aggregatePaginate(
