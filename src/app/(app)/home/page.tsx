@@ -20,7 +20,9 @@ export default async function HomePage() {
 
 async function fetchVideos() {
   try {
-    const response = await axios.get("http://localhost:3000/api/v1/video");
+    const response = await axios.get(
+      "https://vidsphere-eight.vercel.app/api/v1/video"
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching videos", error);
