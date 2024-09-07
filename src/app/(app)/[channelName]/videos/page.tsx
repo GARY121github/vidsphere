@@ -9,7 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function VideoPage() {
   const { channelDetail } = useChannel();
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<Array<VideoGridItemProps | null>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
@@ -43,7 +43,7 @@ export default function VideoPage() {
   return (
     <div>
       {channelDetail?._id ? (
-        <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(400px,1fr))]">
+        <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
           {videos && videos.length > 0 ? (
             videos.map((video: any) => (
               <VideoCard
