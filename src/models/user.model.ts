@@ -51,12 +51,12 @@ const userSchema = new Schema<User>(
       lowercase: true,
     },
     avatar: {
-      type: String, // cloudinary url
+      type: String, // AWS url
       default:
         "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg",
     },
     coverImage: {
-      type: String, // cloudinary url
+      type: String, // AWS url
       default: "https://tokystorage.s3.amazonaws.com/images/default-cover.png",
     },
     password: {

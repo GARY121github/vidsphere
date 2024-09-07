@@ -10,7 +10,7 @@ export interface VideoGridItemProps {
   title: string;
   owner: {
     _id: string;
-    name: string;
+    username: string;
     avatar: string;
   };
   views: number;
@@ -75,7 +75,7 @@ export default function VideoCard({
         />
       </Link>
       <div className="flex gap-2">
-        <Link href={`/@${owner._id}`} className="flex-shrink-0">
+        <Link href={`/@${owner.username}`} className="flex-shrink-0">
           <img className="w-12 h-12 rounded-full" src={owner.avatar} />
         </Link>
         <div className="flex flex-col">
@@ -83,7 +83,7 @@ export default function VideoCard({
             {title}
           </Link>
           <Link href={`/@${owner._id}`} className="text-secondary-text text-sm">
-            {owner.name}
+            {owner.username}
           </Link>
           <div className="text-secondary-text text-sm">
             {VIEW_FORMATTER.format(views)} Views •{" "}
