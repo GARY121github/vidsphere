@@ -70,7 +70,7 @@ export default async function Layout({
 const fetchChannelDetails = async (channel: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/v1/channel/${channel}`
+      `https://vidsphere-eight.vercel.app/api/v1/channel/${channel}`
     );
     return response.data.data[0];
   } catch (error) {
