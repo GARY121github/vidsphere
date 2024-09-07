@@ -36,7 +36,7 @@ export default function ChannelNavigation({
         <Link
           key={item.name}
           href={item.link}
-          className={`text-lg text-slate-200 font-semibold hover:underline underline-offset-[16px] decoration-slate-200 ${currentPath === item.link ? "underline decoration-4 text-slate-100 decoration-slate-100" : ""}`}
+          className={`text-xl text-slate-200 font-semibold hover:underline underline-offset-[16px] decoration-slate-200 ${currentPath === item.link ? "underline decoration-4 text-slate-100 decoration-slate-100" : ""}`}
         >
           {item.name}
         </Link>

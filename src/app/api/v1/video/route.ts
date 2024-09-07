@@ -4,6 +4,7 @@ import connectDB from "@/db/connectDB";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import { videoSearchSchema } from "@/schemas/video.schema";
+import mongoose from "mongoose";
 
 export async function GET(request: NextRequest) {
   await connectDB();
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (userId) {
-      matchStage.owner = userId;
+      matchStage.owner = new mongoose.Types.ObjectId(userId);
     }
 
     const sortStage: any = {};

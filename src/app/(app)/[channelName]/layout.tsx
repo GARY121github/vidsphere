@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import ChannelNavigation from "@/components/channel/channel-navigation";
 import { ChannelProvider } from "@/providers/contexts/channel-context";
+import { setChannelDetails } from "@/providers/store/features/channelSlice";
 
 export default async function Layout({
   children,
@@ -15,6 +16,8 @@ export default async function Layout({
   const { channelName } = params;
   const channel = decodeURIComponent(channelName);
   const channelData = await fetchChannelDetails(channel);
+
+  setChannelDetails({ ...channelData });
 
   return (
     <div>
