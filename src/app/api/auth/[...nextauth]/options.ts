@@ -68,7 +68,7 @@ const authOptions: NextAuthOptions = {
 
           return user;
         } catch (error: any) {
-          throw new Error(error.message);
+          throw new ApiError(401, error.message);
         }
       },
     }),
@@ -120,7 +120,7 @@ const authOptions: NextAuthOptions = {
           return true;
         } catch (error) {
           console.error("Error signing in with Google: ", error);
-          throw new Error("Error signing in with Google!!");
+          throw new ApiError(401, "Error signing in with Google!!");
         }
       }
       return true;
