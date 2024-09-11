@@ -58,7 +58,7 @@ export default function SignInPage() {
         description: "You have successfully signed in",
       });
 
-      router.replace("/");
+      router.replace("/home");
     }
     setIsLoading(false);
   }

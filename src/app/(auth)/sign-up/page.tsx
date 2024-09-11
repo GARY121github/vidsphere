@@ -120,7 +120,7 @@ export default function SignUpPage() {
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-gray-900"
+                      className="text-black"
                       placeholder="Enter your username"
                       {...field}
                       onChange={(e) => {
@@ -149,7 +149,7 @@ export default function SignUpPage() {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-gray-900"
+                      className="text-black"
                       placeholder="Enter your email"
                       {...field}
                     />
@@ -166,7 +166,7 @@ export default function SignUpPage() {
                   <FormLabel>FullName</FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-gray-900"
+                      className="text-black"
                       placeholder="Enter your fullname"
                       {...field}
                     />
@@ -183,7 +183,7 @@ export default function SignUpPage() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-gray-900"
+                      className="text-black"
                       type="password"
                       placeholder="Enter your password"
                       {...field}
