@@ -14,6 +14,7 @@ interface IConfig {
   AWS_ACCESS_KEY: string;
   AWS_SECRET_KEY: string;
   AWS_CLOUDFRONT_URL: string;
+  BACKEND_API: string;
 }
 
 const config: IConfig = {
@@ -32,6 +33,7 @@ const config: IConfig = {
   AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || "",
   AWS_SECRET_KEY: process.env.AWS_SECRET_KEY || "",
   AWS_CLOUDFRONT_URL: process.env.AWS_CLOUDFRONT_URL || "",
+  BACKEND_API: process.env.BACKEND_API || "",
 };
 
 export default config;

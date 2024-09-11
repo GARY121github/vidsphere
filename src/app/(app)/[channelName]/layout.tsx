@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import ChannelNavigation from "@/components/channel/channel-navigation";
 import { ChannelProvider } from "@/providers/contexts/channel-context";
 import { setChannelDetails } from "@/providers/store/features/channelSlice";
+import config from "@/conf/config";
 
 export default async function Layout({
   children,
@@ -70,8 +71,9 @@ export default async function Layout({
 const fetchChannelDetails = async (channel: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/v1/channel/${channel}`
+      `${config.BACKEND_API}/channel/${channel}`
     );
+    console.log("channel", response);
     return response.data.data[0];
   } catch (error) {
     console.log("channel not found");

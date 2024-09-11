@@ -1,5 +1,6 @@
 import VideoCard, { VideoGridItemProps } from "@/components/video-card";
 import axios from "axios";
+import config from "@/conf/config";
 
 export default async function HomePage() {
   const response = await fetchVideos();
@@ -20,9 +21,7 @@ export default async function HomePage() {
 
 async function fetchVideos() {
   try {
-    const response = await axios.get(
-      "https://vidsphere-eight.vercel.app/api/v1/video"
-    );
+    const response = await axios.get(`${config.BACKEND_API}/video`);
     return response.data;
   } catch (error) {
     console.error("Error fetching videos", error);
