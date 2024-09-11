@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../../../images/logo.png";
+import vidsphere from "../../../images/vidsphere.png";
 import background_image from "../../../images/auth.jpeg";
 import Image from "next/image";
 
@@ -14,24 +15,26 @@ const layout: React.FC<LayoutProps> = ({ children }) => {
         <div
           className="h-[60vh] md:h-screen bg-cover"
           style={{
-            backgroundImage: `url(${background_image.src})`,
+            backgroundImage: `url("https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHRlY2hub2xvZ3l8ZW58MHx8MHx8fDA%3D")`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
         >
-          <div className="flex flex-col items-center justify-center h-full bg-gray-900 bg-opacity-40 p-4">
-            <div className="flex items-center mb-4">
-              <Image className="w-12 h-12" src={logo} alt="applogo" />
-              <p className="font-semibold text-base ml-2 text-white">
-                VidSphere
-              </p>
-            </div>
-            <p className="font-medium text-2xl md:text-3xl py-4 md:py-8 text-white text-center">
-              Share,{" "}
-              <span className="font-normal">
-                your moments with the world around you on VidSphere.
-              </span>
+          <div className="h-full relative flex justify-center">
+            <Image
+              className="absolute top-2 left-2 w-24 h-24 p-2"
+              src={vidsphere}
+              alt="applogo"
+            />
+            <p className="absolute bottom-[10%] font-medium text-xl md:text-2xl py-4 md:py-8 text-white text-center w-[75%]">
+              Join us on a journey where every video tells a story and every
+              moment is worth sharing.{" "}
+              <span className="font-semibold text-blue-600">Sign in</span> or{" "}
+              <span className="font-semibold text-blue-600">
+                Create an account
+              </span>{" "}
+              to explore, connect, and discover your next favorite adventure.
             </p>
           </div>
         </div>

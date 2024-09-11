@@ -13,32 +13,24 @@ interface ModalProps {
   title: string;
   description?: string;
   children: React.ReactNode;
-  isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
 }
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
-  (
-    { title, description, children, isModalOpen, setIsModalOpen, className },
-    ref
-  ) => {
+  ({ title, description, children, className }, ref) => {
     return (
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <Dialog>
         <DialogTrigger asChild>
           <Button>{title}</Button>
         </DialogTrigger>
-        <DialogContent
-          className={`sm:max-w-[425px] bg-white text-black ${className}`}
-          ref={ref}
-        >
+        <DialogContent className={`bg-white text-black ${className}`} ref={ref}>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             {description && (
               <DialogDescription>{description}</DialogDescription>
             )}
-            {children}
           </DialogHeader>
+          {children}
         </DialogContent>
       </Dialog>
     );

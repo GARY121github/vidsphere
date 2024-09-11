@@ -76,7 +76,11 @@ export default function VideoCard({
       </Link>
       <div className="flex gap-2">
         <Link href={`/@${owner._id}`} className="flex-shrink-0">
-          <img className="w-12 h-12 rounded-full" src={owner.avatar} />
+          <img
+            className="w-12 h-12 rounded-full"
+            src={owner.avatar}
+            alt="avatar"
+          />
         </Link>
         <div className="flex flex-col">
           <Link href={`/watch?v=${_id}`} className="font-bold">

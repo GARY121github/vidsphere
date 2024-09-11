@@ -3,7 +3,7 @@ import connectDB from "@/db/connectDB";
 import UserModel from "@/models/user.model";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
-import { userNameSchema } from "@/schemas/signUp.schema";
+import userNameSchema from "@/schemas/common/username.schema";
 
 export async function POST(request: NextRequest) {
   await connectDB();

@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 import { X } from "lucide-react";
 import Image from "next/image";
-import logo from "../../../images/logo.png";
+import vidsphere from "../../../images/vidsphere.png";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Video, FileVideo, Radio } from "lucide-react";
 import {
@@ -41,13 +41,10 @@ const Navbar = () => {
       >
         <div className={`flex justify-center items-center`}>
           <Image
-            className="w-8 h-8 md:w-12 md:h-12"
-            src={logo}
+            className="w-16 h-8 md:w-20 md:h-12"
+            src={vidsphere}
             alt="application logo"
           />
-          <p className="font-semibold text-xs md:text-base ml-2 text-white">
-            VidSphere
-          </p>
         </div>
 
         <div className="flex sm:flex-grow xs:max-w-xs sm:max-w-sm md:max-w-md lg:max-w-4xl sm:relative">

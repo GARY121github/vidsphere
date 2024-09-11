@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
   await connectDB();
   try {
     const data = await request.json(); // Parse the JSON body
+    console.log(data);
 
     const isValidData = signUpSchema.safeParse(data);
 

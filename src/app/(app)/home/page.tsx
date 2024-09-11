@@ -2,8 +2,10 @@ import VideoCard, { VideoGridItemProps } from "@/components/video-card";
 import axios from "axios";
 
 export default async function HomePage() {
-  const response = await fetchVideos();
-  const videos: Array<VideoGridItemProps> | undefined = response?.data?.videos;
+  // const response = await fetchVideos();
+
+  // const videos: Array<VideoGridItemProps> | undefined = response?.data?.videos;
+  const videos: Array<VideoGridItemProps> | undefined = [];
 
   return (
     <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
@@ -18,14 +20,15 @@ export default async function HomePage() {
   );
 }
 
-async function fetchVideos() {
-  try {
-    const response = await axios.get(
-      "https://vidsphere-eight.vercel.app/api/v1/video"
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching videos", error);
-    return { videos: undefined };
-  }
-}
+// async function fetchVideos() {
+//   try {
+//     const response = await axios.get(
+//       "https://vidsphere-eight.vercel.app/api/v1/video"
+//     );
+
+//     return response?.data;
+//   } catch (error) {
+//     console.error("Error fetching videos", error);
+//     return { videos: undefined };
+//   }
+// }
