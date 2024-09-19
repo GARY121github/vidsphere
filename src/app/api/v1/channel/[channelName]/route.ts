@@ -13,7 +13,7 @@ export async function GET(
   try {
     const { channelName } = params;
     const username = channelName.substring(1);
-    console.log(username);
+
     if (!username.trim()) {
       throw new ApiError(501, "Invalid Channel Name");
     }

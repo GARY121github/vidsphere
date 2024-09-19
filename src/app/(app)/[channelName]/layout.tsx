@@ -73,7 +73,6 @@ const fetchChannelDetails = async (channel: string) => {
     const response = await axios.get(
       `${config.BACKEND_API}/channel/${channel}`
     );
-    console.log("channel", response);
     return response.data.data[0];
   } catch (error) {
     console.log("channel not found");

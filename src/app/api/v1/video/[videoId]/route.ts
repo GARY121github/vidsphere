@@ -8,7 +8,7 @@ import ApiResponse from "@/utils/ApiResponse";
 import { titleSchema, descriptionSchema } from "@/schemas/video.schema";
 
 export async function GET(
-  _: NextRequest,
+  request: NextRequest,
   { params }: { params: { videoId: string } }
 ) {
   await connectDB();
@@ -26,6 +26,8 @@ export async function GET(
 
   try {
     const { videoId } = params;
+
+    console.log(videoId);
 
     if (!videoId) {
       throw new ApiError(400, "Invalid video id");

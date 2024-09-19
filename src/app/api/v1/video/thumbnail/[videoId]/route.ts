@@ -32,6 +32,8 @@ export async function PUT(
 
     const url = getImageUrl(thumbnail);
 
+    console.log("URL -> ", url);
+
     const video = await VideoModel.findById(videoId);
     if (!video) {
       throw new ApiError(404, "Video not found");
@@ -43,7 +45,7 @@ export async function PUT(
 
     await VideoModel.findByIdAndUpdate(
       videoId,
-      { thumbnailUrl: url },
+      { thumbnail: url },
       { new: true }
     );
 

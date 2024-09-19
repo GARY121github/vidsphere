@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { formatDuration } from "../utils/formatDuration";
+import { formatDuration } from "../../utils/formatDuration";
 import { formatTimeAgo } from "@/utils/formatTimeAgo";
 import Link from "next/link";
 import { VideoQuality } from "@/models/video.model";
@@ -16,7 +16,7 @@ export interface VideoGridItemProps {
   views: number;
   createdAt: Date;
   duration: number;
-  thumbnailUrl: string;
+  thumbnail: string;
   videoUrls: Array<VideoQuality>;
 }
 
@@ -31,7 +31,7 @@ export default function VideoCard({
   views,
   createdAt,
   duration,
-  thumbnailUrl,
+  thumbnail,
   videoUrls,
 }: VideoGridItemProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -56,7 +56,7 @@ export default function VideoCard({
     >
       <Link href={`/watch?v=${_id}`} className="relative aspect-video">
         <img
-          src={thumbnailUrl}
+          src={thumbnail}
           className={`block w-full h-full object-cover transition-[border-radius] duration-200 ${
             isVideoPlaying ? "rounded-none" : "rounded-xl"
           }`}

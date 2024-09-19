@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     }
 
     let matchStage: any = {
-      isPublished: false,
+      isPublished: true,
       status: "completed",
     };
 
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
         $project: {
           title: 1,
           description: 1,
-          thumbnailUrl: 1,
+          thumbnail: 1,
           videoUrls: 1,
           createdAt: 1,
           "owner.username": 1,

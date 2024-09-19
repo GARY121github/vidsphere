@@ -1,4 +1,4 @@
-import VideoCard, { VideoGridItemProps } from "@/components/video-card";
+import VideoCard, { VideoGridItemProps } from "@/components/video/video-card";
 import axios from "axios";
 import config from "@/conf/config";
 

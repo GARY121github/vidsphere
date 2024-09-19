@@ -11,7 +11,7 @@ export interface Video extends Document {
   description: string;
   isPublished: boolean;
   videoUrls: Array<VideoQuality>;
-  thumbnailUrl: string;
+  thumbnail: string;
   owner: {
     type: Types.ObjectId;
     ref: "User";
@@ -50,7 +50,7 @@ const videoSchema = new Schema<Video>(
         _id: false,
       },
     ],
-    thumbnailUrl: {
+    thumbnail: {
       type: String,
       required: true,
     },
