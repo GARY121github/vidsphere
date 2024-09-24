@@ -1,6 +1,6 @@
 "use client";
 
-import VideoCard, { VideoGridItemProps } from "@/components/video-card";
+import VideoCard, { VideoGridItemProps } from "@/components/video/video-card";
 import VideoSkeleton from "@/components/skeleton/video-skeleton";
 import { useChannel } from "@/providers/contexts/channel-context";
 import axios from "axios";

@@ -6,6 +6,7 @@ import authOptions from "@/app/api/auth/[...nextauth]/options";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import { titleSchema, descriptionSchema } from "@/schemas/video.schema";
+import mongoose from "mongoose";
 
 export async function GET(
   request: NextRequest,
@@ -27,19 +28,47 @@ export async function GET(
   try {
     const { videoId } = params;
 
-    console.log(videoId);
-
     if (!videoId) {
       throw new ApiError(400, "Invalid video id");
     }
 
-    const video = await VideoModel.findById(videoId);
+    const video = await VideoModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(videoId),
+          isPublished: true,
+          status: "completed",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "owner",
+          foreignField: "_id",
+          as: "owner",
+        },
+      },
+      { $unwind: "$owner" },
+      {
+        $project: {
+          title: 1,
+          description: 1,
+          thumbnail: 1,
+          videoUrls: 1,
+          createdAt: 1,
+          "owner.username": 1,
+          "owner.fullName": 1,
+          "owner.avatar": 1,
+          "owner._id": 1,
+        },
+      },
+    ]);
 
-    if (!video) {
+    if (!video[0]) {
       throw new ApiError(404, "Video not found");
     }
 
-    return NextResponse.json(new ApiResponse(200, "Video found", video));
+    return NextResponse.json(new ApiResponse(200, "Video found", video[0]));
   } catch (error) {
     console.log(error);
     if (error instanceof ApiError) {

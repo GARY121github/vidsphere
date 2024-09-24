@@ -1,28 +1,29 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
 import aggregatePaginate from "mongoose-aggregate-paginate-v2";
+
+// Interface for video quality
 export interface VideoQuality {
   link: string;
   quality: string;
 }
 
+// Interface for Video document
 export interface Video extends Document {
-  _id: string;
+  _id: Types.ObjectId; // Change to ObjectId
   title: string;
   description: string;
   isPublished: boolean;
   videoUrls: Array<VideoQuality>;
   thumbnail: string;
-  owner: {
-    type: Types.ObjectId;
-    ref: "User";
-  };
-  status: string; // Add the status field
+  owner: Types.ObjectId; // Ensure owner is also ObjectId
+  status: string;
 }
 
+// Define schema for Video
 const videoSchema = new Schema<Video>(
   {
     _id: {
-      type: String,
+      type: Schema.Types.ObjectId, // Use Schema.Types.ObjectId
       required: true,
     },
     title: {
@@ -55,7 +56,7 @@ const videoSchema = new Schema<Video>(
       required: true,
     },
     owner: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId, // Use Schema.Types.ObjectId
       ref: "User",
       required: true,
     },
@@ -68,8 +69,10 @@ const videoSchema = new Schema<Video>(
   { timestamps: true }
 );
 
+// Add pagination plugin
 videoSchema.plugin(aggregatePaginate);
 
+// Model creation
 const VideoModel =
   (mongoose.models.Video as mongoose.Model<Video>) ||
   mongoose.model<Video>("Video", videoSchema);

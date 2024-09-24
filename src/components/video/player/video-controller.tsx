@@ -106,7 +106,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
       <div
         ref={ref}
         className={`absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between text-white transition-opacity ${
-          isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+          isPlaying ? "opacity-0 group-hover:opacity-100 " : "opacity-100"
         }`}
       >
         <input
@@ -145,7 +145,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
               step="0.1"
               value={volume}
               onChange={handleVolumeChange}
-              className="w-24 cursor-pointer"
+              className="w-24 cursor-pointer "
             />
           </div>
         </div>

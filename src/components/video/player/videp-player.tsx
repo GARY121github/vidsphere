@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import VideoController from "./video-controller";
+import mongoose from "mongoose";
 
 interface VideoQuality {
   link: string;
@@ -9,7 +10,7 @@ interface VideoQuality {
 
 interface VideoPlayerProps {
   video: {
-    _id: string;
+    _id: mongoose.Types.ObjectId;
     title: string;
     description: string;
     videoUrls: VideoQuality[];
@@ -84,7 +85,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }, []);
 
   return (
-    <div className={`relative group overflow-hidden max-w-[60vw]`}>
+    <div
+      className={`relative group overflow-hidden w-[${width}] h-[${height}] max-w-[60vw] rounded-lg`}
+    >
       <video
         ref={videoRef}
         onClick={togglePlayPause} // Toggle play/pause on video click

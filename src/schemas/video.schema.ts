@@ -44,7 +44,7 @@ export const statusSchema = z
 export const videoSchema = z.object({
   title: titleSchema,
   description: descriptionSchema,
-  thumbnailUrl: z.string().url(),
+  thumbnail: z.string().url(),
   videoUrls: z.array(
     z.object({
       link: z.string().url(),

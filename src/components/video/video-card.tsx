@@ -64,7 +64,7 @@ export default function VideoCard({
         <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
           <h1>{formatDuration(duration)}</h1>
         </div>
-        <video
+        {/* <video
           className={`block h-full object-cover absolute inset-0 transition-opacity duration-200 ${
             isVideoPlaying ? "opacity-100 delay-200" : "opacity-0"
           }`}
@@ -72,7 +72,7 @@ export default function VideoCard({
           muted
           playsInline
           src={videoUrls[0].quality}
-        />
+        /> */}
       </Link>
       <div className="flex gap-2">
         <Link href={`/@${owner.username}`} className="flex-shrink-0">

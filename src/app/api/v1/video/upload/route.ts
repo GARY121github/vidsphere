@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
   const { user } = session;
   try {
-    const { uniqueID, title, description, thumbnailUrl } = await request.json();
+    const { uniqueID, title, description, thumbnail } = await request.json();
 
     if (!uniqueID) {
       throw new ApiError(400, "Invalid request");
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
       _id: new mongoose.Types.ObjectId(uniqueID),
       title,
       description,
-      thumbnailUrl: getImageUrl(thumbnailUrl),
+      thumbnail: getImageUrl(thumbnail),
       owner: user._id,
       videoUrls: [
         {
@@ -136,8 +136,6 @@ export async function PATCH(request: NextRequest) {
   await connectDB();
   try {
     const { videoId, status } = await request.json();
-
-    console.log(videoId);
 
     if (!videoId) {
       throw new ApiError(400, "Invalid request body");

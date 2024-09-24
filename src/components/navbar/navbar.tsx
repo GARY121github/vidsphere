@@ -35,7 +35,7 @@ const Navbar = () => {
   };
 
   return (
-    <>
+    <div className="border-b-[2px] border-slate-600">
       <div
         className={`${inputVisible ? "hidden" : "flex justify-between items-center py-2  max-m-sm gap-4 mx-4 "}`}
       >
@@ -136,7 +136,7 @@ const Navbar = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
