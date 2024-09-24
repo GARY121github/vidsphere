@@ -67,7 +67,7 @@ export async function GET(
             username: 1,
             fullName: 1,
             email: 1,
-            avatart: 1,
+            avatar: 1,
           },
         },
       },

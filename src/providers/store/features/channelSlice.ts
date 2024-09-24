@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 
 export interface ChannelState {
   _id: string | null;
@@ -12,18 +11,18 @@ const initialState: ChannelState = {
   channelName: null,
 };
 
-export const channlSlice = createSlice({
+export const channelSlice = createSlice({
   name: "channel",
   initialState,
   reducers: {
     setChannelDetails: (
-      state: RootState,
+      state: ChannelState,
       action: PayloadAction<ChannelState>
     ) => {
       state._id = action.payload._id;
       state.channelName = action.payload.channelName;
     },
-    removeChannelDetails: (state: RootState) => {
+    removeChannelDetails: (state: ChannelState) => {
       state._id = null;
       state.channelName = null;
     },
@@ -31,6 +30,6 @@ export const channlSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setChannelDetails, removeChannelDetails } = channlSlice.actions;
+export const { setChannelDetails, removeChannelDetails } = channelSlice.actions;
 
-export default channlSlice.reducer;
+export default channelSlice.reducer;

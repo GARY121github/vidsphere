@@ -12,7 +12,7 @@ import { User } from "next-auth";
 // ******************************************* //
 // *********** TOGGLE SUBSCRIPTION *********** //
 // ******************************************* //
-export async function GET(
+export async function PUT(
   request: NextRequest,
   { params }: { params: { channelId: string } }
 ) {
@@ -87,7 +87,7 @@ export async function GET(
 // ******************************************* //
 // ************* GET SUBSCRIBERS ************* //
 // ******************************************* //
-export async function POST(
+export async function GET(
   request: NextRequest,
   { params }: { params: { channelId: string } }
 ) {

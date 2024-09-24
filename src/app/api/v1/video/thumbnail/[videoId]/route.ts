@@ -7,6 +7,10 @@ import VideoModel from "@/models/video.model";
 import connectDB from "@/db/connectDB";
 import getImageUrl from "@/utils/S3toCloudfront";
 
+// ******************************************* //
+// *********** CHANGE VIDEOS THUMBNAIL *********** //
+// ******************************************* //
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: { videoId: string } }

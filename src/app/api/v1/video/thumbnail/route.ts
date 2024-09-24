@@ -14,6 +14,10 @@ function getUniqueId() {
   return uuidv4();
 }
 
+// ******************************************* //
+// *********** GET VIDEOS THUMBNAIL PRESIGNED URL *********** //
+// ******************************************* //
+
 export async function GET(request: NextRequest) {
   await connectDB();
   const session = await getServerSession(authOptions);

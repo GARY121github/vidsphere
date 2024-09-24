@@ -8,6 +8,10 @@ import ApiResponse from "@/utils/ApiResponse";
 import { titleSchema, descriptionSchema } from "@/schemas/video.schema";
 import mongoose from "mongoose";
 
+// ******************************************* //
+// *********** GET VIDEO DETAILS *********** //
+// ******************************************* //
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { videoId: string } }
@@ -24,6 +28,8 @@ export async function GET(
       { status: 401 }
     );
   }
+
+  const { user } = session;
 
   try {
     const { videoId } = params;
@@ -50,6 +56,25 @@ export async function GET(
       },
       { $unwind: "$owner" },
       {
+        $lookup: {
+          from: "subscriptions",
+          localField: "owner._id", // The owner of the video
+          foreignField: "subscribedTo", // Channel being subscribed to
+          as: "subscribers",
+        },
+      },
+      {
+        $addFields: {
+          subscriberCount: { $size: "$subscribers" }, // Count the subscribers
+          isSubscribed: {
+            $in: [
+              new mongoose.Types.ObjectId(user._id),
+              "$subscribers.subscriber",
+            ], // Check if the current user is subscribed
+          },
+        },
+      },
+      {
         $project: {
           title: 1,
           description: 1,
@@ -60,6 +85,8 @@ export async function GET(
           "owner.fullName": 1,
           "owner.avatar": 1,
           "owner._id": 1,
+          subscriberCount: 1,
+          isSubscribed: 1,
         },
       },
     ]);
@@ -83,6 +110,9 @@ export async function GET(
   }
 }
 
+// ******************************************* //
+// *********** CHANGE VIDEOS META DATA *********** //
+// ******************************************* //
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { videoId: string } }
@@ -159,6 +189,10 @@ export async function PATCH(
     });
   }
 }
+
+// ******************************************* //
+// *********** DELETE VIDEO *********** //
+// ******************************************* //
 
 export async function DELETE(
   _: NextRequest,
