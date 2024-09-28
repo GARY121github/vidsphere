@@ -106,7 +106,12 @@ export default function LandingPage() {
           </div>
 
           <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-            <Image src="/images/hero.png" alt="hero image" />
+            <Image
+              src="/images/hero.png"
+              width={600}
+              height={100}
+              alt="hero image"
+            />
           </div>
         </div>
       </section>
@@ -168,7 +173,9 @@ export default function LandingPage() {
                     <Image
                       src={teamMember.profile}
                       alt="photo"
-                      className="w-60 rounded-2xl object-cover mx-auto"
+                      width={150}
+                      height={100}
+                      className="rounded-2xl object-cover mx-auto"
                     />
                     <p className="m-2 text-center">{teamMember.name}</p>
                     <div className="flex justify-between w-4/5">

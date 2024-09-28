@@ -2,8 +2,7 @@
 
 import React, { useState } from "react";
 import { Input } from "../ui/input";
-import { Search } from "lucide-react";
-import { X } from "lucide-react";
+import { Search, LogOut, X } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Video, FileVideo, Radio } from "lucide-react";
@@ -16,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import config from "@/conf/config";
+import { signOut } from "next-auth/react";
 
 const Navbar = () => {
   const [inputVisible, setInputVisible] = useState(false);
@@ -40,8 +39,10 @@ const Navbar = () => {
       >
         <div className={`flex justify-center items-center`}>
           <Image
-            className="w-8 h-8 md:w-12 md:h-12"
+            className="md:w-12 md:h-12"
             src="/images/logo.png"
+            width={8}
+            height={8}
             alt="application logo"
           />
           <p className="font-semibold text-xs md:text-base ml-2 text-white">
@@ -103,10 +104,12 @@ const Navbar = () => {
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => signOut()}
+                  className="flex justify-around cursor-pointer"
+                >
+                  <LogOut /> Logout
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

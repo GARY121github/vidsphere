@@ -41,7 +41,9 @@ export default async function Layout({
                 <h1 className="font-bold text-5xl text-center capitalize">
                   {channelData.fullName}
                 </h1>
-                <p className="text-2xl">{channel} | </p>
+                <p className="text-2xl">
+                  {channel} | {channelData.subscribersCount} subscribers{" "}
+                </p>
                 <Button variant="outline" className="text-black">
                   Subscribed
                 </Button>
@@ -73,7 +75,7 @@ const fetchChannelDetails = async (channel: string) => {
     const response = await axios.get(
       `${config.BACKEND_API}/channel/${channel}`
     );
-    return response.data.data[0];
+    return response.data.data;
   } catch (error) {
     console.log("channel not found");
     return null;
