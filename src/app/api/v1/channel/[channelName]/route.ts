@@ -1,4 +1,3 @@
-import VideoModel from "@/models/video.model";
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/db/connectDB";
 import ApiError from "@/utils/ApiError";
