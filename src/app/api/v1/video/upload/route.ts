@@ -71,31 +71,34 @@ export async function POST(request: NextRequest) {
   }
 
   const { user } = session;
+
+  console.log(user);
+
   try {
-    const { uniqueID, title, description, thumbnail } = await request.json();
+    const { uniqueID } = await request.json();
 
     if (!uniqueID) {
       throw new ApiError(400, "Invalid request");
     }
 
-    const isValidTitle = titleSchema.safeParse(title);
-    if (!isValidTitle.success) {
-      throw new ApiError(400, isValidTitle.error.errors[0].message);
-    }
+    // const isValidTitle = titleSchema.safeParse(title);
+    // if (!isValidTitle.success) {
+    //   throw new ApiError(400, isValidTitle.error.errors[0].message);
+    // }
 
-    const isValidDescription = descriptionSchema.safeParse(description);
-    if (!isValidDescription.success) {
-      throw new ApiError(400, isValidDescription.error.errors[0].message);
-    }
-    4;
+    // const isValidDescription = descriptionSchema.safeParse(description);
+    // if (!isValidDescription.success) {
+    //   throw new ApiError(400, isValidDescription.error.errors[0].message);
+    // }
 
     const baseUrl = `${config.AWS_CLOUDFRONT_URL}/vidsphere/${user._id}/video/${uniqueID}`;
 
+    if (baseUrl === null) {
+      throw new ApiError(400, "video could not be uploaded");
+    }
+
     await VideoModel.create({
       _id: new mongoose.Types.ObjectId(uniqueID),
-      title,
-      description,
-      thumbnail: getImageUrl(thumbnail),
       owner: user._id,
       videoUrls: [
         {

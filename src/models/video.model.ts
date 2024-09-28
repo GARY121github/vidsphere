@@ -28,11 +28,11 @@ const videoSchema = new Schema<Video>(
     },
     title: {
       type: String,
-      required: true,
+      default: "Untitled",
     },
     description: {
       type: String,
-      required: true,
+      default: "Untitled",
     },
     isPublished: {
       type: Boolean,
@@ -53,7 +53,7 @@ const videoSchema = new Schema<Video>(
     ],
     thumbnail: {
       type: String,
-      required: true,
+      default: "https://images.unsplash.com/photo-1676594904038-94b67e213297",
     },
     owner: {
       type: Schema.Types.ObjectId, // Use Schema.Types.ObjectId

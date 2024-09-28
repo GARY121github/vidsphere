@@ -1,6 +1,6 @@
 import connectDB from "@/db/connectDB";
 import UserModel from "@/models/user.model";
-import { userNameSchema } from "@/schemas/signUp.schema";
+import userNameSchema from "@/schemas/common/username.schema";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import { NextRequest, NextResponse } from "next/server";

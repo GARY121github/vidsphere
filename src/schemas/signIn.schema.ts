@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { passwordSchema, userNameSchema } from "./signUp.schema";
+import passwordSchema from "@/schemas/common/password.schema";
+import userNameSchema from "@/schemas/common/username.schema";
 
 const signInSchema = z.object({
   username: userNameSchema,

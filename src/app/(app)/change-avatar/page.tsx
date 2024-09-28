@@ -23,7 +23,6 @@ import axios, { AxiosError } from "axios";
 import Image from "next/image";
 
 export default function ChangeAvatarPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileEnter, setFileEnter] = useState(false);
@@ -84,11 +83,7 @@ export default function ChangeAvatarPage() {
 
   return (
     <>
-      <Modal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        title="Change Avatar"
-      >
+      <Modal title="Change Avatar">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {!file ? (

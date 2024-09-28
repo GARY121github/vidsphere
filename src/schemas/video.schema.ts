@@ -32,6 +32,7 @@ export const descriptionSchema = z
   .max(500, {
     message: "Description must be at most 500 characters long",
   });
+
 export const statusSchema = z
   .string()
   .refine(
@@ -39,18 +40,74 @@ export const statusSchema = z
     {
       message: "Invalid status",
     }
-  );
+  )
+  .default("uploading");
 
 export const videoSchema = z.object({
   title: titleSchema,
   description: descriptionSchema,
-  thumbnail: z.string().url(),
-  videoUrls: z.array(
-    z.object({
-      link: z.string().url(),
-      quality: z.string().min(1).max(10),
-    })
-  ),
+  thumbnailUrl: z.string().url(),
+  videoUrls: z
+    .array(
+      z.object({
+        link: z.string().url(),
+        quality: z.string().min(1).max(10),
+      })
+    )
+    .optional(),
   owner: z.string(),
   status: statusSchema,
+});
+
+const MAX_VIDEO_FILE_SIZE = 500000000; // 50MB
+const MAX_THUMBNAIL_SIZE = 50000000; // 5MB
+
+function checkVideoFileType(file: File) {
+  if (file?.name) {
+    const fileType = file.name.split(".").pop();
+    if (
+      fileType === "mp4" ||
+      fileType === "mov" ||
+      fileType === "webm" ||
+      fileType === "avi" ||
+      fileType === "mkv" ||
+      fileType === "flv" ||
+      fileType === "wmv"
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function checkThumbnailFileType(file: File) {
+  if (file?.name) {
+    const fileType = file.name.split(".").pop();
+    if (fileType === "jpg" || fileType === "jpeg" || fileType === "png") {
+      return true;
+    }
+  }
+  return false;
+}
+
+export const videoFileSchema = z.object({
+  videoFile: z
+    .any()
+    .refine((file) => file?.length !== 0, "File is required")
+    .refine((file) => file.size < MAX_VIDEO_FILE_SIZE, "Max size is 50MB.")
+    .refine(
+      (file) => checkVideoFileType(file),
+      "Only .mp4, .mov, .webm, .avi, .mkv, .flv, .wmv formats are supported."
+    ),
+});
+
+export const thumnailSchema = z.object({
+  thumbnail: z
+    .any()
+    .refine((file) => file?.length !== 0, "File is required")
+    .refine((file) => file.size < MAX_THUMBNAIL_SIZE, "Max size is 5MB.")
+    .refine(
+      (file) => checkThumbnailFileType(file),
+      "Only .jpg, .jpeg, .png formats are supported."
+    ),
 });

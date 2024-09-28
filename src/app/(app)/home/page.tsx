@@ -4,6 +4,7 @@ import config from "@/conf/config";
 
 export default async function HomePage() {
   const response = await fetchVideos();
+
   const videos: Array<VideoGridItemProps> | undefined = response?.data?.videos;
 
   return (

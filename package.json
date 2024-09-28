@@ -12,11 +12,11 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.583.0",
     "@aws-sdk/s3-request-presigner": "^3.588.0",
-    "@hookform/resolvers": "^3.4.2",
+    "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
-    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-separator": "^1.1.0",
