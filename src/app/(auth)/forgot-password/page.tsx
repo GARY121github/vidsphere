@@ -18,7 +18,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
 
@@ -60,6 +60,9 @@ export default function ForgotPassword() {
 
   return (
     <div className="max-w-md w-full p-6">
+      <Button className="p-0 hover:bg-slate-800 " onClick={router.back}>
+        <ArrowLeft />
+      </Button>
       <h1 className="text-2xl font-semibold mb-6 text-white text-left">
         Forgot Password
       </h1>
@@ -78,9 +81,10 @@ export default function ForgotPassword() {
                 <FormLabel>Email Address</FormLabel>
                 <FormControl>
                   <Input
-                    className="bg-gray-900"
+                    placeholder="tom@gmail.com"
+                    type="text"
+                    className="text-black"
                     {...field}
-                    placeholder="Email"
                   />
                 </FormControl>
                 <FormMessage />

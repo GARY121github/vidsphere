@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import channelSlice from "./features/channelSlice";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    channel: channelSlice,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

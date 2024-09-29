@@ -21,6 +21,10 @@ function getUniqueId() {
   return new mongoose.Types.ObjectId().toHexString();
 }
 
+// ************************************************************* //
+// *********** GET VIDEOS PRESIGEND URL WITH IT'S ID *********** //
+// ************************************************************* //
+
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
@@ -61,6 +65,10 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+// ******************************************* //
+// *********** CREATE VIDEO ****************** //
+// ******************************************* //
 
 export async function POST(request: NextRequest) {
   await connectDB();
@@ -134,6 +142,10 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// ******************************************** //
+// *********** CHANGE VIDEOS STATUS *********** //
+// ******************************************** //
 
 export async function PATCH(request: NextRequest) {
   await connectDB();
