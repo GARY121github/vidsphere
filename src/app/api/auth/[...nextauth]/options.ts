@@ -116,6 +116,7 @@ const authOptions: NextAuthOptions = {
           user._id = userData?._id?.toString();
           user.username = userData?.username;
           user.isVerified = userData?.isVerified;
+          user.avatar = userData?.avatar;
 
           return true;
         } catch (error) {
@@ -130,6 +131,7 @@ const authOptions: NextAuthOptions = {
         token._id = user._id?.toString();
         token.username = user.username;
         token.isVerified = user.isVerified;
+        token.avatar = user.avatar;
       }
       return token;
     },
@@ -138,6 +140,7 @@ const authOptions: NextAuthOptions = {
         session.user._id = token._id;
         session.user.username = token.username;
         session.user.isVerified = token.isVerified;
+        session.user.avatar = token.avatar;
       }
       return session;
     },

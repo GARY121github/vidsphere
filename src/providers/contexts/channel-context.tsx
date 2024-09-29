@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  createContext,
-  useContext,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useState } from "react";
 
 interface ChannelContextType {
   channelDetail: { _id: string | null; channelName: string | null } | null;

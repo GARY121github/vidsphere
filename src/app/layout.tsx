@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import ReduxProviderWrapper from "@/providers/contexts/redux-context";
+import AuthProvider from "@/providers/contexts/auth-context";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,17 +23,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased bg-black text-white",
-          fontSans.variable
-        )}
-      >
-        <main>
-          <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
-        </main>
-        <Toaster />
-      </body>
+      <AuthProvider>
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased bg-black text-white",
+            fontSans.variable
+          )}
+        >
+          <main>
+            <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
+          </main>
+          <Toaster />
+        </body>
+      </AuthProvider>
     </html>
   );
 }

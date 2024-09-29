@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
-import sidebarItems from "./sidebar-items";
+import { sidebarItems } from "./sidebar-items";
 
-const SidebarDesktop = () => {
+export default function SidebarDesktop() {
   const pathname = usePathname();
 
   return (
@@ -29,6 +29,4 @@ const SidebarDesktop = () => {
       </div>
     </aside>
   );
-};
-
-export default SidebarDesktop;
+}

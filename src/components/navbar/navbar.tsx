@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Input } from "../ui/input";
-import { Search, LogOut, X } from "lucide-react";
+import { Search, LogOut, X, VideoIcon } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Video, FileVideo, Radio } from "lucide-react";
@@ -15,9 +15,15 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 
 const Navbar = () => {
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  console.log(user);
   const [inputVisible, setInputVisible] = useState(false);
   const handleXClick = (event: any) => {
     event.stopPropagation();
@@ -35,7 +41,7 @@ const Navbar = () => {
   return (
     <div className="border-b-[2px] border-slate-600">
       <div
-        className={`${inputVisible ? "hidden" : "flex justify-between items-center py-2  max-m-sm gap-4 mx-4 "}`}
+        className={`${inputVisible ? "hidden" : "flex justify-between items-center py-2  max-m-sm gap-4 mx-4"}`}
       >
         <div className={`flex justify-center items-center`}>
           <Image
@@ -65,50 +71,39 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className={`flex justify-center items-center gap-4`}>
+        <div className={`flex justify-center items-center gap-5`}>
           <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Video className="w-8 h-8 md:w-12 md:h-12" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="gap-2 ">
-                <DropdownMenuLabel>
-                  <div className="flex justify-center items-center gap-2">
-                    <FileVideo className="w-4 h-4" />
-                    Upload Video
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuLabel>
-                  <div className="flex justify-start items-center gap-2">
-                    <Radio className="w-4 h-4" />
-                    Go Live
-                  </div>
-                </DropdownMenuLabel>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {user ? (
+              <Link href={`/studio/channel/${user._id}`}>
+                <VideoIcon size={42} />
+              </Link>
+            ) : (
+              <Skeleton className="h-10 w-10 rounded-full" />
+            )}
           </div>
           <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="w-8 h-8 md:w-12 md:h-12">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>User</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => signOut()}
-                  className="flex justify-around cursor-pointer"
-                >
-                  <LogOut /> Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar className="w-8 h-8 md:w-12 md:h-12">
+                    <AvatarImage src={user?.avatar} alt="@shadcn" />
+                    <AvatarFallback>User</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => signOut()}
+                    className="flex justify-start gap-2 cursor-pointer"
+                  >
+                    <LogOut /> <p>Logout</p>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Skeleton className="w-12 h-12 rounded-full" />
+            )}
           </div>
         </div>
       </div>
