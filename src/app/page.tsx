@@ -78,14 +78,15 @@ export default function LandingPage() {
   return (
     <div>
       <Header />
+
       <section className="bg-gray-900">
-        <div className="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
+        <div className="grid max-w-screen-xl items-center px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
+          {/* Text Section */}
           <div className="mr-auto place-self-center lg:col-span-7">
-            <h1 className="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">
-              Explore, Share &amp; Create <br />
-              with VidSphere.
+            <h1 className="max-w-2xl mb-4 text-3xl  text-center md:text-start font-extrabold leading-none tracking-tight md:text-4xl xl:text-5xl text-white">
+              Explore, Share &amp; Create with VidSphere.
             </h1>
-            <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+            <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-base lg:text-lg dark:text-gray-400">
               Vidsphere is a cutting-edge video streaming platform designed to
               enhance your content delivery experience. With seamless user
               authentication, high-quality video transcoding into multiple
@@ -98,18 +99,20 @@ export default function LandingPage() {
             <div className="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
               <Link
                 href="/sign-in"
-                className="cursor-pointer py-3 px-8 w-60 bg-red-600 text-white text-base font-semibold transition-all duration-500 block text-center rounded-full hover:bg-red-700 mx-auto lg:mx-0"
+                className="cursor-pointer py-3 px-8 w-full sm:w-auto bg-red-600 text-white text-base font-semibold transition-all duration-500 block text-center rounded-full hover:bg-red-700 mx-auto lg:mx-0"
               >
                 Get Started Now!
               </Link>
             </div>
           </div>
 
-          <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
+          {/* Image Section */}
+          <div className="mt-10 lg:mt-0 lg:col-span-5 flex justify-evenly lg:justify-end">
             <Image
               src="/images/hero.png"
               width={600}
-              height={100}
+              height={400}
+              className="w-full h-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-full"
               alt="hero image"
             />
           </div>
@@ -178,7 +181,7 @@ export default function LandingPage() {
                       className="rounded-2xl object-cover mx-auto"
                     />
                     <p className="m-2 text-center">{teamMember.name}</p>
-                    <div className="flex justify-between w-4/5">
+                    <div className="flex justify-around md:justify-between w-2/5 md:w-4/5">
                       <Link href={teamMember.github}>
                         <Github />
                       </Link>
