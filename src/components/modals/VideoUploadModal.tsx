@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormField } from "@/components/ui/form";
 import { Input } from "../ui/input";
-import { Upload } from "lucide-react";
+import { ArrowUpFromLine, Upload } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 import Modal from "../modal";
 import { videoFileSchema, videoSchema } from "@/schemas/video.schema";
@@ -49,6 +49,8 @@ const VideoUploadForm = () => {
         },
       });
 
+      console.log(response);
+
       if (response.status === 200) {
         toast({
           title: "Upload Successful!",
@@ -83,6 +85,7 @@ const VideoUploadForm = () => {
       }
       const signedUrl = await getSignedUrl();
       await uploadVideoToS3(signedUrl, data.videoFile);
+
       const response = await axios.post("/api/v1/video/upload", {
         uniqueID: signedUrl.videoLocation,
       });
@@ -119,6 +122,7 @@ const VideoUploadForm = () => {
     <Modal
       title="Upload Video"
       className="max-w-4xl w-full h-[85vh] text-white bg-[#303030] border-0"
+      Icon={ArrowUpFromLine}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>

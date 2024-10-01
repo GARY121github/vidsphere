@@ -8,20 +8,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import React from "react";
+import { LucideIcon } from "lucide-react";
 
 interface ModalProps {
   title: string;
   description?: string;
   children: React.ReactNode;
+  Icon?: LucideIcon; // Change to React.ElementType to accept any component
   className?: string;
 }
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
-  ({ title, description, children, className }, ref) => {
+  ({ title, description, children, className, Icon }, ref) => {
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Button>{title}</Button>
+          <Button>
+            {Icon && <Icon className="mr-2" />}
+            {title}
+          </Button>
         </DialogTrigger>
         <DialogContent className={`bg-white text-black ${className}`} ref={ref}>
           <DialogHeader>
@@ -37,6 +42,6 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   }
 );
 
-Modal.displayName = "Modal";
+Modal.displayName = "Modal"; // Add displayName for better debugging
 
 export default Modal;

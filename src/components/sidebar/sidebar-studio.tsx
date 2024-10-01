@@ -20,7 +20,10 @@ export default function SidebarStudio() {
               studioItems.map((item, index) => {
                 // Create the dynamic link
                 const hrefParts = item.href.split("/");
-                const link = `${hrefParts[0]}/${hrefParts[1]}/${hrefParts[2] || ""}/${user?._id}/${hrefParts.length === 4 ? hrefParts[3] : ""}`;
+                let link = `${hrefParts[0]}/${hrefParts[1]}/${hrefParts[2] || ""}/${user?._id}`;
+                if (hrefParts.length === 4) {
+                  link = link + `/${hrefParts[3]}`;
+                }
 
                 // Compare pathname with the generated link
                 const isActive = pathname === link;

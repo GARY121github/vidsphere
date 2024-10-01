@@ -23,7 +23,6 @@ const Navbar = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  console.log(user);
   const [inputVisible, setInputVisible] = useState(false);
   const handleXClick = (event: any) => {
     event.stopPropagation();
