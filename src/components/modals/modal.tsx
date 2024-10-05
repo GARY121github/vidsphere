@@ -11,21 +11,34 @@ import React from "react";
 import { LucideIcon } from "lucide-react";
 
 interface ModalProps {
-  title: string;
+  title?: string;
   description?: string;
   children: React.ReactNode;
   Icon?: LucideIcon; // Change to React.ElementType to accept any component
   className?: string;
+  triggerClassName?: string;
+  defaultOpen?: boolean;
 }
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
-  ({ title, description, children, className, Icon }, ref) => {
+  (
+    {
+      title,
+      description,
+      children,
+      className,
+      Icon,
+      triggerClassName,
+      defaultOpen,
+    },
+    ref
+  ) => {
     return (
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button>
+      <Dialog defaultOpen={defaultOpen}>
+        <DialogTrigger asChild className={`${triggerClassName}`}>
+          <Button variant="secondary">
             {Icon && <Icon className="mr-2" />}
-            {title}
+            {title && title}
           </Button>
         </DialogTrigger>
         <DialogContent className={`bg-white text-black ${className}`} ref={ref}>

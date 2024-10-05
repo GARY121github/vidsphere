@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <StudioNavbar />
       </div>
       <div className="flex flex-grow overflow-hidden">
-        <div className="hidden md:flex md:flex-col md:w-64 bg-gray-200">
+        <div className="md:flex md:flex-col md:w-64 bg-gray-200">
           <SidebarStudio />
         </div>
         <div className="flex-grow overflow-auto p-4">

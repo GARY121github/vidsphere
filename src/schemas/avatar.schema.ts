@@ -15,7 +15,7 @@ function checkImageFileType(file: File) {
 // File Schema
 const avatar = z
   .any()
-  .refine((file) => file?.length !== 0, { message: "File is required" })
+  .refine((file) => file !== null, { message: "File is required" })
   .refine((file) => file.size < MAX_FILE_SIZE, { message: "Max size is 10MB." })
   .refine((file) => checkImageFileType(file), {
     message: "Only .jpg, .jpeg, .png, .gif formats are supported.",

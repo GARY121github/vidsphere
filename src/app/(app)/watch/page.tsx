@@ -18,12 +18,12 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Dialog from "@/components/dialog/dialog";
 
 export interface VideoQuality {
   link: string;
@@ -115,26 +115,12 @@ export default function WatchVideo() {
                 <div className="flex items-center gap-4">
                   <div>
                     {hasSubscribed ? (
-                      <AlertDialog>
-                        <AlertDialogTrigger className="bg-gray-700 p-3 rounded-3xl inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
-                          Unsubscribe
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="bg-gray-700 text-white border-none p-6 max-w-[19%]">
-                          <AlertDialogHeader>
-                            <AlertDialogTitle className="">
-                              Unsubscribe from {video.owner.username}
-                            </AlertDialogTitle>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter className="flex gap-5">
-                            <AlertDialogCancel className="text-black">
-                              Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction onClick={toggleSubscription}>
-                              Unsubscribe
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Dialog
+                        alert="Unsubscribe"
+                        title={`Unsubscribe from ${video.owner.username}`}
+                        action="Unsubscribe"
+                        actionHandler={toggleSubscription}
+                      />
                     ) : (
                       <Button
                         onClick={toggleSubscription}
