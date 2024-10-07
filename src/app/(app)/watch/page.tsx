@@ -117,6 +117,7 @@ export default function WatchVideo() {
                     {hasSubscribed ? (
                       <Dialog
                         alert="Unsubscribe"
+                        alertStyle="bg-gray-700 p-3 rounded-3xl inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 "
                         title={`Unsubscribe from ${video.owner.username}`}
                         action="Unsubscribe"
                         actionHandler={toggleSubscription}

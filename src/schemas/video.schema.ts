@@ -43,6 +43,11 @@ export const statusSchema = z
   )
   .default("uploading");
 
+export const videoDetailsSchema = z.object({
+  title: titleSchema,
+  description: descriptionSchema,
+});
+
 export const videoSchema = z.object({
   title: titleSchema,
   description: descriptionSchema,
@@ -101,7 +106,7 @@ export const videoFileSchema = z.object({
     ),
 });
 
-export const thumnailSchema = z.object({
+export const thumbnailSchema = z.object({
   thumbnail: z
     .any()
     .refine((file) => file?.length !== 0, "File is required")

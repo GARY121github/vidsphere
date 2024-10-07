@@ -22,7 +22,9 @@ export async function middleware(request: NextRequest) {
 
   if (
     !token &&
-    (url.pathname.startsWith("/studio") || url.pathname.startsWith("/@"))
+    (url.pathname.startsWith("/studio") ||
+      url.pathname.startsWith("/@") ||
+      url.pathname.startsWith("/home"))
   ) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }

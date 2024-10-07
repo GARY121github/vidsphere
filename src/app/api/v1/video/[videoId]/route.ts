@@ -111,7 +111,7 @@ export async function GET(
 }
 
 // ******************************************* //
-// *********** CHANGE VIDEOS META DATA *********** //
+// *********** CHANGE VIDEOS META DATA ******* //
 // ******************************************* //
 export async function PATCH(
   request: NextRequest,
@@ -195,7 +195,7 @@ export async function PATCH(
 // ******************************************* //
 
 export async function DELETE(
-  _: NextRequest,
+  request: NextRequest,
   { params }: { params: { videoId: string } }
 ) {
   await connectDB();
