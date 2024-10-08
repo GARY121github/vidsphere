@@ -28,6 +28,7 @@ export default async function Layout({
             <img
               src={channelData.coverImage}
               className="object-cover h-48 w-full rounded-lg"
+              alt="channel"
             />
             <div className="mt-10 flex gap-10 items-center">
               <Avatar className="h-60 w-60">
