@@ -34,45 +34,18 @@ export default function VideoCard({
   thumbnail,
   videoUrls,
 }: VideoGridItemProps) {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    if (videoRef.current == null) return;
-
-    if (isVideoPlaying) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
-  }, [isVideoPlaying]);
-
   return (
-    <div
-      className="flex flex-col gap-2"
-      onMouseEnter={() => setIsVideoPlaying(true)}
-      onMouseLeave={() => setIsVideoPlaying(false)}
-    >
+    <div className="flex flex-col gap-2">
       <Link href={`/watch?v=${_id}`} className="relative aspect-video">
         <img
           src={thumbnail}
-          className={`block w-full h-full object-cover transition-[border-radius] duration-200 ${
-            isVideoPlaying ? "rounded-none" : "rounded-xl"
-          }`}
+          className="block w-full h-full max-h-72 object-cover transition-[border-radius] duration-200 hover:rounded-xl"
         />
         <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
           <h1>{formatDuration(duration)}</h1>
         </div>
-        {/* <video
-          className={`block h-full object-cover absolute inset-0 transition-opacity duration-200 ${
-            isVideoPlaying ? "opacity-100 delay-200" : "opacity-0"
-          }`}
-          ref={videoRef}
-          muted
-          playsInline
-          src={videoUrls[0].quality}
-        /> */}
       </Link>
       <div className="flex gap-2">
         <Link href={`/@${owner.username}`} className="flex-shrink-0">
@@ -82,7 +55,10 @@ export default function VideoCard({
           <Link href={`/watch?v=${_id}`} className="font-bold">
             {title}
           </Link>
-          <Link href={`/@${owner._id}`} className="text-secondary-text text-sm">
+          <Link
+            href={`/@${owner.username}`}
+            className="text-secondary-text text-sm"
+          >
             {owner.username}
           </Link>
           <div className="text-secondary-text text-sm">

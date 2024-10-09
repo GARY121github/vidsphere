@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Input } from "../ui/input";
-import { Search, LogOut, X, VideoIcon } from "lucide-react";
+import { Search, LogOut, X, VideoIcon, Settings } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Video, FileVideo, Radio } from "lucide-react";
@@ -18,10 +18,12 @@ import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const user = session?.user;
+  const router = useRouter();
 
   const [inputVisible, setInputVisible] = useState(false);
   const handleXClick = (event: any) => {
@@ -92,6 +94,12 @@ const Navbar = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => router.push("/account")}
+                    className="flex justify-start gap-2 cursor-pointer"
+                  >
+                    <Settings /> <p>Settings</p>
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => signOut()}
                     className="flex justify-start gap-2 cursor-pointer"

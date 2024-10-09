@@ -1,23 +1,24 @@
 "use client";
 
 import React from "react";
-import { LogOut } from "lucide-react";
+import { LogOut, Settings, Youtube } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Video } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
 import { Skeleton } from "../ui/skeleton";
+import { useRouter } from "next/navigation";
 
 const StudioNavbar = () => {
   const { data: session } = useSession();
   const user = session?.user;
+  const router = useRouter();
 
   return (
     <div className="border-b-[2px] border-slate-600">
@@ -43,8 +44,21 @@ const StudioNavbar = () => {
                     <AvatarFallback>User</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuItem
+                    onClick={() => router.push("/home")}
+                    className="flex justify-start gap-2 cursor-pointer"
+                  >
+                    <Youtube /> <p>VidSphere</p>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => router.push("/account")}
+                    className="flex justify-start gap-2 cursor-pointer"
+                  >
+                    <Settings /> <p>Settings</p>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={() => signOut()}
