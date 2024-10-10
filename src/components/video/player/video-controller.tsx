@@ -14,6 +14,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { set } from "mongoose";
 
 interface VideoQuality {
   link: string;
@@ -52,8 +53,14 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
 
     const toggleMute = () => {
       if (videoRef.current) {
-        videoRef.current.muted = !videoRef.current.muted;
-        setIsMuted(videoRef.current.muted);
+        const newMuteState = !videoRef.current.muted;
+        videoRef.current.muted = newMuteState;
+        setIsMuted(newMuteState);
+        if (newMuteState) {
+          setVolume(0);
+        } else {
+          setVolume(videoRef.current.volume);
+        }
       }
     };
 
@@ -126,7 +133,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
             {isPlaying ? (
               <Pause size={24} strokeWidth={3} />
             ) : (
-              <Play size={24} strokeWidth={6} />
+              <Play size={24} strokeWidth={3} />
             )}
           </button>
 
@@ -143,7 +150,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
               min="0"
               max="1"
               step="0.1"
-              value={volume}
+              value={isMuted ? 0 : volume}
               onChange={handleVolumeChange}
               className="w-24 cursor-pointer "
             />

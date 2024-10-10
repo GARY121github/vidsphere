@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <SidebarDesktop />
         </div>
         <div className="flex-grow overflow-auto p-4">
-          <div className="grid gap-4 grid-cols-1 px-8">{children}</div>
+          <div className="px-8">{children}</div>
         </div>
       </div>
     </div>

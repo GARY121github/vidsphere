@@ -8,7 +8,7 @@ export default async function HomePage() {
   const videos: Array<VideoGridItemProps> | undefined = response?.data?.videos;
 
   return (
-    <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(400px,1fr))]">
+    <div className="grid gap-4 grid-cols-1 xs:grid-cols-2 xl:grid-cols-3">
       {videos && videos.length > 0 ? (
         videos.map((video: any) => (
           <VideoCard key={video._id} {...video} duration={205} views={200} />
