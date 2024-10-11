@@ -17,7 +17,7 @@ export interface User extends Document {
   forgotPasswordToken?: string;
   forgotPasswordTokenExpiry?: Date;
   avatar?: string;
-  coverImage?: string;
+  coverImage: string;
   refreshToken?: string;
   watchHistory?: WatchHistoryItem[];
   googleId?: string;

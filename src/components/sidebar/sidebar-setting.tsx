@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
-import { desktopItems } from "./sidebar-items";
+import { settingItems } from "./sidebar-items";
 
-export default function SidebarDesktop() {
+export default function SidebarSetting() {
   const pathname = usePathname();
 
   return (
@@ -13,7 +13,7 @@ export default function SidebarDesktop() {
       <div className="h-full px-3 py-4">
         <div className="mt-5">
           <div className="flex flex-col gap-1 w-full">
-            {desktopItems.map((item, index) => (
+            {settingItems.map((item, index) => (
               <Link key={index} href={item.href} passHref>
                 <Button
                   variant={pathname === item.href ? "secondary" : "ghost"}

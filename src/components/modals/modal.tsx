@@ -11,6 +11,7 @@ import React from "react";
 import { LucideIcon } from "lucide-react";
 
 interface ModalProps {
+  triggerChildren?: React.ReactNode;
   title?: string;
   description?: string;
   children: React.ReactNode;
@@ -23,6 +24,7 @@ interface ModalProps {
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   (
     {
+      triggerChildren,
       title,
       description,
       children,
@@ -36,10 +38,13 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     return (
       <Dialog defaultOpen={defaultOpen}>
         <DialogTrigger asChild className={`${triggerClassName}`}>
-          <Button variant="secondary">
-            {Icon && <Icon className="mr-2" />}
-            {title && title}
-          </Button>
+          {triggerChildren && triggerChildren}
+          {!triggerChildren && (
+            <Button variant="secondary">
+              {Icon && <Icon className="mr-2" />}
+              {title && title}
+            </Button>
+          )}
         </DialogTrigger>
         <DialogContent className={`bg-white text-black ${className}`} ref={ref}>
           <DialogHeader>

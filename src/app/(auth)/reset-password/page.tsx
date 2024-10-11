@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-import { changePasswordSchema } from "@/schemas/changePassword.schema";
+import { resetPasswordSchema } from "@/schemas/resetPassword.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -28,8 +28,8 @@ export default function ResetPassword({
   searchParams: { token: string };
 }) {
   const { token } = searchParams;
-  const form = useForm<z.infer<typeof changePasswordSchema>>({
-    resolver: zodResolver(changePasswordSchema),
+  const form = useForm<z.infer<typeof resetPasswordSchema>>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       password: "",
       token: token,
@@ -41,7 +41,7 @@ export default function ResetPassword({
   const router = useRouter();
 
   // submit form
-  async function onSubmit(values: z.infer<typeof changePasswordSchema>) {
+  async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
     setIsLoading(true);
     try {
       await axios.post<ApiResponse>("/api/v1/user/reset-password", {

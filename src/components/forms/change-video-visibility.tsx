@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
+import ApiError from "@/utils/ApiError";
 
 // Define schema for form validation using Zod
 const FormSchema = z.object({
@@ -58,10 +59,13 @@ export function ChangeVideoVisibility({
       });
       setReloadVideos((prev) => !prev);
     } catch (error: any) {
+      const axiosError = error as AxiosError<ApiError>;
+      const errorMessage =
+        axiosError?.response?.data?.message ?? "Error while signing up";
       toast({
         variant: "destructive",
         title: "Error while toggling the visibility of the video",
-        description: error.message,
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);

@@ -10,6 +10,7 @@ import {
   ListPlus,
   CirclePlus,
   SquarePlay,
+  Fingerprint,
 } from "lucide-react";
 
 export interface SidebarItem {
@@ -18,7 +19,7 @@ export interface SidebarItem {
   icon?: LucideIcon;
 }
 
-export const sidebarItems: SidebarItem[] = [
+export const desktopItems: SidebarItem[] = [
   { label: "Home", href: "/home", icon: Home },
   { label: "Liked Videos", href: "/", icon: ThumbsUp },
   { label: "History", href: "/history", icon: Timer },
@@ -27,15 +28,14 @@ export const sidebarItems: SidebarItem[] = [
   { label: "Subscribers", href: "/subscribers", icon: User },
 ];
 
-export interface StudioItems {
-  label: string;
-  href: string;
-  icon?: LucideIcon;
-}
-
-export const studioItems: StudioItems[] = [
+export const studioItems: SidebarItem[] = [
   { label: "Dashboard", href: "/studio/channel", icon: LayoutDashboard },
   { label: "Content", href: "/studio/channel/content", icon: SquarePlay },
   { label: "Playlist", href: "/studio/channel/playlist", icon: ListPlus },
   { label: "Post", href: "/studio/channel/post", icon: CirclePlus },
+];
+
+export const settingItems: SidebarItem[] = [
+  { label: "Profile", href: "/setting/profile", icon: User },
+  { label: "Security", href: "/setting/security", icon: Fingerprint },
 ];

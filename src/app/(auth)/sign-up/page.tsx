@@ -19,7 +19,7 @@ import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useDebounceCallback } from "usehooks-ts";
 import ApiResponse from "@/utils/ApiResponse";
 import ApiError from "@/utils/ApiError";
@@ -40,10 +40,16 @@ export default function SignUpPage() {
   const [isCheckingAvailableUsername, setIsCheckingAvailableUsername] =
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Track password visibility
   const { toast } = useToast();
   const router = useRouter();
 
   const debounce = useDebounceCallback(setAvailableUsername, 500);
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   // api call to check if username is available or not
   async function checkAvailableUsername() {
@@ -99,116 +105,132 @@ export default function SignUpPage() {
   }
 
   return (
-    <>
-      <div className="max-w-md w-full p-6">
-        <p className="text-sm font-semibold mb-6 text-white text-left">
-          Already a member?{" "}
-          <Link href={"/sign-in"} className="text-blue-600 underline">
-            Login
-          </Link>
-        </p>
-        <h1 className="text-2xl font-semibold mb-6 text-white text-left">
-          Register your Account
-        </h1>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
+    <div className="max-w-md w-full p-6">
+      <p className="text-sm font-semibold mb-6 text-white text-left">
+        Already a member?{" "}
+        <Link href={"/sign-in"} className="text-blue-600 underline">
+          Login
+        </Link>
+      </p>
+      <h1 className="text-2xl font-semibold mb-6 text-white text-left">
+        Register your Account
+      </h1>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input
+                    className="text-black"
+                    placeholder="Enter your username"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      debounce(e.target.value);
+                    }}
+                  />
+                </FormControl>
+                {isCheckingAvailableUsername && (
+                  <Loader2 className="animate-spin" />
+                )}
+                <p
+                  className={`text-sm ${
+                    availableUsernameMessage === "Username is available"
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {availableUsernameMessage}
+                </p>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    className="text-black"
+                    placeholder="Enter your email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>FullName</FormLabel>
+                <FormControl>
+                  <Input
+                    className="text-black"
+                    placeholder="Enter your full name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <div className="relative">
                     <Input
                       className="text-black"
-                      placeholder="Enter your username"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        debounce(e.target.value);
-                      }}
-                    />
-                  </FormControl>
-                  {isCheckingAvailableUsername && (
-                    <Loader2 className="animate-spin" />
-                  )}
-                  <p
-                    className={`text-sm ${availableUsernameMessage === "Username is avaliable" ? "text-green-500" : "text-red-500"}`}
-                  >
-                    {availableUsernameMessage}
-                  </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="text-black"
-                      placeholder="Enter your email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="fullName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>FullName</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="text-black"
-                      placeholder="Enter your fullname"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="text-black"
-                      type="password"
+                      type={showPassword ? "text" : "password"} // Toggle input type
                       placeholder="Enter your password"
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="py-4 px-8 bg-blue-600 hover:bg-blue-700 w-full"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
-                </>
-              ) : (
-                "Sign Up"
-              )}
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-2 top-0 p-2"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="py-4 px-8 bg-blue-600 hover:bg-blue-700 w-full"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> please wait
+              </>
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }

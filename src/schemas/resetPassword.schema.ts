@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { emailSchema } from "./signUp.schema";
+import passwordSchema from "@/schemas/common/password.schema";
 
 export const resetPasswordSchema = z.object({
-  email: emailSchema,
+  token: z.string(),
+  password: passwordSchema,
 });
