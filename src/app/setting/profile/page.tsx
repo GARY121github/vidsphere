@@ -1,11 +1,9 @@
 "use client";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { User } from "@/models/user.model";
 import { useToast } from "@/components/ui/use-toast";
 import { Camera, Loader2 } from "lucide-react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
@@ -16,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import ChangeAvatarForm from "@/components/forms/change-avatar-form";
 import UpdateUserProfile from "@/components/forms/update-user-profile";
+import ApiError from "@/utils/ApiError";
 
 export default function UserProfile() {
   const [user, setUser] = useState<User | null>(null);
@@ -29,9 +28,13 @@ export default function UserProfile() {
       const response = await axios.get("/api/v1/user/current-user");
       setUser(response.data.data);
     } catch (error: any) {
+      const axiosError = error as AxiosError<ApiError>;
+      const errorMessage =
+        axiosError?.response?.data?.message ?? "Error while signing up";
       toast({
         variant: "destructive",
-        title: "Somthing went wrong while fetching the user details",
+        title: "Error while changing the password",
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);

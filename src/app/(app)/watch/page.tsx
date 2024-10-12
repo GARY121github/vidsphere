@@ -98,7 +98,7 @@ export default function WatchVideo() {
             : LikeType.none,
       });
     } catch (error: any) {
-      const axiosError = error as AxiosError<ApiResponse>;
+      const axiosError = error as AxiosError<ApiError>;
       const errorMessage = axiosError.response?.data.message;
       toast({
         title: "fetch video failed!",

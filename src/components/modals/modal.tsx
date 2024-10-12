@@ -38,8 +38,9 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     return (
       <Dialog defaultOpen={defaultOpen}>
         <DialogTrigger asChild className={`${triggerClassName}`}>
-          {triggerChildren && triggerChildren}
-          {!triggerChildren && (
+          {triggerChildren ? (
+            triggerChildren
+          ) : (
             <Button variant="secondary">
               {Icon && <Icon className="mr-2" />}
               {title && title}
