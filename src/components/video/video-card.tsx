@@ -35,7 +35,7 @@ export default function VideoCard({
   thumbnail,
   videoUrls,
 }: VideoGridItemProps) {
-  const videoRef = useRef<HTMLVideoElement>(videoUrls[0].link);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   return (
     <div className="flex flex-col gap-2">
