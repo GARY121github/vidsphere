@@ -9,7 +9,10 @@ const nextConfig = {
         hostname: "images.unsplash.com",
       },
       {
-        hostname: "dlqkcl6dprptk.cloudfront.net",
+        hostname: "d3rawx72iic8hc.cloudfront.net",
+      },
+      {
+        hostname: "img.freepik.com",
       },
     ],
   },

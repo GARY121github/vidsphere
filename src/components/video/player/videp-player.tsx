@@ -92,7 +92,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         ref={videoRef}
         onClick={togglePlayPause} // Toggle play/pause on video click
         className="w-full rounded-lg"
-        autoPlay
+        // autoPlay
       />
       {/* Pass videoRef and other states to the controller */}
       <VideoController
