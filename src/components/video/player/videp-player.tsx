@@ -16,15 +16,10 @@ interface VideoPlayerProps {
     videoUrls: VideoQuality[];
     thumbnail: string;
   };
-  width?: string;
-  height?: string;
+  className?: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({
-  video,
-  width = "600",
-  height = "500",
-}) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, className }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hlsInstance, setHlsInstance] = useState<Hls | null>(null);
   const [selectedQuality, setSelectedQuality] = useState<string>(
@@ -86,14 +81,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   return (
     <div
-      className={`relative group overflow-hidden w-[${width}] h-[${height}] max-w-[60vw] rounded-lg`}
+      className={`relative group overflow-hidden w-full md:max-w-[60vw] rounded-lg ${className}`}
     >
       <video
         ref={videoRef}
         onClick={togglePlayPause} // Toggle play/pause on video click
         className="w-full rounded-lg"
-        // autoPlay
       />
+
       {/* Pass videoRef and other states to the controller */}
       <VideoController
         videoRef={videoRef}

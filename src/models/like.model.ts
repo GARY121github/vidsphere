@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+
 interface Like extends Document {
   video: Schema.Types.ObjectId;
   comment: Schema.Types.ObjectId;
@@ -35,8 +35,6 @@ const likeSchema = new Schema<Like>(
   },
   { timestamps: true }
 );
-
-likeSchema.plugin(mongooseAggregatePaginate);
 
 const LikeModel =
   (mongoose.models.Like as mongoose.Model<Like>) ||

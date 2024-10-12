@@ -64,6 +64,14 @@ export async function GET(
         },
       },
       {
+        $lookup: {
+          from: "likes", // Assuming your likes collection is named 'likes'
+          localField: "_id", // Video _id
+          foreignField: "video", // Refers to 'video' field in 'Like' schema
+          as: "likes",
+        },
+      },
+      {
         $addFields: {
           subscriberCount: { $size: "$subscribers" }, // Count the subscribers
           isSubscribed: {
@@ -71,6 +79,44 @@ export async function GET(
               new mongoose.Types.ObjectId(user._id),
               "$subscribers.subscriber",
             ], // Check if the current user is subscribed
+          },
+          likeCount: {
+            $size: "$likes", // Count total likes on the video
+          },
+          userLikeStatus: {
+            $arrayElemAt: [
+              {
+                $filter: {
+                  input: "$likes",
+                  as: "like",
+                  cond: {
+                    $eq: [
+                      "$$like.likedBy",
+                      new mongoose.Types.ObjectId(user._id),
+                    ],
+                  },
+                },
+              },
+              0,
+            ],
+          },
+        },
+      },
+      {
+        $addFields: {
+          hasLiked: {
+            $cond: {
+              if: { $eq: ["$userLikeStatus.likeType", "like"] },
+              then: true,
+              else: false,
+            },
+          },
+          hasDisliked: {
+            $cond: {
+              if: { $eq: ["$userLikeStatus.likeType", "dislike"] },
+              then: true,
+              else: false,
+            },
           },
         },
       },
@@ -87,6 +133,9 @@ export async function GET(
           "owner._id": 1,
           subscriberCount: 1,
           isSubscribed: 1,
+          likeCount: 1, // Total likes on the video
+          hasLiked: 1, // Whether the user has liked the video
+          hasDisliked: 1, // Whether the user has disliked the video
         },
       },
     ]);

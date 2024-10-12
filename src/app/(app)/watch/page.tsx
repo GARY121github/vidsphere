@@ -37,6 +37,9 @@ interface Video {
     _id: string;
   };
   status: string;
+  hasDisliked: boolean;
+  hasLiked: boolean;
+  likeCount: number;
 }
 
 interface Comment {
@@ -55,12 +58,11 @@ interface Comment {
 enum LikeType {
   like = "like",
   dislike = "dislike",
-  undefined = "undefined",
+  none = "none",
 }
 
 interface Like {
   likeCount: number;
-  dislikeCount: number;
   liked: LikeType;
 }
 
@@ -73,8 +75,7 @@ export default function WatchVideo() {
   const [subscribers, setSubscribers] = useState(0);
   const [videoLikes, setVideoLikes] = useState<Like>({
     likeCount: 0,
-    dislikeCount: 0,
-    liked: LikeType.undefined,
+    liked: LikeType.none,
   });
   const [comments, setComments] = useState<Array<Comment>>([]);
   const [isCommentSectionHidden, setIsCommentSectionHidden] = useState(true);
@@ -83,18 +84,20 @@ export default function WatchVideo() {
   const getVideo = async () => {
     try {
       const response = await axios.get<ApiResponse>(`/api/v1/video/${videoId}`);
-      if (response.status !== 200) {
-        toast({
-          title: "fetch video failed!",
-          description: response.data.message,
-          variant: "destructive",
-        });
-      } else {
-        setVideo(response.data.data);
-        setSubscribers(response.data.data.subscriberCount);
-        setHasSubscribed(response.data.data.isSubscribed);
-      }
-    } catch (error) {
+
+      setVideo(response.data.data);
+      setSubscribers(response.data.data.subscriberCount);
+      setHasSubscribed(response.data.data.isSubscribed);
+
+      setVideoLikes({
+        likeCount: response.data.data.likeCount,
+        liked: response.data.data.hasLiked
+          ? LikeType.like
+          : response.data.data.hasDisliked
+            ? LikeType.dislike
+            : LikeType.none,
+      });
+    } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
       toast({
@@ -114,25 +117,9 @@ export default function WatchVideo() {
       title: `${hasSubscribed ? "Unsubscribed Successfully" : "Subscribed Successfully"}`,
     });
     try {
-      const response = await axios.put<ApiResponse>(
+      await axios.put<ApiResponse>(
         `/api/v1/subscription/c/${video?.owner._id}`
       );
-
-      if (response.status !== 200) {
-        toast({
-          title: "Something went wrong while toggeling the subscrpition",
-          description: response.data.message,
-          variant: "destructive",
-        });
-        setSubscribers((prev) => (hasSubscribed ? prev + 1 : prev - 1));
-        setHasSubscribed((prev) => !prev);
-      } else {
-        toast({
-          title: "Subscrpition toggled successfully",
-          description: response.data.message,
-          variant: "success",
-        });
-      }
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
@@ -148,53 +135,18 @@ export default function WatchVideo() {
     }
   };
 
-  const fetchVideoLikes = async () => {
-    try {
-      const response = await axios.get<ApiResponse>(
-        `/api/v1/like?entityType=video&entityId=${videoId}`
-      );
-      if (response.status !== 200) {
-        toast({
-          title: "fetch video likes failed!",
-          description: response.data.message,
-          variant: "destructive",
-        });
-      } else {
-        setVideoLikes({
-          likeCount: response.data.data.likeCount,
-          dislikeCount: response.data.data.dislikeCount,
-          liked: response.data.data.isLikedByCurrentUser
-            ? LikeType.like
-            : response.data.data.isDislikedByCurrentUser
-              ? LikeType.dislike
-              : LikeType.undefined,
-        });
-      }
-    } catch (error: any) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      const errorMessage = axiosError.response?.data.message;
-      toast({
-        title: "fetch video likes failed!",
-        description:
-          errorMessage || "Something went wrong while fetching video likes",
-        variant: "destructive",
-      });
-    }
-  };
-
   const toggleVideoLike = async () => {
     setVideoLikes((prev) => {
       if (prev.liked === LikeType.like) {
         return {
           ...prev,
           likeCount: prev.likeCount - 1,
-          liked: LikeType.undefined,
+          liked: LikeType.none,
         };
       } else if (prev.liked === LikeType.dislike) {
         return {
           ...prev,
           likeCount: prev.likeCount + 1,
-          dislikeCount: prev.dislikeCount - 1,
           liked: LikeType.like,
         };
       } else {
@@ -205,19 +157,13 @@ export default function WatchVideo() {
         };
       }
     });
+    toast({
+      title: `${videoLikes.liked === "like" ? "Video Unliked" : "Video Liked"}`,
+    });
     try {
-      const response = await axios.post<ApiResponse>(
+      await axios.post<ApiResponse>(
         `/api/v1/like?entityType=video&entityId=${videoId}&likeType=like`
       );
-      if (response.status !== 200) {
-        throw new ApiError(response.status, response.data.message);
-      } else {
-        toast({
-          title: "video liked!",
-          description: response.data.message,
-          variant: "success",
-        });
-      }
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
@@ -232,14 +178,13 @@ export default function WatchVideo() {
           return {
             ...prev,
             likeCount: prev.likeCount - 1,
-            liked: LikeType.undefined,
+            liked: LikeType.none,
           };
         } else if (prev.liked === LikeType.dislike) {
           return {
             ...prev,
             likeCount: prev.likeCount - 1,
-            dislikeCount: prev.dislikeCount + 1,
-            liked: LikeType.undefined,
+            liked: LikeType.none,
           };
         } else {
           return prev;
@@ -253,37 +198,25 @@ export default function WatchVideo() {
       if (prev.liked === LikeType.dislike) {
         return {
           ...prev,
-          dislikeCount: prev.dislikeCount - 1,
-          liked: LikeType.undefined,
+          liked: LikeType.none,
         };
       } else if (prev.liked === LikeType.like) {
         return {
           ...prev,
           likeCount: prev.likeCount - 1,
-          dislikeCount: prev.dislikeCount + 1,
           liked: LikeType.dislike,
         };
       } else {
         return {
           ...prev,
-          dislikeCount: prev.dislikeCount + 1,
           liked: LikeType.dislike,
         };
       }
     });
     try {
-      const response = await axios.post<ApiResponse>(
+      await axios.post<ApiResponse>(
         `/api/v1/like?entityType=video&entityId=${videoId}&likeType=dislike`
       );
-      if (response.status !== 200) {
-        throw new ApiError(response.status, response.data.message);
-      } else {
-        toast({
-          title: "video disliked!",
-          description: response.data.message,
-          variant: "success",
-        });
-      }
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
@@ -297,14 +230,12 @@ export default function WatchVideo() {
         if (prev.liked === LikeType.dislike) {
           return {
             ...prev,
-            dislikeCount: prev.dislikeCount - 1,
-            liked: LikeType.undefined,
+            liked: LikeType.none,
           };
         } else if (prev.liked === LikeType.like) {
           return {
             ...prev,
             likeCount: prev.likeCount + 1,
-            dislikeCount: prev.dislikeCount - 1,
             liked: LikeType.dislike,
           };
         } else {
@@ -319,16 +250,9 @@ export default function WatchVideo() {
       const response = await axios.get<ApiResponse>(
         `/api/v1/comments?videoId=${videoId}&page=${page}`
       );
-      if (response.status !== 200) {
-        toast({
-          title: "fetch comments failed!",
-          description: response.data.message,
-          variant: "destructive",
-        });
-      } else {
-        setComments(response.data.data);
-        setIsCommentSectionHidden(false);
-      }
+
+      setComments(response.data.data);
+      setIsCommentSectionHidden(false);
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
@@ -347,19 +271,11 @@ export default function WatchVideo() {
         `/api/v1/comments?videoId=${videoId}`,
         { commentText: content }
       );
-      if (response.status !== 201) {
-        toast({
-          title: "add comment failed!",
-          description: response.data.message,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "comment added!",
-          description: response.data.message,
-          variant: "success",
-        });
-      }
+
+      toast({
+        title: "comment added!",
+        description: response.data.message,
+      });
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
@@ -377,19 +293,12 @@ export default function WatchVideo() {
       const response = await axios.delete<ApiResponse>(
         `/api/v1/comments/${commentId}`
       );
-      if (response.status !== 200) {
-        toast({
-          title: "delete comment failed!",
-          description: response.data.message,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "comment deleted!",
-          description: response.data.message,
-          variant: "success",
-        });
-      }
+
+      toast({
+        title: "comment deleted!",
+        description: response.data.message,
+        variant: "success",
+      });
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
@@ -404,31 +313,30 @@ export default function WatchVideo() {
 
   useEffect(() => {
     getVideo();
-    fetchVideoLikes();
-  }, []);
+  }, [videoId]);
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      <div className="col-span-2">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="md:col-span-2">
         {video ? (
           <div className="flex flex-col gap-2">
-            <VideoPlayer video={video} width="800" height="450" />
+            <VideoPlayer video={video} />
             <h1 className="text-3xl font-extrabold mt-5">{video.title}</h1>
             <div className="mt-4">
-              <div className="flex justify-between">
+              <div className="flex justify-between flex-wrap">
                 <Link href={`@${video.owner.username}`} className="flex gap-4">
-                  <Avatar className="h-12 w-12">
+                  <Avatar className="h-8 w-8 md:h-12 md:w-12">
                     <AvatarImage src={video.owner.avatar} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="text-xl font-semibold capitalize">
+                    <h2 className="text-sm md:text-xl font-semibold capitalize">
                       {video.owner.fullName}
                     </h2>
-                    <p>{subscribers} subscribers</p>
+                    <span>{subscribers} subscribers</span>
                   </div>
                 </Link>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-wrap">
                   <div>
                     {hasSubscribed ? (
                       <Dialog
@@ -464,7 +372,6 @@ export default function WatchVideo() {
                     <span className="text-xs">{videoLikes.likeCount}</span>
                     <Separator orientation="vertical" className="h-7" />
 
-                    <span className="text-xs">{videoLikes.dislikeCount}</span>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -511,7 +418,7 @@ export default function WatchVideo() {
           <VideoPlayerSkeleton />
         )}
       </div>
-      <div className="">
+      <div className="col-span-1">
         <h1 className="text-4xl font-semibold">
           Recommended Video Section: comming soon
         </h1>
