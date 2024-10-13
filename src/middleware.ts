@@ -30,7 +30,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  if (token && url.pathname.startsWith("/studio")) {
+  if (
+    token &&
+    url.pathname.startsWith("/studio") &&
+    url.pathname.split("/").length >= 4
+  ) {
     const userId = url.pathname.split("/")[3];
     if (userId !== token._id) {
       return NextResponse.redirect(
