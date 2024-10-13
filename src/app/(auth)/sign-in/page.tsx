@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { signIn } from "next-auth/react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react"; // Importing the icons
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -32,6 +32,12 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   async function onSubmit(values: z.infer<typeof signInSchema>) {
     setIsLoading(true);
@@ -62,6 +68,7 @@ export default function SignInPage() {
     }
     setIsLoading(false);
   }
+
   return (
     <>
       <div className="max-w-md w-full p-6">
@@ -116,12 +123,26 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="password"
-                      type="password"
-                      className="text-black"
-                      {...field}
-                    />
+                    <div className="relative">
+                      <Input
+                        className="text-black"
+                        type={showPassword ? "text" : "password"} // Toggle input type
+                        placeholder="Enter your password"
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={togglePasswordVisibility}
+                        className="absolute right-2 top-0 p-2"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
