@@ -40,12 +40,10 @@ export default function VideoCard({
   return (
     <div className="flex flex-col gap-2">
       <Link href={`/watch?v=${_id}`} className="relative aspect-video">
-        <Image
+        <img
           src={thumbnail}
           alt="thumbnail"
           className="block w-full h-full max-h-72 object-cover transition-[border-radius] duration-200 hover:rounded-xl"
-          height={72}
-          width={100}
         />
         <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
           <h1>{formatDuration(duration)}</h1>

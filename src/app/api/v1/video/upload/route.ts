@@ -80,8 +80,6 @@ export async function POST(request: NextRequest) {
 
   const { user } = session;
 
-  console.log(user);
-
   try {
     const { uniqueID } = await request.json();
 
