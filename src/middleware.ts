@@ -24,9 +24,23 @@ export async function middleware(request: NextRequest) {
     !token &&
     (url.pathname.startsWith("/studio") ||
       url.pathname.startsWith("/@") ||
-      url.pathname.startsWith("/home"))
+      url.pathname.startsWith("/home") ||
+      url.pathname.startsWith("/setting"))
   ) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
+  }
+
+  if (
+    token &&
+    url.pathname.startsWith("/studio") &&
+    url.pathname.split("/").length >= 4
+  ) {
+    const userId = url.pathname.split("/")[3];
+    if (userId !== token._id) {
+      return NextResponse.redirect(
+        new URL("/studio/invalid-user", request.url)
+      );
+    }
   }
 
   return NextResponse.next();
@@ -38,6 +52,7 @@ export const config = {
     "/:path*",
     "/studio/:path*",
     "/home/:path*",
+    "/setting/:path*",
     "/sign-in",
     "/sign-up",
     "/verify/:path*",

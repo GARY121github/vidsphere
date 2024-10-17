@@ -4,6 +4,7 @@ import { formatDuration } from "../../utils/formatDuration";
 import { formatTimeAgo } from "@/utils/formatTimeAgo";
 import Link from "next/link";
 import { VideoQuality } from "@/models/video.model";
+import Image from "next/image";
 
 export interface VideoGridItemProps {
   _id: string;
@@ -34,13 +35,14 @@ export default function VideoCard({
   thumbnail,
   videoUrls,
 }: VideoGridItemProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   return (
     <div className="flex flex-col gap-2">
       <Link href={`/watch?v=${_id}`} className="relative aspect-video">
         <img
           src={thumbnail}
+          alt="thumbnail"
           className="block w-full h-full max-h-72 object-cover transition-[border-radius] duration-200 hover:rounded-xl"
         />
         <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
@@ -49,7 +51,13 @@ export default function VideoCard({
       </Link>
       <div className="flex gap-2">
         <Link href={`/@${owner.username}`} className="flex-shrink-0">
-          <img className="w-12 h-12 rounded-full" src={owner.avatar} />
+          <Image
+            className="flex-0 rounded-full"
+            width={48}
+            height={48}
+            src={owner.avatar}
+            alt={owner.username}
+          />
         </Link>
         <div className="flex flex-col">
           <Link href={`/watch?v=${_id}`} className="font-bold">

@@ -22,7 +22,8 @@ import UpdateVideoDetails from "../modals/update-video-details";
 import { Loader2, Trash2 } from "lucide-react";
 import Dialog from "@/components/dialog/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import ApiError from "@/utils/ApiError";
 
 export type Video = {
   _id: string;
@@ -59,10 +60,13 @@ export const columns = (
             prevVideos.filter((video) => video._id !== videoId)
           );
         } catch (error: any) {
+          const axiosError = error as AxiosError<ApiError>;
+          const errorMessage =
+            axiosError?.response?.data?.message ?? "Error while signing up";
           toast({
             variant: "destructive",
             title: "Error while deleting the video",
-            description: error.message,
+            description: errorMessage,
           });
         }
       }
@@ -226,7 +230,7 @@ export default function ChannelVideoDetailsTable({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center">
+              <TableCell colSpan={7} className="h-24 text-center">
                 {isLoading ? (
                   <Loader2 className="animate-spin w-16 h-16 mx-auto" />
                 ) : (

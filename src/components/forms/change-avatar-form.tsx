@@ -21,7 +21,11 @@ import ApiError from "@/utils/ApiError";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
 
-export default function ChangeAvatarForm() {
+export default function ChangeAvatarForm({
+  setReloadInformation,
+}: {
+  setReloadInformation: React.Dispatch<React.SetStateAction<Boolean>>;
+}) {
   const [isUploading, setIsUploading] = useState(false);
   const [file, setFile] = useState<File | undefined>(undefined);
   const [fileEnter, setFileEnter] = useState(false);
@@ -60,6 +64,8 @@ export default function ChangeAvatarForm() {
       toast({
         title: "Avatar uploaded successfully",
       });
+
+      setReloadInformation((prev) => !prev);
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiError>;
       const errorMessage =

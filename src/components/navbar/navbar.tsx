@@ -95,7 +95,7 @@ const Navbar = () => {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => router.push("/account")}
+                    onClick={() => router.push("/setting/profile")}
                     className="flex justify-start gap-2 cursor-pointer"
                   >
                     <Settings /> <p>Settings</p>

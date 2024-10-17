@@ -111,7 +111,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
     return (
       <div
         ref={ref}
-        className={`absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between text-white transition-opacity ${
+        className={`p-2 flex items-center justify-between text-white transition-opacity ${isFullscreen ? "" : "absolute bottom-0 left-0 right-0"} ${
           isPlaying ? "opacity-0 group-hover:opacity-100 " : "opacity-100"
         }`}
       >
@@ -130,7 +130,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
             className="mx-1 hover:opacity-80 focus:outline-none"
           >
             {isPlaying ? (
-              <Pause size={24} strokeWidth={3} />
+              <Pause size={24} fill="white" />
             ) : (
               <Play size={24} strokeWidth={3} />
             )}
@@ -156,22 +156,20 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
           </div>
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex flex-shrink-0 relative justify-between items-center">
           {/* Quality Selection */}
-          <div className="bg-transparent">
-            <Select value={selectedQuality} onValueChange={onQualityChange}>
-              <SelectTrigger className="text-black">
-                <Settings />
-              </SelectTrigger>
-              <SelectContent>
-                {video.videoUrls.map((quality) => (
-                  <SelectItem key={quality.link} value={quality.link}>
-                    {quality.quality}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <Select value={selectedQuality} onValueChange={onQualityChange}>
+            <SelectTrigger className="border-none focus:ring-0 focus:ring-offset-0 bg-transparent">
+              <Settings />
+            </SelectTrigger>
+            <SelectContent>
+              {video.videoUrls.map((quality) => (
+                <SelectItem key={quality.link} value={quality.link}>
+                  {quality.quality}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           {/* Fullscreen Toggle */}
           <button
