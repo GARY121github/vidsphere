@@ -52,8 +52,14 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
 
     const toggleMute = () => {
       if (videoRef.current) {
-        videoRef.current.muted = !videoRef.current.muted;
-        setIsMuted(videoRef.current.muted);
+        const newMuteState = !videoRef.current.muted;
+        videoRef.current.muted = newMuteState;
+        setIsMuted(newMuteState);
+        if (newMuteState) {
+          setVolume(0);
+        } else {
+          setVolume(videoRef.current.volume);
+        }
       }
     };
 
@@ -105,7 +111,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
     return (
       <div
         ref={ref}
-        className={`p-2 flex items-center justify-between text-white transition-opacity ${isFullscreen ? "" : "absolute bottom-0 left-0 right-0"} ${
+        className={`p-2 flex items-center justify-between text-white transition-opacity ${isFullscreen ? "absolute bottom-0 left-0 right-0" : "absolute bottom-0 left-0 right-0"} ${
           isPlaying ? "opacity-0 group-hover:opacity-100 " : "opacity-100"
         }`}
       >
@@ -126,7 +132,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
             {isPlaying ? (
               <Pause size={24} fill="white" />
             ) : (
-              <Play size={24} fill="white" />
+              <Play size={24} strokeWidth={3} />
             )}
           </button>
 
@@ -143,7 +149,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
               min="0"
               max="1"
               step="0.1"
-              value={volume}
+              value={isMuted ? 0 : volume}
               onChange={handleVolumeChange}
               className="w-24 cursor-pointer "
             />
