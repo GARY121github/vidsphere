@@ -9,7 +9,7 @@ export default function SidebarDesktop() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-[270px] max-w-xs left-0 top-0 z-40 bg-black h-screen border-r-[1px] border-slate-600">
+    <aside className="max-w-xs left-0 top-0 z-40 bg-black h-full border-r-[1px] border-slate-600">
       <div className="h-full px-3 py-4">
         <div className="mt-5">
           <div className="flex flex-col gap-1 w-full">

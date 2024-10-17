@@ -21,7 +21,7 @@ export interface SidebarItem {
 
 export const desktopItems: SidebarItem[] = [
   { label: "Home", href: "/home", icon: Home },
-  { label: "Liked Videos", href: "/", icon: ThumbsUp },
+  { label: "Liked Videos", href: "/like", icon: ThumbsUp },
   { label: "History", href: "/history", icon: Timer },
   { label: "My Content", href: "/my-content", icon: Video },
   { label: "Collection", href: "/collections", icon: Folder },

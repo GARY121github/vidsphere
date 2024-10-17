@@ -40,9 +40,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="border-b-[2px] border-slate-600">
+    <div className="border-b-[2px] border-slate-600 h-20 bg-black">
       <div
-        className={`${inputVisible ? "hidden" : "flex justify-between items-center py-2  max-m-sm gap-4 mx-4"}`}
+        className={`${inputVisible ? "hidden" : "h-full flex justify-between items-center py-2  max-m-sm gap-4 mx-4"}`}
       >
         <div className={`flex justify-center items-center`}>
           <Image

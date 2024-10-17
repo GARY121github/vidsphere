@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { formatDuration } from "../../utils/formatDuration";
 import { formatTimeAgo } from "@/utils/formatTimeAgo";
 import Link from "next/link";
@@ -44,6 +44,8 @@ export default function VideoCard({
           src={thumbnail}
           alt="thumbnail"
           className="block w-full h-full max-h-72 object-cover transition-[border-radius] duration-200 hover:rounded-xl"
+          width={640}
+          height={360}
         />
         <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
           <h1>{formatDuration(duration)}</h1>
