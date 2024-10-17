@@ -43,7 +43,7 @@ export default function VideoCard({
         <img
           src={thumbnail}
           alt="thumbnail"
-          className="block w-full h-full max-h-72 object-cover transition-[border-radius] duration-200 hover:rounded-xl"
+          className="block w-full h-[225px] object-cover transition-[border-radius] duration-200 rounded-xl hover:rounded-none"
         />
         <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
           <h1>{formatDuration(duration)}</h1>

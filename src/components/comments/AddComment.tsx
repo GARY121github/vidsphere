@@ -32,6 +32,12 @@ const AddComment = ({ setAddCommentContent }: AddCommentProps) => {
     form.reset();
   };
 
+  const handleSpaceKey = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.code === "Space") {
+      event.stopPropagation();
+    }
+  };
+
   return (
     <Form {...form}>
       <form
@@ -45,9 +51,10 @@ const AddComment = ({ setAddCommentContent }: AddCommentProps) => {
             <FormItem>
               <FormControl>
                 <Textarea
-                  placeholder="enter your comment here..."
+                  placeholder="Enter your comment here..."
                   {...field}
                   rows={3}
+                  onKeyDown={handleSpaceKey}
                 />
               </FormControl>
               <FormMessage />

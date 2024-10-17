@@ -111,7 +111,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
     return (
       <div
         ref={ref}
-        className={`p-2 flex items-center justify-between text-white transition-opacity ${isFullscreen ? "" : "absolute bottom-0 left-0 right-0"} ${
+        className={`p-2 flex items-center justify-between text-white transition-opacity ${isFullscreen ? "absolute bottom-0 left-0 right-0" : "absolute bottom-0 left-0 right-0"} ${
           isPlaying ? "opacity-0 group-hover:opacity-100 " : "opacity-100"
         }`}
       >

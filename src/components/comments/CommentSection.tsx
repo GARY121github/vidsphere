@@ -52,8 +52,8 @@ const CommentSection = ({
   const [showEditableComment, setShowEditableComment] =
     useState<Comment | null>(null);
 
-  const handleDeleteComment = (commentId: string) => {
-    deleteComment(commentId);
+  const handleDeleteComment = async (commentId: string) => {
+    await deleteComment(commentId);
     fetchComments(page.toString());
   };
 
@@ -88,9 +88,9 @@ const CommentSection = ({
             <Image
               src={comment.owner.avatar}
               alt="avatar"
-              className="rounded-full flex-0"
-              width={50}
-              height={50}
+              className="rounded-full flex-0 h-[4rem] w-[4rem] "
+              width={100}
+              height={100}
             />
             <div className="flex flex-wrap flex-col w-full">
               <div className="flex gap-1">
@@ -98,9 +98,12 @@ const CommentSection = ({
                   @{comment.owner.username}
                 </span>
                 <span className="text-xs text-gray-700">
-                  {new Date(comment.owner.updatedAt).toLocaleDateString(
+                  {/* {new Date(comment.owner.updatedAt).toLocaleDateString(
                     "en-IN"
-                  )}
+                  )} */}
+                  {dayjs().diff(dayjs(comment.owner.updatedAt), "day") < 1
+                    ? dayjs(comment.owner.updatedAt).fromNow()
+                    : dayjs(comment.owner.updatedAt).format("DD/MM/YYYY")}
                   {/* {dayjs(comment.owner.updatedAt).fromNow()} */}
                 </span>
               </div>
