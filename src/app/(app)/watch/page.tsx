@@ -162,7 +162,7 @@ export default function WatchVideo() {
     });
     try {
       await axios.post<ApiResponse>(
-        `/api/v1/like?entityType=video&entityId=${videoId}&likeType=like`
+        `/api/v1/like/${videoId}?entityType=video&likeType=like`
       );
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -215,7 +215,7 @@ export default function WatchVideo() {
     });
     try {
       await axios.post<ApiResponse>(
-        `/api/v1/like?entityType=video&entityId=${videoId}&likeType=dislike`
+        `/api/v1/like/${videoId}?entityType=video&likeType=dislike`
       );
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;

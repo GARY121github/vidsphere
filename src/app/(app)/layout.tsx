@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="hidden md:flex md:flex-col md:w-64 bg-gray-200 fixed max-h-screen h-full">
           <SidebarDesktop />
         </div>
-        <div className="flex-grow p-4 md:ml-64 -z-10">
+        <div className="flex-grow p-4 md:ml-64">
           <div className="grid gap-4 grid-cols-1 px-8 py-4 overflow-auto">
             {children}
           </div>
