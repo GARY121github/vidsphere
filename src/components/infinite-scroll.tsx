@@ -51,16 +51,18 @@ export default function InfiniteScroll({ initialVideos }: InfiniteScrollProps) {
 
   return (
     <>
-      <div className="grid gap-4 grid-cols-3">
+      <div className="grid gap-4 grid-cols-1  md:grid-cols-2  xl:grid-cols-3">
         {videos && videos.length > 0 ? (
           videos.map((video: VideoGridItemProps) => (
             <VideoCard key={video._id} {...video} duration={205} views={200} />
           ))
         ) : (
-          <h1>No Videos Found</h1>
+          <h1 className="col-span-full text-center text-lg font-semibold">
+            No Videos Found
+          </h1>
         )}
       </div>
-      <div>
+      <div className="mt-4">
         {hasMoreVideos ? (
           <div ref={ref} className="flex flex-col items-center justify-center">
             <Loader2 className="animate-spin h-16 w-16" />

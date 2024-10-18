@@ -1,7 +1,7 @@
 "use client";
 
 import VideoCard, { VideoGridItemProps } from "@/components/video/video-card";
-import VideoSkeleton from "@/components/skeleton/video-skeleton";
+import VideoCardSkeleton from "@/components/skeleton/video-card-skeleton";
 import { useChannel } from "@/providers/contexts/channel-context";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -38,7 +38,7 @@ export default function VideoPage() {
     getChannelVideos();
   }, []);
 
-  if (loading) return <VideoSkeleton />;
+  if (loading) return <VideoCardSkeleton />;
 
   return (
     <div>

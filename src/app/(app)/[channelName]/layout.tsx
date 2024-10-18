@@ -1,11 +1,11 @@
 import React from "react";
 import axios from "axios";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import ChannelNavigation from "@/components/channel/channel-navigation";
 import { ChannelProvider } from "@/providers/contexts/channel-context";
 import { setChannelDetails } from "@/providers/store/features/channelSlice";
 import config from "@/conf/config";
+import Subscription from "@/components/channel/channel-subscription";
 
 export default async function Layout({
   children,
@@ -42,12 +42,12 @@ export default async function Layout({
                 <h1 className="font-bold text-5xl text-center capitalize">
                   {channelData.fullName}
                 </h1>
-                <p className="text-2xl">
-                  {channel} | {channelData.subscribersCount} subscribers{" "}
-                </p>
-                <Button variant="outline" className="text-black">
-                  Subscribed
-                </Button>
+                <Subscription
+                  hasSubscribed={channelData.hasSubscribed}
+                  channelName={channelData.username}
+                  channelSubscribers={channelData.subscribersCount}
+                  channelId={channelData._id}
+                />
               </div>
             </div>
           </div>

@@ -9,5 +9,3 @@ export default async function ChannelPage({
     </div>
   );
 }
-
-const getChannelVideo = async (channel: string) => {};

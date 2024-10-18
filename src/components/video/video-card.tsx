@@ -38,29 +38,42 @@ export default function VideoCard({
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   return (
-    <div className="flex flex-col gap-2">
-      <Link href={`/watch?v=${_id}`} className="relative aspect-video">
-        <img
-          src={thumbnail}
-          alt="thumbnail"
-          className="block w-full h-[225px] object-cover transition-[border-radius] duration-200 rounded-xl hover:rounded-none"
-        />
-        <div className="absolute bottom-1 right-1 bg-secondary-dark text-secondary text-sm px-0.5 rounded">
+    <div className="flex flex-col gap-3 mb-5">
+      {/* Thumbnail */}
+      <Link
+        href={`/watch?v=${_id}`}
+        className="relative block w-full aspect-video"
+      >
+        <div className="relative w-full h-0 pb-[56.25%]">
+          {" "}
+          {/* Aspect ratio 16:9 */}
+          <img
+            src={thumbnail}
+            alt="thumbnail"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-105 rounded-lg"
+          />
+        </div>
+        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-sm px-2 py-0.5 rounded-md">
           <h1>{formatDuration(duration)}</h1>
         </div>
       </Link>
+
+      {/* Video Info */}
       <div className="flex gap-2">
         <Link href={`/@${owner.username}`} className="flex-shrink-0">
           <Image
-            className="flex-0 rounded-full"
+            className="rounded-full"
             width={48}
             height={48}
             src={owner.avatar}
             alt={owner.username}
           />
         </Link>
-        <div className="flex flex-col">
-          <Link href={`/watch?v=${_id}`} className="font-bold">
+        <div className="flex flex-col overflow-hidden">
+          <Link
+            href={`/watch?v=${_id}`}
+            className="font-bold text-ellipsis line-clamp-2"
+          >
             {title}
           </Link>
           <Link

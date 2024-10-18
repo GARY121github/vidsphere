@@ -1,5 +1,5 @@
-import VideoSkeleton from "@/components/skeleton/video-skeleton";
+import VideoCardSkeleton from "@/components/skeleton/video-card-skeleton";
 
 export default function Loading() {
-  return <VideoSkeleton />;
+  return <VideoCardSkeleton />;
 }

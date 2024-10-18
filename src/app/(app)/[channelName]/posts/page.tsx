@@ -1,7 +1,7 @@
-import React from "react";
-
-const page = () => {
-  return <div>Posts Page</div>;
-};
-
-export default page;
+export default function ChannelPost() {
+  return (
+    <div>
+      <h1 className="text-3xl">Channel Post</h1>
+    </div>
+  );
+}

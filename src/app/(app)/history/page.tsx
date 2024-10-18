@@ -1,10 +1,11 @@
 "use client";
+
 import { useToast } from "@/components/ui/use-toast";
 import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import axios, { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
-import Loading from "./loading";
+import VideoListSkeleton from "@/components/skeleton/video-list-skeleton";
 import VideoInfoCard from "@/components/cards/VideoInfoCard";
 
 interface Video {
@@ -50,7 +51,7 @@ const WatchPage = () => {
     fetchWatchedVideos();
   }, []);
 
-  if (loading) return <Loading />;
+  if (loading) return <VideoListSkeleton />;
 
   return (
     <div className="grid grid-cols-4">
