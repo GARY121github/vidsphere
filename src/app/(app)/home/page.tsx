@@ -1,10 +1,13 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import config from "@/conf/config";
 import { VideoGridItemProps } from "@/components/video/video-card";
 import InfiniteScroll from "@/components/infinite-scroll";
 
 export default async function HomePage() {
   const response = await fetchVideos({ page: 1 });
+  if (response.videos === undefined) {
+    return <div>Error fetching videos</div>;
+  }
   const videos: VideoGridItemProps[] | undefined = response?.videos;
   return <InfiniteScroll initialVideos={videos} />;
 }
@@ -38,7 +41,6 @@ const fetchVideos = async ({
 
     return response.data.data;
   } catch (error: any) {
-    console.error("Error fetching videos:", error.message);
-    throw error;
+    return error;
   }
 };

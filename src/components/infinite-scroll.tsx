@@ -5,6 +5,7 @@ import VideoCard, { VideoGridItemProps } from "@/components/video/video-card";
 import { useInView } from "react-intersection-observer";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
+import { useSidebar } from "./ui/sidebar";
 
 interface InfiniteScrollProps {
   initialVideos: VideoGridItemProps[] | undefined;
@@ -17,6 +18,15 @@ export default function InfiniteScroll({ initialVideos }: InfiniteScrollProps) {
   const [page, setPage] = useState<number>(1);
   const [hasMoreVideos, setHasMoreVideos] = useState<boolean>(true);
   const [ref, inView] = useInView();
+  const {
+    state,
+    open,
+    setOpen,
+    openMobile,
+    setOpenMobile,
+    isMobile,
+    toggleSidebar,
+  } = useSidebar();
 
   async function LoadMoreVideos() {
     const next = page + 1;
@@ -50,8 +60,12 @@ export default function InfiniteScroll({ initialVideos }: InfiniteScrollProps) {
   }, [inView]);
 
   return (
-    <>
-      <div className="grid gap-4 grid-cols-1  md:grid-cols-2  xl:grid-cols-3">
+    <div className="flex flex-col gap-4 mx-auto">
+      <div
+        className={`grid gap-4 grid-cols-1 ${
+          state === "collapsed" ? "md:grid-cols-4" : "md:grid-cols-3"
+        }`}
+      >
         {videos && videos.length > 0 ? (
           videos.map((video: VideoGridItemProps) => (
             <VideoCard key={video._id} {...video} duration={205} views={200} />
@@ -71,6 +85,6 @@ export default function InfiniteScroll({ initialVideos }: InfiniteScrollProps) {
           <h1 className="text-center text-lg font-semibold">No More Videos</h1>
         )}
       </div>
-    </>
+    </div>
   );
 }
