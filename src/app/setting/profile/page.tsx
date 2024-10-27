@@ -15,6 +15,7 @@ import {
 import ChangeAvatarForm from "@/components/forms/change-avatar-form";
 import UpdateUserProfile from "@/components/forms/update-user-profile";
 import ApiError from "@/utils/ApiError";
+import ChangeCoverImageForm from "@/components/forms/change-cover-image-form";
 
 export default function UserProfile() {
   const [user, setUser] = useState<User | null>(null);
@@ -57,14 +58,28 @@ export default function UserProfile() {
           {user && (
             <section>
               <div className="cursor-pointer relative group">
-                <img
-                  src={user.coverImage}
-                  className="object-cover h-48 w-full rounded-lg transition duration-300 group-hover:opacity-50 group-hover:shadow-lg group-hover:shadow-black"
-                  alt="channel"
-                />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <Camera className="h-10 w-10 text-white" />
-                </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div>
+                      <img
+                        src={user.coverImage}
+                        className="object-cover h-48 w-full rounded-lg transition duration-300 group-hover:opacity-50 group-hover:shadow-lg group-hover:shadow-black"
+                        alt="channel"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <Camera className="h-10 w-10 text-white" />
+                      </div>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="text-white bg-[#303030] border-0 max-w-6xl ">
+                    <DialogHeader className="text-white">
+                      <DialogTitle>Change Cover Image</DialogTitle>
+                    </DialogHeader>
+                    <ChangeCoverImageForm
+                      setReloadInformation={setReloadInformation}
+                    />
+                  </DialogContent>
+                </Dialog>
               </div>
               <div className="p-2 grid grid-cols-6 justify-items-start">
                 <Dialog>
@@ -79,7 +94,7 @@ export default function UserProfile() {
                       </div>
                     </Avatar>
                   </DialogTrigger>
-                  <DialogContent className="text-white bg-[#303030] border-0">
+                  <DialogContent className="text-white bg-[#303030] border-0 max-w-lg">
                     <DialogHeader className="text-white">
                       <DialogTitle>Change Avatar</DialogTitle>
                     </DialogHeader>

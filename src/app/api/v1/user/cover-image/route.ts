@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 
     const command = new PutObjectCommand({
       Bucket: config.AWS_S3_BUCKET_NAME,
-      Key: `vidsphere/${user._id}/avatar/${uniqueId}`,
+      Key: `vidsphere/${user._id}/cover-image/${uniqueId}`,
       ContentType: "image/*",
     });
 
@@ -61,25 +61,25 @@ export async function PUT(request: NextRequest) {
 
   try {
     const data = await request.json();
-    const { avatar } = data;
+    const { coverImage } = data;
 
-    const url = getImageUrl(avatar);
+    const url = getImageUrl(coverImage);
 
-    const updatedAvatarUser = await UserModel.updateOne(
+    const updatedCoverImageUser = await UserModel.updateOne(
       {
         _id: session.user._id,
       },
       {
-        avatar: url,
+        coverImage: url,
       }
     );
 
-    if (updatedAvatarUser.modifiedCount === 0) {
-      throw new ApiError(400, "Avatar not updated");
+    if (updatedCoverImageUser.modifiedCount === 0) {
+      throw new ApiError(400, "Cover Image not updated");
     }
 
     return NextResponse.json(
-      new ApiResponse(200, "Avatar updated successfully")
+      new ApiResponse(200, "Cover Image updated successfully")
     );
   } catch (error: any) {
     console.error(error);

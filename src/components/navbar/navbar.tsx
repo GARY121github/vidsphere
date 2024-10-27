@@ -46,10 +46,10 @@ const Navbar = () => {
       >
         <div className={`flex justify-center items-center`}>
           <Image
-            className="md:w-12 md:h-12"
+            // className="md:w-36 md:h-20"
             src="/images/logo.png"
-            width={8}
-            height={8}
+            width={150}
+            height={50}
             alt="application logo"
           />
         </div>
