@@ -45,8 +45,6 @@ export default function VideoCard({
         className="relative block w-full aspect-video"
       >
         <div className="relative w-full h-0 pb-[56.25%]">
-          {" "}
-          {/* Aspect ratio 16:9 */}
           <img
             src={thumbnail}
             alt="thumbnail"

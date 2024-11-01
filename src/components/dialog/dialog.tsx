@@ -22,6 +22,7 @@ interface DialogProps {
   actionStyle?: string;
   titleStyle?: string;
   cancelStyle?: string;
+  isOpen?: boolean;
 }
 
 const Dialog = forwardRef<HTMLButtonElement, DialogProps>(
@@ -37,11 +38,12 @@ const Dialog = forwardRef<HTMLButtonElement, DialogProps>(
       actionStyle,
       titleStyle,
       cancelStyle,
+      isOpen,
     },
     ref
   ) => {
     return (
-      <AlertDialog>
+      <AlertDialog open={isOpen}>
         <AlertDialogTrigger ref={ref} className={`${alertStyle}`}>
           {AlertIcon && <AlertIcon />}
           {alert && alert}

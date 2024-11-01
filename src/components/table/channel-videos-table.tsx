@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
-import UpdateVideoDetails from "../modals/update-video-details";
+import UpdateVideoDetailsModal from "../modals/update-video-details-modal";
 import { Loader2, Trash2 } from "lucide-react";
 import Dialog from "@/components/dialog/dialog";
 import { useToast } from "@/components/ui/use-toast";
@@ -81,7 +81,7 @@ export const columns = (
           <div>
             <p>{row.original.title}</p>
             <div className="flex items-center">
-              <UpdateVideoDetails
+              <UpdateVideoDetailsModal
                 videoId={row.original._id}
                 description={row.original.description}
                 isPublished={row.original.isPublished}

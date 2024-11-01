@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ChangeAvatarForm from "@/components/forms/change-avatar-form";
-import UpdateUserProfile from "@/components/forms/update-user-profile";
+import UpdateUserProfile from "@/components/forms/update-user-profile-form";
 import ApiError from "@/utils/ApiError";
 import ChangeCoverImageForm from "@/components/forms/change-cover-image-form";
 

@@ -1,5 +1,5 @@
 "use client";
-import UploadVideo from "@/components/modals/upload-video-modal";
+import UploadVideoModal from "@/components/modals/upload-video-modal";
 import ChannelVideoDetailsTable from "@/components/table/channel-videos-table";
 import { Separator } from "@/components/ui/separator";
 import config from "@/conf/config";
@@ -19,7 +19,7 @@ export default function ChannelContent({
     <div className="flex flex-col gap-5">
       <section className="flex justify-between">
         <h1 className="text-4xl font-semibold">Channel's Videos</h1>
-        <UploadVideo />
+        <UploadVideoModal />
       </section>
       <Separator />
       <section>

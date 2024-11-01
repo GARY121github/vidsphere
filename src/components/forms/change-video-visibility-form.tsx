@@ -25,7 +25,7 @@ const FormSchema = z.object({
   visibility: z.enum(["public", "private"]).default("private"),
 });
 
-export function ChangeVideoVisibility({
+export default function ChangeVideoVisibilityForm({
   isPublished,
   videoId,
   setReloadVideos,

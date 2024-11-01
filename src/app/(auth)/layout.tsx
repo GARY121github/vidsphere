@@ -18,7 +18,7 @@ const layout: React.FC<LayoutProps> = ({ children }) => {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <p className="text-3xl font-semibold text-center text-orange-700">
+            <p className="text-xl md-text-3xl font-semibold text-center text-orange-700">
               &nbsp; &nbsp; &nbsp; &nbsp; Welcome to VidSphere{" "}
             </p>
           </div>
