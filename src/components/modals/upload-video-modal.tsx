@@ -2,7 +2,7 @@ import { ArrowUpFromLine } from "lucide-react";
 import Modal from "./modal";
 import VideoUploadForm from "../forms/upload-video-form";
 
-export default function UploadVideo({
+export default function UploadVideoModal({
   defaultOpen,
 }: {
   defaultOpen?: boolean;

@@ -5,28 +5,22 @@ import VideoCard, { VideoGridItemProps } from "@/components/video/video-card";
 import { useInView } from "react-intersection-observer";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
-import { useSidebar } from "./ui/sidebar";
+import { useSidebar } from "../ui/sidebar";
 
-interface InfiniteScrollProps {
+interface InfiniteVideosScrollProps {
   initialVideos: VideoGridItemProps[] | undefined;
 }
 
-export default function InfiniteScroll({ initialVideos }: InfiniteScrollProps) {
+export default function InfiniteVideoScroll({
+  initialVideos,
+}: InfiniteVideosScrollProps) {
   const [videos, setVideos] = useState<VideoGridItemProps[] | undefined>(
     initialVideos
   );
   const [page, setPage] = useState<number>(1);
   const [hasMoreVideos, setHasMoreVideos] = useState<boolean>(true);
   const [ref, inView] = useInView();
-  const {
-    state,
-    open,
-    setOpen,
-    openMobile,
-    setOpenMobile,
-    isMobile,
-    toggleSidebar,
-  } = useSidebar();
+  const { state } = useSidebar();
 
   async function LoadMoreVideos() {
     const next = page + 1;

@@ -1,8 +1,7 @@
 import Navbar from "@/components/navbar/navbar";
-import SidebarDesktop from "@/components/sidebar/sidebar-desktop";
 import React from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/sidebar/sidebar-app";
 
 interface LayoutProps {
   children: React.ReactNode;

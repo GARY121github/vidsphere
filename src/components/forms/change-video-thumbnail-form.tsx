@@ -22,7 +22,7 @@ import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import { thumbnailSchema } from "@/schemas/video.schema";
 
-export default function ChangeVideoThumbnail({
+export default function ChangeVideoThumbnailForm({
   thumbnail,
   videoId,
   setReloadVideos,

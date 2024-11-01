@@ -1,10 +1,10 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 import config from "@/conf/config";
 import { VideoGridItemProps } from "@/components/video/video-card";
-import InfiniteScroll from "@/components/infinite-scroll";
+import InfiniteScroll from "@/components/infinite-scroll/infinite-video-scroll";
 
 export default async function HomePage() {
-  const response = await fetchVideos({ page: 1 });
+  const response = await fetchVideos();
   if (response.videos === undefined) {
     return <div>Error fetching videos</div>;
   }
@@ -12,30 +12,12 @@ export default async function HomePage() {
   return <InfiniteScroll initialVideos={videos} />;
 }
 
-interface FetchVideoInterface {
-  page: number;
-  limit?: number;
-  query?: string;
-  sortBy?: string;
-  sortType?: string;
-}
-
 // Define the function that fetches videos
-const fetchVideos = async ({
-  page,
-  limit,
-  query,
-  sortBy,
-  sortType,
-}: FetchVideoInterface) => {
+const fetchVideos = async () => {
   try {
     const response = await axios.get(`${config.BACKEND_API}/video`, {
       params: {
-        page, // Current page number
-        limit, // Number of videos to fetch per request
-        query, // Optional: Search query for filtering videos
-        sortBy, // Sorting field, e.g., 'createdAt'
-        sortType, // Sorting type, 'asc' or 'desc'
+        page: 1,
       },
     });
 

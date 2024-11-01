@@ -23,7 +23,7 @@ interface UserProfileSchema {
   fullName: string;
 }
 
-export default function UpdateUserProfile({
+export default function UpdateUserProfileForm({
   username,
   fullName,
   email,

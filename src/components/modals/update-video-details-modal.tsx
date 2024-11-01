@@ -1,8 +1,8 @@
 import { SquarePen } from "lucide-react";
 import Modal from "./modal";
 import EditVideoForm from "../forms/edit-video-form";
-import { ChangeVideoVisibility } from "../forms/change-video-visibility";
-import ChangeVideoThumbnail from "../forms/change-video-thumbnail";
+import ChangeVideoVisibilityForm from "../forms/change-video-visibility-form";
+import ChangeVideoThumbnail from "../forms/change-video-thumbnail-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UpdateVideoDetailsProps {
@@ -15,7 +15,7 @@ interface UpdateVideoDetailsProps {
   setReloadVideos: React.Dispatch<React.SetStateAction<Boolean>>;
 }
 
-export default function UpdateVideoDetails({
+export default function UpdateVideoDetailsModal({
   defaultOpen,
   videoId,
   title,
@@ -49,7 +49,7 @@ export default function UpdateVideoDetails({
     {
       title: "Video Visibility",
       form: (
-        <ChangeVideoVisibility
+        <ChangeVideoVisibilityForm
           isPublished={isPublished}
           videoId={videoId}
           setReloadVideos={setReloadVideos}
