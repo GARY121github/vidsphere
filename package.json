@@ -44,6 +44,7 @@
     "mongoose-aggregate-paginate-v2": "^1.1.2",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
+    "nextjs-toploader": "^3.7.15",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",

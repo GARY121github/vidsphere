@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import ReduxProviderWrapper from "@/providers/contexts/redux-context";
 import AuthProvider from "@/providers/contexts/auth-context";
+import NextTopLoader from "nextjs-toploader";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
             fontSans.variable
           )}
         >
+          <NextTopLoader color="#d62828" height={3} showSpinner={false} />
           <main>
             <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
           </main>
