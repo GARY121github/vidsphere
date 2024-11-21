@@ -17,9 +17,9 @@ const Header = () => {
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
           <Link href="/" className="flex items-center">
             <Image
-              src="/images/logo.png"
-              width={48}
-              height={48}
+              src="/images/vidsphere.png"
+              width={100}
+              height={50}
               className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
               alt="VidSphere Logo"
             />
