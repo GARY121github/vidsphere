@@ -9,11 +9,11 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <SidebarProvider>
+    <>
       <Navbar />
       <AppSidebar />
       <div className="px-8 py-8 mt-20 w-full">{children}</div>
-    </SidebarProvider>
+    </>
   );
 };
 

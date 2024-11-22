@@ -2,31 +2,45 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
 import { settingItems } from "./sidebar-items";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 export default function SidebarSetting() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-[270px] max-w-xs left-0 top-0 z-40 bg-black h-screen border-r-[1px] border-slate-600">
-      <div className="h-full px-3 py-4">
-        <div className="mt-5">
-          <div className="flex flex-col gap-1 w-full">
-            {settingItems.map((item, index) => (
-              <Link key={index} href={item.href} passHref>
-                <Button
-                  variant={pathname === item.href ? "secondary" : "ghost"}
-                  className="flex gap-2 justify-start items-center text-lg w-full"
-                >
-                  {item.icon && <item.icon size={20} />}
-                  <span>{item.label}</span>
-                </Button>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-    </aside>
+    <Sidebar className="mt-20">
+      <SidebarContent className="mx-2 mt-4">
+        <SidebarGroup title="Main">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {settingItems.map((item, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                    className={`flex gap-6 p-4 text-md [&>svg]:size-6 ${item.href === pathname ? "bg-white text-black" : "hover:bg-white hover:text-black"}`}
+                    size="lg"
+                  >
+                    <Link key={index} href={item.href} passHref>
+                      {item.icon && <item.icon size={20} />}
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 }

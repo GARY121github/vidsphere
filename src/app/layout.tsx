@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import ReduxProviderWrapper from "@/providers/contexts/redux-context";
 import AuthProvider from "@/providers/contexts/auth-context";
 import NextTopLoader from "nextjs-toploader";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -33,7 +34,9 @@ export default function RootLayout({
         >
           <NextTopLoader color="#d62828" height={3} showSpinner={false} />
           <main>
-            <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
+            <SidebarProvider>
+              <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
+            </SidebarProvider>
           </main>
           <Toaster />
         </body>
