@@ -15,7 +15,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Skeleton } from "../ui/skeleton";
 import { useRouter } from "next/navigation";
 
-const StudioNavbar = () => {
+const NavbarStudio = () => {
   const { data: session } = useSession();
   const user = session?.user;
   const router = useRouter();
@@ -78,4 +78,4 @@ const StudioNavbar = () => {
   );
 };
 
-export default StudioNavbar;
+export default NavbarStudio;
