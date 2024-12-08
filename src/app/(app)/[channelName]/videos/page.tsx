@@ -1,6 +1,6 @@
 "use client";
 
-import VideoCard, { VideoGridItemProps } from "@/components/video/video-card";
+import VideoCard, { VideoData } from "@/components/video/video-card";
 import VideoCardSkeleton from "@/components/skeleton/video-card-skeleton";
 import { useChannel } from "@/providers/contexts/channel-context";
 import axios from "axios";
@@ -9,7 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function VideoPage() {
   const { channelDetail } = useChannel();
-  const [videos, setVideos] = useState<Array<VideoGridItemProps | null>>([]);
+  const [videos, setVideos] = useState<VideoData[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
@@ -46,12 +46,7 @@ export default function VideoPage() {
         <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
           {videos && videos.length > 0 ? (
             videos.map((video: any) => (
-              <VideoCard
-                key={video._id}
-                {...video}
-                duration={205}
-                views={200}
-              />
+              <VideoCard key={video._id} {...video} duration={205} />
             ))
           ) : (
             <h1>No Video Found</h1>
