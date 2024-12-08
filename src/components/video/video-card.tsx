@@ -6,7 +6,7 @@ import Link from "next/link";
 import { VideoQuality } from "@/models/video.model";
 import Image from "next/image";
 
-export interface VideoGridItemProps {
+export interface VideoData {
   _id: string;
   title: string;
   owner: {
@@ -34,7 +34,7 @@ export default function VideoCard({
   duration,
   thumbnail,
   videoUrls,
-}: VideoGridItemProps) {
+}: VideoData) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   return (

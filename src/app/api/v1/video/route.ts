@@ -91,6 +91,7 @@ export async function GET(request: NextRequest) {
           description: 1,
           thumbnail: 1,
           videoUrls: 1,
+          views: 1,
           createdAt: 1,
           "owner.username": 1,
           "owner.fullName": 1,

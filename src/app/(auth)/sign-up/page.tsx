@@ -139,7 +139,7 @@ export default function SignUpPage() {
                 )}
                 <p
                   className={`text-sm ${
-                    availableUsernameMessage === "Username is available"
+                    availableUsernameMessage === "Username is avaliable"
                       ? "text-green-500"
                       : "text-red-500"
                   }`}
