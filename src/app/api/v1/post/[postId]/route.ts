@@ -7,7 +7,10 @@ import postSchema from "@/schemas/post.schema";
 import PostModel from "@/models/post.model";
 import ApiResponse from "@/utils/ApiResponse";
 
-export async function PUT(request: NextRequest, params: { postId: string }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { postId: string } }
+) {
   await connectDB();
   const session = await getServerSession(authOptions);
 

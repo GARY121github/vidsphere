@@ -17,7 +17,7 @@ interface CreatePostModalProps {
   setRefreshPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const postSchema = z.object({
+export const postSchema = z.object({
   content: z
     .string()
     .min(1, "Content is required")
@@ -104,12 +104,14 @@ export default function PostForm({ setRefreshPost }: CreatePostModalProps) {
           name="content"
           render={({ field }) => (
             <FormItem className="relative">
-              <FormLabel className="mb-2">Content</FormLabel>
+              <FormLabel className="mb-2 text-xl font-semibold">
+                Content
+              </FormLabel>
               <Textarea
                 {...field}
                 placeholder="What's happening?"
                 rows={5}
-                className="w-full rounded-lg p-3 text-black resize-none"
+                className="w-full rounded-lg p-3 text-black resize-none bg-slate-200"
               />
               <span className="absolute right-2 bottom-2 text-gray-400 text-sm">
                 {field.value.length}/500

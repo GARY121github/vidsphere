@@ -174,6 +174,7 @@ export default function VideoUploadForm() {
             variant={"destructive"}
             className="w-full"
             onClick={handleReset}
+            disabled={uploading}
           >
             Reset
           </Button>

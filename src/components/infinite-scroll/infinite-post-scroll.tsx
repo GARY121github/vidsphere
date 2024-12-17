@@ -162,7 +162,7 @@ export default function InfinitePostScroll({
                               className="max-w-4xl w-full h-[85vh] text-white bg-[#303030] border-0"
                               Icon={PencilLine}
                             >
-                              <EditPostForm />
+                              <EditPostForm {...post} />
                             </Modal>
                             <DropdownMenuSeparator />
                             <Dialog
