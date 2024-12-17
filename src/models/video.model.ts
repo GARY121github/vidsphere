@@ -18,6 +18,7 @@ export interface Video extends Document {
   owner: Types.ObjectId; // Ensure owner is also ObjectId
   status: string;
   views: number;
+  duration: number;
 }
 
 // Define schema for Video
@@ -67,6 +68,10 @@ const videoSchema = new Schema<Video>(
       default: "uploading",
     },
     views: {
+      type: Number,
+      default: 0,
+    },
+    duration: {
       type: Number,
       default: 0,
     },

@@ -81,21 +81,13 @@ export async function POST(request: NextRequest) {
   const { user } = session;
 
   try {
-    const { uniqueID } = await request.json();
+    const { uniqueID, duration } = await request.json();
 
-    if (!uniqueID) {
+    if (!uniqueID || !duration) {
       throw new ApiError(400, "Invalid request");
     }
 
-    // const isValidTitle = titleSchema.safeParse(title);
-    // if (!isValidTitle.success) {
-    //   throw new ApiError(400, isValidTitle.error.errors[0].message);
-    // }
-
-    // const isValidDescription = descriptionSchema.safeParse(description);
-    // if (!isValidDescription.success) {
-    //   throw new ApiError(400, isValidDescription.error.errors[0].message);
-    // }
+    console.log(duration, uniqueID);
 
     const baseUrl = `${config.AWS_CLOUDFRONT_URL}/vidsphere/${user._id}/video/${uniqueID}`;
 
@@ -106,6 +98,7 @@ export async function POST(request: NextRequest) {
     await VideoModel.create({
       _id: new mongoose.Types.ObjectId(uniqueID),
       owner: user._id,
+      duration: duration,
       videoUrls: [
         {
           link: `${baseUrl}/360p/index.m3u8`,

@@ -62,7 +62,7 @@ export default function InfiniteVideoScroll({
       >
         {videos.length > 0 ? (
           videos.map((video: VideoData) => (
-            <VideoCard key={video._id} {...video} duration={205} />
+            <VideoCard key={video._id} {...video} />
           ))
         ) : (
           <h1 className="col-span-full text-center text-lg font-semibold mt-80">
