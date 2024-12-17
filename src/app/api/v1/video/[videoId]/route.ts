@@ -127,6 +127,7 @@ export async function GET(
           thumbnail: 1,
           videoUrls: 1,
           createdAt: 1,
+          views: 1,
           "owner.username": 1,
           "owner.fullName": 1,
           "owner.avatar": 1,
@@ -143,6 +144,16 @@ export async function GET(
     if (!video[0]) {
       throw new ApiError(404, "Video not found");
     }
+
+    // update the video views
+    await VideoModel.updateOne(
+      {
+        _id: new mongoose.Types.ObjectId(videoId),
+        isPublished: true,
+        status: "completed",
+      },
+      { $inc: { views: 1 } }
+    );
 
     return NextResponse.json(new ApiResponse(200, "Video found", video[0]));
   } catch (error) {

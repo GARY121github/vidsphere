@@ -11,8 +11,13 @@ import { useToast } from "../ui/use-toast";
 import { videoFileSchema } from "@/schemas/video.schema";
 import axios, { AxiosError } from "axios";
 import ApiError from "@/utils/ApiError";
+import getVideoDuration from "@/utils/getVideoDuration";
 
-export default function VideoUploadForm() {
+export default function VideoUploadForm({
+  setReloadVideos,
+}: {
+  setReloadVideos: React.Dispatch<React.SetStateAction<Boolean>>;
+}) {
   const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
@@ -73,11 +78,14 @@ export default function VideoUploadForm() {
         return;
       }
 
+      const duration = await getVideoDuration(data.videoFile);
+
       const signedUrl = await getSignedUrl();
       await uploadVideoToS3(signedUrl.url, data.videoFile);
 
       await axios.post("/api/v1/video/upload", {
         uniqueID: signedUrl.videoLocation,
+        duration: duration,
       });
 
       toast({
@@ -98,6 +106,7 @@ export default function VideoUploadForm() {
     } finally {
       handleReset();
       setUploading(false);
+      setReloadVideos((prev) => !prev);
     }
   };
 

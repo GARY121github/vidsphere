@@ -35,7 +35,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" className="mt-20">
       <SidebarHeader />
       <SidebarContent className="mx-2">
-        <SidebarGroup title="Main">
+        <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {desktopItems.map((item, index) => (

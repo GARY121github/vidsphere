@@ -17,6 +17,8 @@ export interface Video extends Document {
   thumbnail: string;
   owner: Types.ObjectId; // Ensure owner is also ObjectId
   status: string;
+  views: number;
+  duration: number;
 }
 
 // Define schema for Video
@@ -64,6 +66,14 @@ const videoSchema = new Schema<Video>(
       type: String,
       enum: ["uploading", "transcoding", "completed"],
       default: "uploading",
+    },
+    views: {
+      type: Number,
+      default: 0,
+    },
+    duration: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

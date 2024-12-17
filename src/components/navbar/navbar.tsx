@@ -80,11 +80,11 @@ const Navbar = () => {
             {user ? (
               <Link href={`/studio/channel/${user._id}`}>
                 <VideoIcon
-                  className={`w-8 h-8 md:w-10 md:h-10 rounded-full p-1`}
+                  className={`w-10 h-10 md:w-12 md:h-12 rounded-full p-1`}
                 />
               </Link>
             ) : (
-              <Skeleton className="w-8 h-8 md:h-10 md:w-10 rounded-full" />
+              <Skeleton className="w-10 h-10 md:h-12 md:w-12 rounded-full" />
             )}
           </div>
           <div>
