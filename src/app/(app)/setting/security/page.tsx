@@ -79,7 +79,7 @@ export default function AccountSecurity() {
 
   return (
     <Form {...form}>
-      <h1 className="text-3xl font-semibold">Change Password</h1>
+      <h1 className="text-2xl font-semibold">Change Password</h1>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}

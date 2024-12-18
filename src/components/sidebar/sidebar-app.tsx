@@ -22,6 +22,8 @@ export function AppSidebar() {
 
   // Collapse sidebar if no item href matches the current URL
   useEffect(() => {
+    if (pathname === "/setting/security") return;
+
     const shouldCollapse = !desktopItems.some((item) => item.href === pathname);
     if (
       (state === "expanded" && shouldCollapse) ||

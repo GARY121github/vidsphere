@@ -4,13 +4,12 @@ import {
   Home,
   ThumbsUp,
   Timer,
-  User,
   Video,
   LayoutDashboard,
   ListPlus,
   CirclePlus,
   SquarePlay,
-  Fingerprint,
+  Settings2,
 } from "lucide-react";
 
 export interface SidebarItem {
@@ -25,7 +24,7 @@ export const desktopItems: SidebarItem[] = [
   { label: "History", href: "/history", icon: Timer },
   { label: "My Content", href: "/my-content", icon: Video },
   { label: "Collection", href: "/collections", icon: Folder },
-  { label: "Subscribers", href: "/subscribers", icon: User },
+  { label: "Settings", href: "/setting/profile", icon: Settings2 },
 ];
 
 export const studioItems: SidebarItem[] = [
@@ -33,9 +32,4 @@ export const studioItems: SidebarItem[] = [
   { label: "Content", href: "/studio/channel/content", icon: SquarePlay },
   { label: "Playlist", href: "/studio/channel/playlist", icon: ListPlus },
   { label: "Post", href: "/studio/channel/post", icon: CirclePlus },
-];
-
-export const settingItems: SidebarItem[] = [
-  { label: "Profile", href: "/setting/profile", icon: User },
-  { label: "Security", href: "/setting/security", icon: Fingerprint },
 ];

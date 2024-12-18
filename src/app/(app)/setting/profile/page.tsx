@@ -48,7 +48,7 @@ export default function UserProfile() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-semibold">Edit Profile</h1>
+      <h1 className="text-2xl font-semibold">Edit Profile</h1>
       {isLoading ? (
         <div className="flex flex-col items-center justify-center h-96">
           <Loader2 className="animate-spin h-24 w-24" />
