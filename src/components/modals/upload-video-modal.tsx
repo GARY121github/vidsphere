@@ -4,8 +4,10 @@ import VideoUploadForm from "../forms/upload-video-form";
 
 export default function UploadVideoModal({
   defaultOpen,
+  setReloadVideos,
 }: {
   defaultOpen?: boolean;
+  setReloadVideos: React.Dispatch<React.SetStateAction<Boolean>>;
 }) {
   return (
     <Modal
@@ -14,7 +16,7 @@ export default function UploadVideoModal({
       Icon={ArrowUpFromLine}
       defaultOpen={defaultOpen || false}
     >
-      <VideoUploadForm />
+      <VideoUploadForm setReloadVideos={setReloadVideos} />
     </Modal>
   );
 }

@@ -1,28 +1,41 @@
+"use client";
+
 import axios from "axios";
-import config from "@/conf/config";
-import { VideoGridItemProps } from "@/components/video/video-card";
+import { VideoData } from "@/components/video/video-card";
 import InfiniteScroll from "@/components/infinite-scroll/infinite-video-scroll";
+import { useEffect, useState } from "react";
+import VideoCardSkeleton from "@/components/skeleton/video-card-skeleton";
 
-export default async function HomePage() {
-  const response = await fetchVideos();
-  if (response.videos === undefined) {
-    return <div>Error fetching videos</div>;
-  }
-  const videos: VideoGridItemProps[] | undefined = response?.videos;
-  return <InfiniteScroll initialVideos={videos} />;
+export default function HomePage() {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [videos, setVideos] = useState<VideoData[] | []>([]);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
+
+  const fetchVideos = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/v1/video");
+      console.log(response);
+      setVideos(response.data.data.videos);
+      setHasNextPage(response.data.data.hasNextPage ?? false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  return (
+    <div>
+      {loading ? (
+        <VideoCardSkeleton />
+      ) : (
+        <InfiniteScroll initialVideos={videos} hasMoreVideo={hasNextPage} />
+      )}
+    </div>
+  );
 }
-
-// Define the function that fetches videos
-const fetchVideos = async () => {
-  try {
-    const response = await axios.get(`${config.BACKEND_API}/video`, {
-      params: {
-        page: 1,
-      },
-    });
-
-    return response.data.data;
-  } catch (error: any) {
-    return error;
-  }
-};

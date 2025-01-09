@@ -22,6 +22,8 @@ export function AppSidebar() {
 
   // Collapse sidebar if no item href matches the current URL
   useEffect(() => {
+    if (pathname === "/setting/security") return;
+
     const shouldCollapse = !desktopItems.some((item) => item.href === pathname);
     if (
       (state === "expanded" && shouldCollapse) ||
@@ -35,7 +37,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" className="mt-20">
       <SidebarHeader />
       <SidebarContent className="mx-2">
-        <SidebarGroup title="Main">
+        <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {desktopItems.map((item, index) => (

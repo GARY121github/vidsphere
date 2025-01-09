@@ -8,7 +8,6 @@ import connectDB from "@/db/connectDB";
 import { getServerSession } from "next-auth";
 import authOptions from "../../../auth/[...nextauth]/options";
 import CommentModel from "@/models/comment.model";
-import TweetModel from "@/models/tweet.model";
 import PostModel from "@/models/post.model";
 
 // ENTITY : VIDEO, COMMENT, TWEET//
@@ -32,8 +31,8 @@ async function checkEntityExistence(
         return false;
       }
       return true;
-    case "tweet":
-      const tweet = await TweetModel.findById(EntityId);
+    case "post":
+      const tweet = await PostModel.findById(EntityId);
       if (!tweet) {
         return false;
       }

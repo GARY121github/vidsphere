@@ -33,7 +33,7 @@ export default function RootLayout({
           )}
         >
           <NextTopLoader color="#d62828" height={3} showSpinner={false} />
-          <main className="w-full">
+          <main>
             <SidebarProvider>
               <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
             </SidebarProvider>

@@ -164,12 +164,16 @@ export const columns = (
 
 export default function ChannelVideoDetailsTable({
   channelId,
+  reloadVideos,
+  setReloadVideos,
 }: {
   channelId: string;
+  reloadVideos: Boolean;
+  setReloadVideos: React.Dispatch<React.SetStateAction<Boolean>>;
 }) {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [videos, setVideos] = useState<Array<Video>>([]);
-  const [reloadVideos, setReloadVideos] = useState<Boolean>(false);
+  // const [reloadVideos, setReloadVideos] = useState<Boolean>(false);
 
   const table = useReactTable({
     data: videos,
