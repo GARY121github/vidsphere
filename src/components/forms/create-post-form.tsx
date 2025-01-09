@@ -10,7 +10,7 @@ import { Form, FormField, FormLabel, FormItem } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
 import { Switch } from "../ui/switch";
 import { useToast } from "../ui/use-toast";
-import { Image, X } from "lucide-react";
+import { Image as ImageLogo, X } from "lucide-react";
 import ApiResponse from "@/utils/ApiResponse";
 
 interface CreatePostModalProps {
@@ -141,7 +141,7 @@ export default function PostForm({ setRefreshPost }: CreatePostModalProps) {
                 </div>
               ) : (
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <Image
+                  <ImageLogo
                     size={24}
                     className="text-gray-400 hover:text-blue-500 transition"
                   />
