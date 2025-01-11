@@ -17,6 +17,7 @@ export interface VideoData {
   views: number;
   createdAt: Date;
   duration: number;
+  description: string;
   thumbnail: string;
   videoUrls: Array<VideoQuality>;
 }
