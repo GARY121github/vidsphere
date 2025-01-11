@@ -7,6 +7,8 @@ import {
   Maximize,
   Minimize,
   Settings,
+  Check,
+  ChevronDown,
 } from "lucide-react";
 import {
   Select,
@@ -14,6 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { formatDuration } from "@/utils/formatDuration";
 
 interface VideoQuality {
   link: string;
@@ -22,6 +25,7 @@ interface VideoQuality {
 
 interface VideoControllerProps {
   videoRef: React.RefObject<HTMLVideoElement>;
+  videoId: string;
   duration: number;
   video: {
     videoUrls: VideoQuality[];
@@ -36,6 +40,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
   (
     {
       videoRef,
+      videoId,
       duration,
       video,
       isPlaying,
@@ -49,17 +54,15 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
     const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
     const [volume, setVolume] = useState<number>(1);
     const [progress, setProgress] = useState<number>(0);
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+    const [isChangingQuality, setIsChangingQuality] = useState<boolean>(false);
 
     const toggleMute = () => {
       if (videoRef.current) {
         const newMuteState = !videoRef.current.muted;
         videoRef.current.muted = newMuteState;
         setIsMuted(newMuteState);
-        if (newMuteState) {
-          setVolume(0);
-        } else {
-          setVolume(videoRef.current.volume);
-        }
+        setVolume(newMuteState ? 0 : videoRef.current.volume);
       }
     };
 
@@ -68,6 +71,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
       setVolume(newVolume);
       if (videoRef.current) {
         videoRef.current.volume = newVolume;
+        videoRef.current.muted = newVolume === 0;
         setIsMuted(newVolume === 0);
       }
     };
@@ -82,7 +86,24 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
       }
     };
 
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+      }
+    };
+
+    useEffect(() => {
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+      return () => {
+        document.removeEventListener(
+          "fullscreenchange",
+          handleFullscreenChange
+        );
+      };
+    }, []);
+
     const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log(videoRef.current);
       if (videoRef.current) {
         const newProgress = parseFloat(e.target.value);
         videoRef.current.currentTime =
@@ -95,8 +116,44 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
       if (videoRef.current) {
         const progressValue =
           (videoRef.current.currentTime / videoRef.current.duration) * 100;
-        setProgress(progressValue);
+        setProgress(Number.isNaN(progressValue) ? 0 : progressValue);
+        sessionStorage.setItem(
+          `currentTime-${videoId}`,
+          videoRef.current.currentTime.toString()
+        );
       }
+    };
+
+    const handleQualityChange = (newQuality: string) => {
+      if (videoRef.current) {
+        // Set state to indicate quality is changing
+        setIsChangingQuality(true);
+
+        // Save the current playback state and time
+        const wasPlaying = !videoRef.current.paused;
+        const currentTime = videoRef.current.currentTime;
+
+        // Update the quality
+        onQualityChange(newQuality);
+
+        // Change the video source and restore playback position
+        videoRef.current.src = newQuality;
+        videoRef.current.load();
+        videoRef.current.currentTime = currentTime;
+
+        // Handle playback state after quality change
+        const handleCanPlay = () => {
+          if (wasPlaying) {
+            videoRef.current?.play();
+          }
+          setIsChangingQuality(false); // Quality change completed
+          videoRef.current?.removeEventListener("canplay", handleCanPlay);
+        };
+
+        // Wait for the video to be ready to play
+        videoRef.current.addEventListener("canplay", handleCanPlay);
+      }
+      setIsDropdownOpen(false); // Close the dropdown menu
     };
 
     useEffect(() => {
@@ -107,6 +164,32 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
         };
       }
     }, [videoRef]);
+
+    // Enhanced keyboard controls with smooth seeking
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (!videoRef.current) return;
+
+        const currentTime = videoRef.current.currentTime;
+
+        switch (e.key) {
+          case "ArrowRight": // Seek forward
+            videoRef.current.currentTime = Math.min(
+              videoRef.current.currentTime + 5,
+              videoRef.current.duration
+            );
+            break;
+          case "ArrowLeft": // Seek backward
+            videoRef.current.currentTime = Math.max(currentTime - 5, 0);
+            break;
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }, [togglePlayPause, duration]);
 
     return (
       <div
@@ -136,6 +219,11 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
             )}
           </button>
 
+          {/* Time Display */}
+          <div className="text-sm">
+            {formatDuration(duration)} / {formatDuration(duration)}
+          </div>
+
           {/* Volume Control */}
           <div className="flex items-center mx-4">
             <button
@@ -158,18 +246,51 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
 
         <div className="flex flex-shrink-0 relative justify-between items-center">
           {/* Quality Selection */}
-          <Select value={selectedQuality} onValueChange={onQualityChange}>
+          {/* <Select value={selectedQuality} onValueChange={onQualityChange}>
             <SelectTrigger className="border-none focus:ring-0 focus:ring-offset-0 bg-transparent">
               <Settings />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent
+              className="z-50 absolute">
               {video.videoUrls.map((quality) => (
                 <SelectItem key={quality.link} value={quality.link}>
                   {quality.quality}
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
+
+          <div className="relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center border-none focus:outline-none bg-transparent"
+            >
+              <Settings />
+              <ChevronDown
+                className={`transition-transform h-4 w-4 ${
+                  isDropdownOpen ? "rotate-180" : "rotate-0"
+                }`}
+              />
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute bottom-full right-full z-50 mb-2 w-32 bg-white border border-gray-300 rounded-md shadow-lg">
+                {video.videoUrls.map((quality) => (
+                  <button
+                    key={quality.link}
+                    onClick={() => handleQualityChange(quality.link)}
+                    className={`flex justify-between text-black items-center w-full px-4 py-2 text-left hover:bg-gray-100 ${
+                      selectedQuality === quality.link
+                        ? "bg-gray-200 font-semibold"
+                        : ""
+                    }`}
+                  >
+                    <span>{quality.quality}</span>
+                    {selectedQuality === quality.link && <Check size={16} />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Fullscreen Toggle */}
           <button

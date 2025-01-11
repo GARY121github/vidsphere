@@ -51,6 +51,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, className }) => {
     }
   }, [selectedQuality]);
 
+  // Restore playback position from localStorage
+  useEffect(() => {
+    if (videoRef.current) {
+      const savedTime = sessionStorage.getItem(`currentTime-${video._id}`);
+      if (savedTime) {
+        videoRef.current.currentTime = Math.max(parseFloat(savedTime) - 5, 0);
+      }
+    }
+  }, []);
+
   // Toggle Play/Pause on click
   const togglePlayPause = () => {
     if (videoRef.current) {
@@ -81,17 +91,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, className }) => {
 
   return (
     <div
-      className={`relative group overflow-hidden w-full md:max-w-[60vw] rounded-lg ${className}`}
+      className={`relative group overflow-hidden w-full md:max-w-[65vw] h-[60vh] rounded-lg ${className}`}
     >
-      <video
-        ref={videoRef}
-        onClick={togglePlayPause} // Toggle play/pause on video click
-        className="w-full rounded-lg"
-      />
+      <div className="aspect-w-16 aspect-h-9">
+        <video
+          ref={videoRef}
+          onClick={togglePlayPause} // Toggle play/pause on video click
+          className="w-full h-full rounded-lg"
+        />
+      </div>
 
       {/* Pass videoRef and other states to the controller */}
       <VideoController
         videoRef={videoRef}
+        videoId={video._id.toString()}
         duration={duration}
         video={video}
         isPlaying={isPlaying}
