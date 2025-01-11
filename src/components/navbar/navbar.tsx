@@ -49,8 +49,8 @@ const Navbar = () => {
           <SidebarTrigger className="w-8 h-8" />
           <Image
             // className="md:w-36 md:h-20"
-            src="/images/logo.png"
-            width={150}
+            src="/images/vidsphere.png"
+            width={100}
             height={50}
             alt="application logo"
           />

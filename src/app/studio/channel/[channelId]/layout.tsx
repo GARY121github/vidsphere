@@ -1,4 +1,4 @@
-import StudioNavbar from "@/components/navbar/studio-navbar";
+import NavbarStudio from "@/components/navbar/navbar-studio";
 import SidebarStudio from "@/components/sidebar/sidebar-studio";
 import React from "react";
 
@@ -8,9 +8,9 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen w-full">
       <div className="drop-shadow-md">
-        <StudioNavbar />
+        <NavbarStudio />
       </div>
       <div className="flex flex-grow overflow-hidden">
         <div className="md:flex md:flex-col md:w-64 bg-gray-200">

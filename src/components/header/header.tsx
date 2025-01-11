@@ -12,16 +12,16 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 w-full z-50">
+    <header className="fixed w-full z-50">
       <nav className="bg-gray-800 border-gray-200 border-b-[1px] rounded-b-xl shadow-lg shadow-black py-2.5">
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
           <Link href="/" className="flex items-center">
             <Image
-              // className="md:w-36 md:h-20"
-              src="/images/logo.png"
-              width={100}
-              height={25}
-              alt="application logo"
+              src="/images/vidsphere.png"
+              width={250}
+              height={250}
+              className="w-8 h-8 sm:w-10 sm:h-10 md:w-20 md:h-16"
+              alt="VidSphere Logo"
             />
           </Link>
 

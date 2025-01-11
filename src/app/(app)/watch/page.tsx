@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import VideoPlayer from "@/components/video/player/videp-player";
 import axios, { AxiosError } from "axios";
 import { useSearchParams } from "next/navigation";
@@ -8,7 +8,7 @@ import VideoPlayerSkeleton from "@/components/skeleton/video-player-skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { set, Types } from "mongoose";
 import Link from "next/link";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { Ghost, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
@@ -66,7 +66,7 @@ interface Like {
   liked: LikeType;
 }
 
-export default function WatchVideo() {
+function WatchVideo() {
   const videoParams = useSearchParams();
   const videoId = videoParams.get("v");
   const router = useRouter();
@@ -424,5 +424,22 @@ export default function WatchVideo() {
         </h1>
       </div>
     </div>
+  );
+}
+
+function WatchVideoFallback() {
+  return (
+    <div className="flex flex-col items-center justify-center h-[80vh]">
+      <Ghost className="h-72 w-72" />
+      <h1 className="text-5xl mt-4 font-semibold">Video Not Found</h1>
+    </div>
+  );
+}
+
+export default function WatchVideoPage() {
+  return (
+    <Suspense fallback={<WatchVideoFallback />}>
+      <WatchVideo />
+    </Suspense>
   );
 }

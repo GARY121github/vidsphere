@@ -37,6 +37,12 @@ async function checkEntityExistence(
         return false;
       }
       return true;
+    case "post":
+      const post = await PostModel.findById(EntityId);
+      if (!post) {
+        return false;
+      }
+      return true;
     default:
       throw new ApiError(400, "Invalid entity type");
   }

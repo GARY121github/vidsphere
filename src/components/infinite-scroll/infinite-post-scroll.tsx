@@ -28,6 +28,9 @@ import EditPostForm from "../forms/edit-post-form";
 import { useToast } from "../ui/use-toast";
 import ApiError from "@/utils/ApiError";
 import Image from "next/image";
+import ApiResponse from "@/utils/ApiResponse";
+import { useSearchParams } from "next/navigation";
+import { Separator } from "../ui/separator";
 
 export interface PostData {
   _id: string;
@@ -49,6 +52,17 @@ interface InfinitePostScrollProps {
   hasMorePost: boolean;
 }
 
+enum LikeType {
+  like = "like",
+  dislike = "dislike",
+  none = "none",
+}
+
+interface Like {
+  likeCount: number;
+  liked: LikeType;
+}
+
 export default function InfinitePostScroll({
   initialPosts,
   channelId,
@@ -58,6 +72,10 @@ export default function InfinitePostScroll({
   const [posts, setPosts] = useState<PostData[]>(initialPosts || []);
   const [page, setPage] = useState<number>(1);
   const [hasMorePosts, setHasMorePosts] = useState<boolean>(hasMorePost);
+  const [postLikes, setPostLikes] = useState<Like>({
+    likeCount: 0,
+    liked: LikeType.none,
+  });
   const [ref, inView] = useInView();
   const { toast } = useToast();
   const [isDeletingPost, setIsDeletingPost] = useState<boolean>(false);
@@ -108,6 +126,116 @@ export default function InfinitePostScroll({
       });
     } finally {
       setIsDeletingPost(false);
+    }
+  };
+
+  const togglePostLike = async (postId: string) => {
+    setPostLikes((prev) => {
+      if (prev.liked === LikeType.like) {
+        return {
+          ...prev,
+          likeCount: prev.likeCount - 1,
+          liked: LikeType.none,
+        };
+      } else if (prev.liked === LikeType.dislike) {
+        return {
+          ...prev,
+          likeCount: prev.likeCount + 1,
+          liked: LikeType.like,
+        };
+      } else {
+        return {
+          ...prev,
+          likeCount: prev.likeCount + 1,
+          liked: LikeType.like,
+        };
+      }
+    });
+    toast({
+      title: `${postLikes.liked === "like" ? "Post Unliked" : "Post Liked"}`,
+    });
+    try {
+      await axios.post<ApiResponse>(
+        `/api/v1/like/${postId}?entityType=post&likeType=like`
+      );
+    } catch (error: any) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      const errorMessage = axiosError.response?.data.message;
+      toast({
+        title: "like post failed!",
+        description:
+          errorMessage || "Something went wrong while liking the post",
+        variant: "destructive",
+      });
+      setPostLikes((prev) => {
+        if (prev.liked === LikeType.like) {
+          return {
+            ...prev,
+            likeCount: prev.likeCount - 1,
+            liked: LikeType.none,
+          };
+        } else if (prev.liked === LikeType.dislike) {
+          return {
+            ...prev,
+            likeCount: prev.likeCount - 1,
+            liked: LikeType.none,
+          };
+        } else {
+          return prev;
+        }
+      });
+    }
+  };
+
+  const togglePostDislike = async (postId: string) => {
+    setPostLikes((prev) => {
+      if (prev.liked === LikeType.dislike) {
+        return {
+          ...prev,
+          liked: LikeType.none,
+        };
+      } else if (prev.liked === LikeType.like) {
+        return {
+          ...prev,
+          likeCount: prev.likeCount - 1,
+          liked: LikeType.dislike,
+        };
+      } else {
+        return {
+          ...prev,
+          liked: LikeType.dislike,
+        };
+      }
+    });
+    try {
+      await axios.post<ApiResponse>(
+        `/api/v1/like/${postId}?entityType=post&likeType=dislike`
+      );
+    } catch (error: any) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      const errorMessage = axiosError.response?.data.message;
+      toast({
+        title: "dislike post failed!",
+        description:
+          errorMessage || "Something went wrong while disliking the post",
+        variant: "destructive",
+      });
+      setPostLikes((prev) => {
+        if (prev.liked === LikeType.dislike) {
+          return {
+            ...prev,
+            liked: LikeType.none,
+          };
+        } else if (prev.liked === LikeType.like) {
+          return {
+            ...prev,
+            likeCount: prev.likeCount + 1,
+            liked: LikeType.dislike,
+          };
+        } else {
+          return prev;
+        }
+      });
     }
   };
 
@@ -195,12 +323,35 @@ export default function InfinitePostScroll({
                 </CardContent>
 
                 <CardFooter className="flex gap-2 justify-start items-center">
-                  <Button>
-                    <ThumbsUp />
-                  </Button>
-                  <Button>
-                    <ThumbsDown />
-                  </Button>
+                  <div className="flex bg-white items-center justify-around gap-4 text-gray-800 rounded-full px-2 p-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full hover:bg-white"
+                    >
+                      <ThumbsUp
+                        size={20}
+                        onClick={() => togglePostLike(post._id)}
+                        fill={postLikes.liked === "like" ? "blue" : "none"}
+                        className="flex-none"
+                      />
+                    </Button>
+                    <span className="text-xs">{postLikes.likeCount}</span>
+                    <Separator orientation="vertical" className="h-7" />
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full hover:bg-white"
+                    >
+                      <ThumbsDown
+                        size={20}
+                        onClick={() => togglePostDislike(post._id)}
+                        fill={postLikes.liked === "dislike" ? "red" : "none"}
+                        className="flex-none"
+                      />
+                    </Button>
+                  </div>
                 </CardFooter>
               </Card>
             ))}

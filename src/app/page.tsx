@@ -76,10 +76,10 @@ export default function LandingPage() {
   ];
 
   return (
-    <div>
+    <div className="w-full">
       <Header />
 
-      <section className="bg-gray-900">
+      <section className="bg-gray-900 pt-12">
         <div className="grid max-w-screen-xl items-center px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
           {/* Text Section */}
           <div className="mr-auto place-self-center lg:col-span-7">
