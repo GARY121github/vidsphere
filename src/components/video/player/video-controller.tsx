@@ -10,12 +10,6 @@ import {
   Check,
   ChevronDown,
 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
 import { formatDuration } from "@/utils/formatDuration";
 
 interface VideoQuality {
