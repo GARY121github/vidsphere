@@ -204,7 +204,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
           max="100"
           value={progress}
           onChange={handleProgressChange}
-          className="absolute bottom-14 bg-opacity-60 bg-gray-700 cursor-pointer group-hover:bg-gray-800 self-center w-[99%]"
+          className="absolute bottom-14 bg-opacity-60 bg-gray-700 cursor-pointer group-hover:bg-gray-800 self-center w-[96%] lg:w-[98%]"
         />
         <div className="flex justify-between items-center">
           {/* Play/Pause Button */}
@@ -239,7 +239,7 @@ const VideoController = forwardRef<HTMLDivElement, VideoControllerProps>(
               step="0.1"
               value={isMuted ? 0 : volume}
               onChange={handleVolumeChange}
-              className="w-24 cursor-pointer "
+              className="w-24 cursor-pointer"
             />
           </div>
         </div>

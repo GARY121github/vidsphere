@@ -47,7 +47,7 @@ export default function UserProfile() {
   }, [reloadInformation]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4 sm:p-6 md:p-8">
       <h1 className="text-2xl font-semibold">Edit Profile</h1>
       {isLoading ? (
         <div className="flex flex-col items-center justify-center h-96">
@@ -63,7 +63,7 @@ export default function UserProfile() {
                     <div>
                       <img
                         src={user.coverImage}
-                        className="object-cover h-48 w-full rounded-lg transition duration-300 group-hover:opacity-50 group-hover:shadow-lg group-hover:shadow-black"
+                        className="object-cover w-full rounded-lg transition duration-300 group-hover:opacity-50 group-hover:shadow-lg group-hover:shadow-black sm:h-32 md:h-48 lg:h-64"
                         alt="channel"
                       />
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -71,7 +71,7 @@ export default function UserProfile() {
                       </div>
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="text-white bg-[#303030] border-0 max-w-6xl ">
+                  <DialogContent className="text-white bg-[#303030] border-0 max-w-6xl">
                     <DialogHeader className="text-white">
                       <DialogTitle>Change Cover Image</DialogTitle>
                     </DialogHeader>
@@ -81,19 +81,21 @@ export default function UserProfile() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <div className="p-2 grid grid-cols-6 justify-items-start">
+
+              <div className="p-4 flex flex-col sm:flex-row sm:items-start sm:space-x-6">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Avatar className="h-44 w-44 cursor-pointer relative group">
+                    <Avatar className="h-32 w-32 mx-auto sm:mx-0 sm:h-44 sm:w-44 cursor-pointer relative group">
                       <AvatarImage
                         src={user.avatar}
-                        className="h-44 w-44 rounded-full object-cover transition duration-300 group-hover:opacity-50 group-hover:shadow-lg group-hover:shadow-black"
+                        className="rounded-full object-cover transition duration-300 group-hover:opacity-50 group-hover:shadow-lg group-hover:shadow-black"
                       />
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                         <Camera className="h-10 w-10 text-white" />
                       </div>
                     </Avatar>
                   </DialogTrigger>
+
                   <DialogContent className="text-white bg-[#303030] border-0 max-w-lg">
                     <DialogHeader className="text-white">
                       <DialogTitle>Change Avatar</DialogTitle>
@@ -103,7 +105,8 @@ export default function UserProfile() {
                     />
                   </DialogContent>
                 </Dialog>
-                <div className="col-span-5  w-full">
+
+                <div className="flex-1 mt-6 sm:mt-0">
                   <UpdateUserProfile
                     username={user.username}
                     email={user.email}

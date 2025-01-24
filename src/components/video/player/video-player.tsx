@@ -63,6 +63,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, className }) => {
 
   // Toggle Play/Pause on click
   const togglePlayPause = () => {
+    console.log(videoRef?.current?.onloadedmetadata);
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play();
@@ -91,27 +92,27 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, className }) => {
 
   return (
     <div
-      className={`relative group overflow-hidden w-full md:max-w-[65vw] h-[60vh] rounded-lg ${className}`}
+      className={`relative group overflow-hidden w-full md:max-w-[80vw] lg:max-w-[60vw] rounded-lg ${className}`}
     >
-      <div className="aspect-w-16 aspect-h-9">
+      {/* Container to preserve aspect ratio */}
+      <div className="aspect-w-16 aspect-h-9 relative bg-black">
         <video
           ref={videoRef}
           onClick={togglePlayPause} // Toggle play/pause on video click
-          className="w-full h-full rounded-lg"
+          className="w-full h-full object-cover rounded-lg"
+        />
+        {/* Video Controller */}
+        <VideoController
+          videoRef={videoRef}
+          videoId={video._id.toString()}
+          duration={duration}
+          video={video}
+          isPlaying={isPlaying}
+          togglePlayPause={togglePlayPause} // Pass togglePlayPause to controller
+          selectedQuality={selectedQuality}
+          onQualityChange={setSelectedQuality}
         />
       </div>
-
-      {/* Pass videoRef and other states to the controller */}
-      <VideoController
-        videoRef={videoRef}
-        videoId={video._id.toString()}
-        duration={duration}
-        video={video}
-        isPlaying={isPlaying}
-        togglePlayPause={togglePlayPause} // Pass togglePlayPause to controller
-        selectedQuality={selectedQuality}
-        onQualityChange={setSelectedQuality}
-      />
     </div>
   );
 };

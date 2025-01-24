@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import VideoPlayer from "@/components/video/player/videp-player";
+import VideoPlayer from "@/components/video/player/video-player";
 import axios, { AxiosError } from "axios";
 import { useSearchParams } from "next/navigation";
 import VideoPlayerSkeleton from "@/components/skeleton/video-player-skeleton";
