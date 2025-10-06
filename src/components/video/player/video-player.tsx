@@ -119,6 +119,7 @@ const VideoPlayer = React.forwardRef<HTMLDivElement, VideoPlayerProps>(
 
       const video = videoRef.current;
       const savedCurrentTime = currentTime; // Preserve current time
+      const wasPlaying = isPlaying; // Preserve playing state
 
       // Reset loading state when changing quality
       setIsLoading(true);
@@ -143,6 +144,10 @@ const VideoPlayer = React.forwardRef<HTMLDivElement, VideoPlayerProps>(
           if (savedCurrentTime > 0) {
             video.currentTime = savedCurrentTime;
           }
+          // Resume playback if it was playing before quality change
+          if (wasPlaying) {
+            video.play().catch(console.error);
+          }
         });
 
         hls.on(Hls.Events.ERROR, (event, data) => {
@@ -157,6 +162,10 @@ const VideoPlayer = React.forwardRef<HTMLDivElement, VideoPlayerProps>(
         if (savedCurrentTime > 0) {
           video.currentTime = savedCurrentTime;
         }
+        // Resume playback if it was playing before quality change
+        if (wasPlaying) {
+          video.play().catch(console.error);
+        }
       }
 
       // Event handlers
@@ -167,6 +176,11 @@ const VideoPlayer = React.forwardRef<HTMLDivElement, VideoPlayerProps>(
         // Initialize volume
         video.volume = volume;
         setIsLoading(false);
+
+        // For non-HLS videos, resume playback here as well
+        if (wasPlaying && !Hls.isSupported()) {
+          video.play().catch(console.error);
+        }
       };
 
       const handleTimeUpdate = () => {
@@ -236,10 +250,8 @@ const VideoPlayer = React.forwardRef<HTMLDivElement, VideoPlayerProps>(
       if (containerRef.current) {
         if (document.fullscreenElement) {
           document.exitFullscreen();
-          setIsFullscreen(false);
         } else {
           containerRef.current.requestFullscreen();
-          setIsFullscreen(true);
         }
       }
     }, []);
@@ -276,6 +288,22 @@ const VideoPlayer = React.forwardRef<HTMLDivElement, VideoPlayerProps>(
         setShowControls(false);
       }
     }, [isPlaying, isMobile]);
+
+    // Fullscreen change event listener
+    useEffect(() => {
+      const handleFullscreenChange = () => {
+        const isCurrentlyFullscreen = !!document.fullscreenElement;
+        setIsFullscreen(isCurrentlyFullscreen);
+      };
+
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+      return () => {
+        document.removeEventListener(
+          "fullscreenchange",
+          handleFullscreenChange
+        );
+      };
+    }, []);
 
     // Keyboard controls
     useEffect(() => {
