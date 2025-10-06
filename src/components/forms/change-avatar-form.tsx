@@ -69,7 +69,7 @@ export default function ChangeAvatarForm({
     } catch (error: any) {
       const axiosError = error as AxiosError<ApiError>;
       const errorMessage =
-        axiosError?.response?.data?.message ?? "Error while signing up";
+        axiosError?.response?.data?.message ?? "Error while chaging avatar";
       toast({
         title: "Error while changing avatar",
         description: errorMessage,
