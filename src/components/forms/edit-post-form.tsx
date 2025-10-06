@@ -156,6 +156,7 @@ export default function EditPostForm({
                 </div>
               ) : (
                 <label className="flex items-center gap-2 cursor-pointer">
+                  {/* eslint-disable-next-line jsx-a11y/alt-text */}
                   <Image
                     size={24}
                     className="text-gray-400 hover:text-blue-500 transition"

@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     //Generate hashed token
     const forgotPasswordToken = generateForgotPasswordToken(
-      user._id.toString()
+      user._id!.toString()
     );
     const forgotPasswordTokenExpiry = new Date(Date.now() + 10 * 60 * 1000); //10 minutes;
 
