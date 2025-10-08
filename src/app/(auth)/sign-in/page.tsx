@@ -97,6 +97,36 @@ export default function SignInPage() {
           <span className="mx-3 text-sm text-gray-400">OR</span>
           <hr className="flex-grow border-gray-500" />
         </div>
+
+        {/* Demo Credentials Section */}
+        <div className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-600">
+          <h3 className="text-sm font-medium text-white mb-2">
+            Demo Credentials
+          </h3>
+          <p className="text-xs text-gray-400 mb-3">
+            Click below to use demo credentials for testing
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full text-blue-400 border-blue-400 hover:bg-blue-400 hover:text-white"
+            onClick={() => {
+              form.setValue("username", "falgun");
+              form.setValue("password", "Vidsphere@12");
+            }}
+          >
+            Use Demo Credentials
+          </Button>
+          <div className="mt-2 text-xs text-gray-500">
+            <p>
+              Username: <span className="text-gray-300">falgun</span>
+            </p>
+            <p>
+              Password: <span className="text-gray-300">Vidsphere@12</span>
+            </p>
+          </div>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
